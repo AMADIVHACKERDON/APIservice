@@ -1,0 +1,676 @@
+# Version of the OpenAPI Specification
+openapi: 3.1.0
+
+# Metadata about the API
+info:
+  title: Solutions API
+  description: A RESTful API service for tech solutions across categories like IoT, AI, Cybersecurity and more.
+  version: 1.0.0
+  contact:
+    name: API Support
+    url: https://example.com
+
+# Target servers for testing or production
+servers:
+  - url: http://localhost:3000/v1
+    description: Local development server
+  - url: https://example.com/v1
+    description: Production server
+
+# API Endpoints
+paths:
+
+  # ─── Categories ───────────────────────────────────────────────
+  /categories:
+    get:
+      summary: List all categories
+      description: Returns all top-level categories, each with their nested subcategories.
+      tags:
+        - Categories
+      responses:
+        '200':
+          description: A list of categories with subcategories
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Category'
+        '500':
+          $ref: '#/components/responses/InternalError'
+
+  /categories/{slug}/solutions:
+    get:
+      summary: Get solutions by category
+      description: Returns all verified solutions under a specific subcategory slug.
+      tags:
+        - Categories
+      parameters:
+        - $ref: '#/components/parameters/SlugParam'
+        - $ref: '#/components/parameters/PageParam'
+        - $ref: '#/components/parameters/LimitParam'
+      responses:
+        '200':
+          description: A list of solutions under the specified category
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedSolutions'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/InternalError'
+
+  # ─── Solutions ────────────────────────────────────────────────
+  /solutions:
+    get:
+      summary: List all solutions
+      description: Returns all verified solutions. Supports search and filtering by category.
+      tags:
+        - Solutions
+      parameters:
+        - name: search
+          in: query
+          description: Search solutions by keyword
+          required: false
+          schema:
+            type: string
+          example: firewall
+        - name: category
+          in: query
+          description: Filter by category slug
+          required: false
+          schema:
+            type: string
+          example: cybersecurity
+        - $ref: '#/components/parameters/PageParam'
+        - $ref: '#/components/parameters/LimitParam'
+      responses:
+        '200':
+          description: A paginated list of solutions
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedSolutions'
+        '500':
+          $ref: '#/components/responses/InternalError'
+
+    post:
+      summary: Publish a new solution
+      description: Creates and publishes a new solution. Admin only.
+      tags:
+        - Solutions
+      security:
+        - BearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SolutionInput'
+      responses:
+        '201':
+          description: Solution created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Solution'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '500':
+          $ref: '#/components/responses/InternalError'
+
+  /solutions/{id}:
+    get:
+      summary: Get a single solution
+      description: Returns the full detail of a single solution by its ID.
+      tags:
+        - Solutions
+      parameters:
+        - $ref: '#/components/parameters/IdParam'
+      responses:
+        '200':
+          description: Solution detail
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Solution'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/InternalError'
+
+    put:
+      summary: Update a solution
+      description: Edits an existing solution. Admin only.
+      tags:
+        - Solutions
+      security:
+        - BearerAuth: []
+      parameters:
+        - $ref: '#/components/parameters/IdParam'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SolutionInput'
+      responses:
+        '200':
+          description: Solution updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Solution'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/InternalError'
+
+    delete:
+      summary: Delete a solution
+      description: Permanently removes a solution. Admin only.
+      tags:
+        - Solutions
+      security:
+        - BearerAuth: []
+      parameters:
+        - $ref: '#/components/parameters/IdParam'
+      responses:
+        '204':
+          description: Solution deleted successfully
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/InternalError'
+
+  /solutions/{id}/helpful:
+    post:
+      summary: Mark solution as helpful
+      description: Increments the helpful count on a solution. One vote per user per solution.
+      tags:
+        - Solutions
+      security:
+        - BearerAuth: []
+        - ApiKeyAuth: []
+      parameters:
+        - $ref: '#/components/parameters/IdParam'
+      responses:
+        '200':
+          description: Helpful count updated
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: string
+                    format: uuid
+                  helpful_count:
+                    type: integer
+                    examples:
+                      - 42
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '409':
+          description: User has already marked this solution as helpful
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          $ref: '#/components/responses/InternalError'
+
+  # ─── Auth ─────────────────────────────────────────────────────
+  /auth/register:
+    post:
+      summary: Register a new user
+      description: Creates a new user account.
+      tags:
+        - Auth
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RegisterInput'
+      responses:
+        '201':
+          description: User registered successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserPublic'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '409':
+          description: Email already in use
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          $ref: '#/components/responses/InternalError'
+
+  /auth/login:
+    post:
+      summary: Login
+      description: Authenticates a user and returns a bearer token.
+      tags:
+        - Auth
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LoginInput'
+      responses:
+        '200':
+          description: Login successful
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  token:
+                    type: string
+                    examples:
+                      - eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
+                  expires_in:
+                    type: integer
+                    description: Token lifetime in seconds
+                    examples: 
+                      - 86400
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '500':
+          $ref: '#/components/responses/InternalError'
+
+  # ─── Developer ────────────────────────────────────────────────
+  /me/api-key:
+    get:
+      summary: Get your API key
+      description: Returns the API key for the authenticated user.
+      tags:
+        - Developer
+      security:
+        - BearerAuth: []
+      responses:
+        '200':
+          description: API key returned
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  api_key:
+                    type: string
+                    examples:
+                      - sk_live_abc123xyz
+                  created_at:
+                    type: string
+                    format: date-time
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '500':
+          $ref: '#/components/responses/InternalError'
+
+  /me/api-key/regenerate:
+    post:
+      summary: Regenerate API key
+      description: Issues a new API key and invalidates the old one.
+      tags:
+        - Developer
+      security:
+        - BearerAuth: []
+      responses:
+        '200':
+          description: New API key issued
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  api_key:
+                    type: string
+                    examples:
+                      - sk_live_newkey456
+                  created_at:
+                    type: string
+                    format: date-time
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '500':
+          $ref: '#/components/responses/InternalError'
+
+# ─── Reusable Components ──────────────────────────────────────────
+components:
+
+  # Security schemes
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: JWT token obtained from /auth/login
+    ApiKeyAuth:
+      type: apiKey
+      in: header
+      name: x-api-key
+      description: API key for third-party developer access
+
+  # Reusable parameters
+  parameters:
+    IdParam:
+      name: id
+      in: path
+      required: true
+      description: The UUID of the resource
+      schema:
+        type: string
+        format: uuid
+      examples:
+        default_id:
+          summary: A sample UUID
+          value: 3fa85f64-5717-4562-b3fc-2c963f66afa6
+
+    SlugParam:
+      name: slug
+      in: path
+      required: true
+      description: The URL-friendly identifier of a category
+      schema:
+        type: string
+      examples:
+        smart_home_example:
+          summary: A sample category slug
+          value: smart-home-system
+
+    PageParam:
+      name: page
+      in: query
+      required: false
+      description: Page number for pagination
+      schema:
+        type: integer
+        default: 1
+      examples:
+        page_example:
+          summary: A sample of a page number
+          value: 1
+
+    LimitParam:
+      name: limit
+      in: query
+      required: false
+      description: Number of results per page
+      schema:
+        type: integer
+        default: 20
+        maximum: 100
+      examples:
+        default_limit:
+          summary: The default limit value
+          value: 20
+
+
+  # Reusable response templates
+  responses:
+    BadRequest:
+      description: Invalid request body or parameters
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    Unauthorized:
+      description: Missing or invalid authentication credentials
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    Forbidden:
+      description: Authenticated but not permitted to perform this action
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    NotFound:
+      description: The requested resource was not found
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    InternalError:
+      description: Unexpected server error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+
+  # Data schemas
+  schemas:
+
+    Error:
+      type: object
+      properties:
+        error:
+          type: string
+          examples:
+            - Resource not found
+        code:
+          type: integer
+          examples:
+            - 404
+      required:
+        - error
+        - code
+
+    Category:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+          examples:
+            - IoT
+        slug:
+          type: string
+          examples:
+            - iot
+        subcategories:
+          type: array
+          items:
+            $ref: '#/components/schemas/Subcategory'
+      required:
+        - id
+        - name
+        - slug
+
+    Subcategory:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+          examples:
+            - Smart Home System
+        slug:
+          type: string
+          examples:
+            - smart-home-system
+      required:
+        - id
+        - name
+        - slug
+
+    Solution:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        title:
+          type: string
+          examples:
+            - How to fix Alexa not connecting to hub
+        content:
+          type: string
+          examples:
+            - Step 1 - Reset the hub by holding the button for 10 seconds...
+        difficulty:
+          type: string
+          enum: [beginner, intermediate, advanced]
+          examples:
+            - beginner
+        verified:
+          type: boolean
+          examples:
+            - true
+        helpful_count:
+          type: integer
+          examples:
+            - 38
+        category:
+          $ref: '#/components/schemas/Subcategory'
+        author:
+          $ref: '#/components/schemas/UserPublic'
+        created_at:
+          type: string
+          format: date-time
+      required:
+        - id
+        - title
+        - content
+        - verified
+        - category
+
+    SolutionInput:
+      type: object
+      properties:
+        title:
+          type: string
+          examples:
+            - How to fix Alexa not connecting to hub
+        content:
+          type: string
+          examples:
+            - Step 1 - Reset the hub by holding the button for 10 seconds...
+        category_id:
+          type: string
+          format: uuid
+        difficulty:
+          type: string
+          enum: [beginner, intermediate, advanced]
+          examples:
+            - beginner
+        verified:
+          type: boolean
+          default: false
+      required:
+        - title
+        - content
+        - category_id
+
+    PaginatedSolutions:
+      type: object
+      properties:
+        total:
+          type: integer
+          examples:
+            - 84
+        page:
+          type: integer
+          examples:
+            - 1
+        limit:
+          type: integer
+          examples:
+            - 20
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/Solution'
+      required:
+        - total
+        - page
+        - limit
+        - data
+
+    UserPublic:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        username:
+          type: string
+          examples:
+            - john_doe
+        role:
+          type: string
+          enum: [user, admin]
+          examples:
+            - user
+      required:
+        - id
+        - username
+
+    RegisterInput:
+      type: object
+      properties:
+        username:
+          type: string
+          examples:
+            - john_doe
+        email:
+          type: string
+          format: email
+          examples:
+            - john@email.com
+        password:
+          type: string
+          format: password
+          minLength: 8
+          examples:
+            - secret123
+      required:
+        - username
+        - email
+        - password
+
+    LoginInput:
+      type: object
+      properties:
+        email:
+          type: string
+          format: email
+          examples:
+            - john@email.com
+        password:
+          type: string
+          format: password
+          examples:
+            - secret123
+      required:
+        - email
+        - password
