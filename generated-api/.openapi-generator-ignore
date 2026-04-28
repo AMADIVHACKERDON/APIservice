@@ -21,3 +21,19 @@
 #docs/*.md
 # Then explicitly reverse the ignore rule for a single file:
 #!docs/README.md
+
+# 1. Protect your actual implementation logic
+# In the typescript-node generator, 'api' and 'model' folders are the "plumbing"
+# You usually want to keep your custom controllers/logic safe elsewhere, 
+# but if you edit them inside 'generated-api', ignore them here:
+generated-api/api.ts
+generated-api/model/
+
+# 2. Protect project configuration
+generated-api/package.json
+generated-api/tsconfig.json
+generated-api/git_push.sh
+generated-api/.gitignore
+
+# 3. Protect README if you've customized it
+generated-api/README.md
