@@ -44,6 +44,7 @@ const paginate = (data, page = 1, limit = 10) => {
     return data.slice(start, start + Number(limit));
 };
 
+
 // --- Routes ---
 
 // Get all categories
