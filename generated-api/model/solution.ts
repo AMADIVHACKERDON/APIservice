@@ -17,9 +17,9 @@ export class Solution {
     'title'?: any | null;
     'content'?: any | null;
     'difficulty'?: Solution.DifficultyEnum;
-    'helpfulCount'?: any | null;
-    'subcategoryId'?: any | null;
-    'createdAt'?: any | null;
+    'helpful_count'?: any | null;
+    'subcategory_id'?: any | null;
+    'created_at'?: any | null;
 
     static discriminator: string | undefined = undefined;
 
@@ -45,17 +45,17 @@ export class Solution {
             "type": "Solution.DifficultyEnum"
         },
         {
-            "name": "helpfulCount",
+            "name": "helpful_count",
             "baseName": "helpful_count",
             "type": "any"
         },
         {
-            "name": "subcategoryId",
+            "name": "subcategory_id",
             "baseName": "subcategory_id",
             "type": "any"
         },
         {
-            "name": "createdAt",
+            "name": "created_at",
             "baseName": "created_at",
             "type": "any"
         }    ];

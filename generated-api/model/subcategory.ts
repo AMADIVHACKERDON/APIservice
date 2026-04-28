@@ -16,7 +16,7 @@ export class Subcategory {
     'id'?: any | null;
     'name'?: any | null;
     'slug'?: any | null;
-    'categoryId'?: any | null;
+    'category_id'?: any | null;
 
     static discriminator: string | undefined = undefined;
 
@@ -37,7 +37,7 @@ export class Subcategory {
             "type": "any"
         },
         {
-            "name": "categoryId",
+            "name": "category_id",
             "baseName": "category_id",
             "type": "any"
         }    ];

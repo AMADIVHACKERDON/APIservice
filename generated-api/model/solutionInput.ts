@@ -15,7 +15,7 @@ import { RequestFile } from './models';
 export class SolutionInput {
     'title': any | null;
     'content': any | null;
-    'subcategoryId': any | null;
+    'subcategory_id': any | null;
     'difficulty'?: SolutionInput.DifficultyEnum;
 
     static discriminator: string | undefined = undefined;
@@ -32,7 +32,7 @@ export class SolutionInput {
             "type": "any"
         },
         {
-            "name": "subcategoryId",
+            "name": "subcategory_id",
             "baseName": "subcategory_id",
             "type": "any"
         },

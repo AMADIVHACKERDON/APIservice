@@ -14,7 +14,7 @@ import { RequestFile } from './models';
 
 export class SolutionsIdHelpfulPost200Response {
     'id'?: any | null;
-    'helpfulCount'?: any | null;
+    'helpful_count'?: any | null;
 
     static discriminator: string | undefined = undefined;
 
@@ -25,7 +25,7 @@ export class SolutionsIdHelpfulPost200Response {
             "type": "any"
         },
         {
-            "name": "helpfulCount",
+            "name": "helpful_count",
             "baseName": "helpful_count",
             "type": "any"
         }    ];
