@@ -1,0 +1,30 @@
+name: Generate API Boilerplate
+on:
+  push:
+    paths:
+      - 'openapi.yaml'
+
+jobs:
+  generate:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write # Essential for the git push to work
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Generate Code
+        uses: openapi-generators/openapi-generator-action@v1
+        with:
+          generator: nodejs-express-server
+          generator-tag: v7.0.0
+          openapi-file: openapi.yaml
+          command-args: -o ./generated-api
+
+      - name: Commit changes
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          git add ./generated-api
+          # Adding [skip ci] prevents the action from triggering itself
+          git commit -m "Auto-update API boilerplate [skip ci]" || echo "No changes to commit"
+          git push
