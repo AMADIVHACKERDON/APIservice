@@ -16,18 +16,18 @@ jobs:
       - name: Generate Modern API
         uses: openapi-generators/openapitools-generator-action@v1
         with:
-          # This generator uses 'import/export' natively
-          generator: typescript-node
+          # This generator is the most compatible with React/Next/Node ESM
+          generator: typescript-axios
           generator-tag: v7.0.0
           openapi-file: openapi.yaml
           command-args: >
             -o ./generated-api 
-            --additional-properties=npmName=api-service,supportsES6=true,modelPropertyNaming=snake_case
+            --additional-properties=useSingleRequestParameter=true,withSeparateModelsAndApi=true,modelPropertyNaming=snake_case
 
       - name: Commit changes
         run: |
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action"
           git add ./generated-api
-          git commit -m "Auto-update API with ESM imports [skip ci]" || echo "No changes"
+          git commit -m "Auto-update API with clean Axios SDK [skip ci]" || echo "No changes"
           git push
