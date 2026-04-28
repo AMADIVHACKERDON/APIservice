@@ -16,10 +16,12 @@ jobs:
       - name: Generate Code
         uses: openapi-generators/openapitools-generator-action@v1
         with:
-          generator: typescript-node 
+          generator: typescript-node # Switch to TypeScript for modern ESM support
           generator-tag: v7.0.0
           openapi-file: openapi.yaml
-          command-args: -o ./generated-api
+          command-args: >
+            -o ./generated-api 
+            --additional-properties=supportsES6=true,modelPropertyNaming=snake_case
 
       - name: Commit changes
         run: |
