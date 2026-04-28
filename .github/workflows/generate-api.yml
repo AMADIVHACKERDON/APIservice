@@ -16,7 +16,7 @@ jobs:
       - name: Generate Code
         uses: openapi-generators/openapitools-generator-action@v1
         with:
-          generator: nodejs-express-server
+          generator: typescript-node 
           generator-tag: v7.0.0
           openapi-file: openapi.yaml
           command-args: -o ./generated-api
