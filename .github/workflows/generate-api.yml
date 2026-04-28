@@ -3,30 +3,31 @@ on:
   push:
     paths:
       - 'openapi.yaml'
-      - '.github/workflows/generate-api.yml' # Fixed slash here
+      - '.github/workflows/generate-api.yml'
 
 jobs:
   generate:
     runs-on: ubuntu-latest
     permissions:
-      contents: write # Added this to ensure the bot can push code back
+      contents: write
     steps:
-      - uses: actions/checkout@v4 # Updated to v4 for better stability
+      - uses: actions/checkout@v4
 
-      - name: Generate Code
+      - name: Generate Modern API
         uses: openapi-generators/openapitools-generator-action@v1
         with:
-          generator: typescript-node # Switch to TypeScript for modern ESM support
+          # This generator uses 'import/export' natively
+          generator: typescript-node
           generator-tag: v7.0.0
           openapi-file: openapi.yaml
           command-args: >
             -o ./generated-api 
-            --additional-properties=supportsES6=true,modelPropertyNaming=snake_case
+            --additional-properties=npmName=api-service,supportsES6=true,modelPropertyNaming=snake_case
 
       - name: Commit changes
         run: |
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action"
           git add ./generated-api
-          git commit -m "Auto-update API boilerplate [skip ci]" || echo "No changes to commit"
+          git commit -m "Auto-update API with ESM imports [skip ci]" || echo "No changes"
           git push
