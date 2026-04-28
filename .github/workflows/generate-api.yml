@@ -3,23 +3,28 @@ on:
   push:
     paths:
       - 'openapi.yaml'
-      - '.github\workflows\generate-api.yml'
+      - '.github/workflows/generate-api.yml' # Fixed slash here
+
 jobs:
   generate:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write # Added this to ensure the bot can push code back
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4 # Updated to v4 for better stability
+
       - name: Generate Code
         uses: openapi-generators/openapitools-generator-action@v1
         with:
-          generator: nodejs-express-server # Change this to your language
+          generator: nodejs-express-server
           generator-tag: v7.0.0
           openapi-file: openapi.yaml
           command-args: -o ./generated-api
+
       - name: Commit changes
         run: |
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action"
-          git add .
-          git commit -m "Auto-update API boilerplate"
+          git add ./generated-api
+          git commit -m "Auto-update API boilerplate [skip ci]" || echo "No changes to commit"
           git push
