@@ -3,6 +3,7 @@ on:
   push:
     paths:
       - 'openapi.yaml'
+      - '.github\workflows\generate-api.yml'
 jobs:
   generate:
     runs-on: ubuntu-latest
