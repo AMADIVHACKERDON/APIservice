@@ -22,7 +22,7 @@ jobs:
           openapi-file: openapi.yaml
           command-args: >
             -o ./generated-api 
-            --additional-properties=useSingleRequestParameter=true,withSeparateModelsAndApi=true,modelPropertyNaming=snake_case
+            --additional-properties=apiPackage=api,modelPackage=models,withSeparateModelsAndApi=true,useSingleRequestParameter=true,modelPropertyNaming=snake_case
 
       - name: Commit changes
         run: |
@@ -31,4 +31,4 @@ jobs:
           git add ./generated-api
           git commit -m "Auto-update API with clean Axios SDK [skip ci]" || echo "No changes"
           git push
-          
+
