@@ -13,7 +13,7 @@ jobs:
       - uses: actions/checkout@v4
 
       - name: Generate Code
-        uses: openapi-generators/openapi-generator-action@v1
+        uses: openapitools/openapi-generator-action@v1
         with:
           generator: nodejs-express-server
           generator-tag: v7.0.0
