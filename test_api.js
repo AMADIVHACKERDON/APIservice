@@ -48,18 +48,18 @@ const paginate = (data, page = 1, limit = 10) => {
 // --- Routes ---
 
 // Get all categories
-app.get('/categories', (req, res) => {
+app.get('/v1/categories', (req, res) => {
     res.json(categories);
 });
 
 // Get single category by slug
-app.get('/categories/:slug', (req, res) => {
+app.get('/v1/categories/:slug', (req, res) => {
     const category = categories.find(c => c.slug === req.params.slug);
     category ? res.json(category) : res.status(404).json({ error: 'Category not found' });
 });
 
 // Get all solutions under a PARENT category (e.g., /categories/iot/solutions)
-app.get('/categories/:slug/solutions', (req, res) => {
+app.get('/v1/categories/:slug/solutions', (req, res) => {
     const { slug } = req.params;
     const { page = 1, limit = 10 } = req.query;
     
@@ -72,19 +72,19 @@ app.get('/categories/:slug/solutions', (req, res) => {
 });
 
 // Get all subcategories
-app.get('/subcategories', (req, res) => {
+app.get('/v1/subcategories', (req, res) => {
     res.send(subcategories);
 });
 
 
 // Get single subcategory by slug
-app.get('/subcategories/:slug', (req, res) => {
+app.get('/v1/subcategories/:slug', (req, res) => {
     const sub = subcategories.find(s => s.slug === req.params.slug);
     sub ? res.json(sub) : res.status(404).json({ error: 'Subcategory not found' });
 });
 
 // Get solutions by subcategory (e.g., /subcategories/smart-home/solutions)
-app.get('/subcategories/:slug/solutions', (req, res) => {
+app.get('/v1/subcategories/:slug/solutions', (req, res) => {
     const { slug } = req.params;
     const { page = 1, limit = 10 } = req.query;
 
@@ -95,18 +95,6 @@ app.get('/subcategories/:slug/solutions', (req, res) => {
         page: Number(page),
         data: paginate(filtered, page, limit)
     });
-});
-
-// General search/list solutions
-app.get('/solutions', (req, res) => {
-    const { difficulty } = req.query;
-    let results = solutions;
-
-    if (difficulty) {
-        results = results.filter(s => s.difficulty === difficulty);
-    }
-    
-    res.json(results);
 });
 
 app.listen(3000, () => console.log('Server running on port 3000'));
