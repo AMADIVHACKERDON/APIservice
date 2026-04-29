@@ -13,7 +13,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Generate Modern API (Client)
+      - name: Generate Client SDK (Axios)
         uses: openapi-generators/openapitools-generator-action@v1
         with:
           generator: typescript-axios
@@ -23,22 +23,20 @@ jobs:
             -o ./generated-api 
             --additional-properties=npmName=solutions-api-sdk,apiPackage=api,modelPackage=models,withSeparateModelsAndApi=true,useSingleRequestParameter=true,importFileExtension=.js
 
-      - name: Generate Express Server
+      - name: Generate Server Types (TypeScript)
         uses: openapi-generators/openapitools-generator-action@v1
         with:
-          generator: nodejs-express-server
+          generator: typescript-node
           generator-tag: v7.0.0
           openapi-file: openapi.yaml
           command-args: >
             -o ./generated-server
-            --additional-properties=supportES6=true
-    
+            --additional-properties=supportsES6=true,modelPropertyNaming=camelCase
+
       - name: Commit changes
         run: |
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action"
-          # Add both generated directories
           git add ./generated-api ./generated-server
-          git commit -m "Auto-update Client SDK and Server Boilerplate [skip ci]" || echo "No changes"
+          git commit -m "Auto-update API types and SDK [skip ci]" || echo "No changes"
           git push
-          
