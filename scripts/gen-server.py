@@ -55,8 +55,7 @@ def generate():
     # 5. Write to file
     dir = 'src/server'
     os.makedirs(dir, exist_ok=True)
-    os.chdir(dir)
-    server_file = "app-server.ts"
+    server_file = dir + "/app-server.ts"
     with open(server_file, 'w') as f:
         f.write("\n".join(code))
     print(f"Successfully generated {server_file}")
