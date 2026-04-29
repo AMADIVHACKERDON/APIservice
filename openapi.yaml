@@ -12,13 +12,13 @@ servers:
     description: Production
 
 paths:
-
   # ─────────────────────────────
   # CATEGORIES
   # ─────────────────────────────
   /categories:
     get:
       summary: List categories
+      operationId: getCategories
       tags: [Categories]
       responses:
         "200":
@@ -33,6 +33,7 @@ paths:
   /categories/{slug}:
     get:
       summary: Get category
+      operationId: getCategoryBySlug
       tags: [Categories]
       parameters:
         - $ref: "#/components/parameters/SlugParam"
@@ -49,6 +50,7 @@ paths:
   /categories/{slug}/solutions:
     get:
       summary: Solutions under category
+      operationId: getSolutionsByCategory
       tags: [Categories]
       parameters:
         - $ref: "#/components/parameters/SlugParam"
@@ -68,6 +70,7 @@ paths:
   /subcategories:
     get:
       summary: List subcategories
+      operationId: getSubcategories
       tags: [Categories]
       responses:
         "200":
@@ -82,6 +85,7 @@ paths:
   /subcategories/{slug}:
     get:
       summary: Get subcategory
+      operationId: getSubcategoryBySlug
       tags: [Categories]
       parameters:
         - $ref: "#/components/parameters/SlugParam"
@@ -98,6 +102,7 @@ paths:
   /subcategories/{slug}/solutions:
     get:
       summary: Solutions under subcategory
+      operationId: getSolutionsBySubcategory
       tags: [Solutions]
       parameters:
         - $ref: "#/components/parameters/SlugParam"
@@ -111,12 +116,14 @@ paths:
               schema:
                 $ref: "#/components/schemas/PaginatedSolutions"
 
-  # ─────────────────────────────
-  # SOLUTIONS
-  # ─────────────────────────────
+    # ─────────────────────────────
+    # SOLUTIONS
+    # ─────────────────────────────
+    
   /solutions:
     get:
       summary: List solutions
+      operationId: getSolutions
       tags: [Solutions]
       description: Search across title and content, optionally filter by subcategory
       parameters:
@@ -143,6 +150,7 @@ paths:
 
     post:
       summary: Create solution
+      operationId: createSolution
       tags: [Solutions]
       security:
         - BearerAuth: []
@@ -163,6 +171,7 @@ paths:
   /solutions/{id}:
     get:
       summary: Get solution
+      operationId: getSolutionById
       tags: [Solutions]
       parameters:
         - $ref: "#/components/parameters/IdParam"
@@ -176,6 +185,7 @@ paths:
 
     put:
       summary: Update solution
+      operationId: updateSolution
       tags: [Solutions]
       security:
         - BearerAuth: []
@@ -197,6 +207,7 @@ paths:
 
     delete:
       summary: Delete solution
+      operationId: deleteSolution
       tags: [Solutions]
       security:
         - BearerAuth: []
@@ -209,6 +220,7 @@ paths:
   /solutions/{id}/helpful:
     post:
       summary: Mark solution helpful
+      operationId: markSolutionHelpful
       tags: [Solutions]
       security:
         - BearerAuth: []
@@ -234,6 +246,7 @@ paths:
   /auth/register:
     post:
       summary: Register
+      operationId: registerUser
       tags: [Auth]
       requestBody:
         required: true
@@ -252,6 +265,7 @@ paths:
   /auth/login:
     post:
       summary: Login
+      operationId: loginUser
       tags: [Auth]
       requestBody:
         required: true
@@ -269,6 +283,7 @@ paths:
   /me/api-key:
     get:
       summary: Get API key
+      operationId: getApiKey
       tags: [Developer]
       security:
         - BearerAuth: []
@@ -279,6 +294,7 @@ paths:
   /me/api-key/regenerate:
     post:
       summary: Regenerate API key
+      operationId: regenerateApiKey
       tags: [Developer]
       security:
         - BearerAuth: []
