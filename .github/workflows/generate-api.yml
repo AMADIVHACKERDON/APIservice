@@ -30,7 +30,7 @@ jobs:
           openapi-file: openapi.yaml
           command-args: >
             -o ./generated-api 
-            --additional-properties=npmName=solutions-api-sdk,apiPackage=api,modelPackage=models,withSeparateModelsAndApi=true,useSingleRequestParameter=true,importFileExtension=.js
+            --additional-properties=npmName=solutions-api-sdk,apiPackage=api,modelPackage=models,withSeparateModelsAndApi=true,useSingleRequestParameter=true,importFileExtension=.js,supportsES6=true
 
       - name: Generate Clean Express Skeleton
         run: python scripts/gen-server.py

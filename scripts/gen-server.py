@@ -58,7 +58,7 @@ def generate():
             server_code.append(f'app.{method.lower()}("{express_path}", APIs.{op_id});')
 
             test_code.append("")
-            test_code.append(f"export function {op_id}(){{")
+            test_code.append(f"export function {op_id}(request, response){{")
             test_code.append(f"    // Logic for {op_id}")
             test_code.append("}")
 

@@ -4,9 +4,7 @@
   "description": "Creation of endpoints as service and it's details",
   "main": "index.js",
   "scripts": {
-    "start": "npx tsx src/server/start-server.ts",
-    "api-gen": "npx tsx src/server/api-creator.ts",
-    "test": "start-server-and-test start http://localhost:3000 api-gen"
+    "test": "node ./src/server/test-api.js"
   },
   "repository": {
     "type": "git",

@@ -1,18 +1,21 @@
 {
   "compilerOptions": {
-    "declaration": true,
-    "target": "esnext",
+    "target": "ESNext",
     "module": "NodeNext",
+    "moduleResolution": "NodeNext",
+    "declaration": true,
     "noImplicitAny": true,
     "outDir": "dist",
     "rootDir": ".",
     "lib": [
-      "es6",
+      "ESNext",
       "dom"
     ],
     "typeRoots": [
       "node_modules/@types"
-    ]
+    ],
+    "esModuleInterop": true,
+    "skipLibCheck": true
   },
   "exclude": [
     "dist",
