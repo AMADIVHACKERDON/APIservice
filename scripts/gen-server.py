@@ -22,7 +22,6 @@ def generate():
     server_code = [
         'import express from "express";',
         f'import * as APIs from "./{test_filename}";',
-        f'import * as Models from "../../generated-api/models/index.ts";',
         '',
         'const app = express();',
         'app.use(express.json());',
@@ -31,6 +30,7 @@ def generate():
 
     test_code = [
         '//OPTIONAL FILE: configure test for the server',
+        f'import * as Models from "../../generated-api/models/index.ts";',
     ]
 
     # 3. Process Paths
