@@ -20,5 +20,8 @@
   "homepage": "https://github.com/AMADIVHACKERDON/APIservice#readme",
   "dependencies": {
     "express": "^5.2.1"
+  },
+  "devDependencies": {
+    "@types/express": "^5.0.6"
   }
 }
