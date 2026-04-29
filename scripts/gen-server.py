@@ -64,7 +64,7 @@ def generate():
     # Write to file
     
     # CREATE SERVER FILE
-    server_file = os.path.join(target_dir, "/app-server.ts")
+    server_file = os.path.join(target_dir, "app-server.ts")
     with open(server_file, 'w') as f:
         f.write("\n".join(code))
     
