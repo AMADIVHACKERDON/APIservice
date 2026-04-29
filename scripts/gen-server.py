@@ -6,11 +6,9 @@ def generate():
     target_dir = "src/server"
     os.makedirs(target_dir, exist_ok=True)
 
-    # CREATE TEST FILE
+    # files to create
     test_filename = "test-api.js"
-    test_file = os.path.join(target_dir, test_filename)
-    with open(test_file, 'w') as f:
-        f.write()
+    server_filename = "app-server.ts"
 
     # 1. Load the spec
     spec_path = 'openapi.yaml'
@@ -69,10 +67,15 @@ def generate():
     server_code.append('    console.log(`🚀 Solutions API live at http://localhost:${PORT}`);')
     server_code.append('});')
 
-    # Write to file
-    
+    # Write to files
+
+    # CREATE TEST FILE
+    test_file = os.path.join(target_dir, test_filename)
+    with open(test_file, 'w') as f:
+        f.write("\n".join(test_code))
+
     # CREATE SERVER FILE
-    server_file = os.path.join(target_dir, "app-server.ts")
+    server_file = os.path.join(target_dir, server_filename)
     with open(server_file, 'w') as f:
         f.write("\n".join(server_code))
     
