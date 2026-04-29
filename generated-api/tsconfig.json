@@ -1,9 +1,8 @@
 {
   "compilerOptions": {
     "declaration": true,
-    "target": "ESNext",
-    "module": "NodeNext",
-    "moduleResolution": "NodeNext",
+    "target": "ES5",
+    "module": "commonjs",
     "noImplicitAny": true,
     "outDir": "dist",
     "rootDir": ".",
