@@ -23,16 +23,16 @@ jobs:
             -o ./generated-api 
             --additional-properties=npmName=solutions-api-sdk,apiPackage=api,modelPackage=models,withSeparateModelsAndApi=true,useSingleRequestParameter=true,importFileExtension=.js
 
-      - name: Generate TypeScript Server
+      - name: Generate Express Server
         uses: openapi-generators/openapitools-generator-action@v1
         with:
-          generator: typescript-node-server
+          generator: nodejs-express-server
           generator-tag: v7.0.0
           openapi-file: openapi.yaml
           command-args: >
             -o ./generated-server
-            --additional-properties=platform=node,useSingleRequestParameter=true
-
+            --additional-properties=supportES6=true
+    
       - name: Commit changes
         run: |
           git config --local user.email "action@github.com"
