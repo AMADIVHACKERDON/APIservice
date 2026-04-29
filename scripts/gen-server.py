@@ -30,7 +30,7 @@ def generate():
 
     test_code = [
         '//OPTIONAL FILE: configure test for the server',
-        f'import * as Models from "../../generated-api/models/index.ts";',
+        f'import * as Models from "../../generated-api/models/index.ts";'
     ]
 
     # 3. Process Paths
