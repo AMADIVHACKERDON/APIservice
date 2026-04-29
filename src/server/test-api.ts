@@ -1,8 +1,8 @@
 //OPTIONAL FILE: configure test for the server
 import * as Models from "../../generated-api/models/index.js";
 
-export function getCategories(request, response){
-    // Logic for getCategories
+export function getCategories(request: Request, response) {
+    
 }
 
 export function getCategoryBySlug(request, response){

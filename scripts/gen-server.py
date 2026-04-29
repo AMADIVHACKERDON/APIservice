@@ -31,6 +31,7 @@ def generate():
     test_code = [
         '//OPTIONAL FILE: configure test for the server',
         f'import * as Models from "../../generated-api/models/index.js";'
+        'import type { Request, Response } from "express";'
     ]
 
     # 3. Process Paths
@@ -58,7 +59,7 @@ def generate():
             server_code.append(f'app.{method.lower()}("{express_path}", APIs.{op_id});')
 
             test_code.append("")
-            test_code.append(f"export function {op_id}(request, response){{")
+            test_code.append(f"export function {op_id}(request: Request, response: Response){{")
             test_code.append(f"    // Logic for {op_id}")
             test_code.append("}")
 
