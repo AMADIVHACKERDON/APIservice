@@ -2,7 +2,7 @@
 import * as Models from "../../generated-api/models/index.js";
 import type { Request, Response } from "express";
 
-// Example
+//--------------- Example -------------------
 const categories: Models.Category[] = [
     { id: "1", name: "web dev", slug: "web-dev" },
     { id: "1", name: "iot", slug: "iot" },
@@ -14,10 +14,11 @@ const categories: Models.Category[] = [
 //     response.send({ data: categories });
 // }
 
+// -------------------------------------------
 
-export function getCategories(request: Request, response: Response){
-    // Logic for getCategories
-}
+// export function getCategories(request: Request, response: Response){
+//     // Logic for getCategories
+// }
 
 export function getCategoryBySlug(request: Request, response: Response){
     // Logic for getCategoryBySlug

@@ -2,7 +2,7 @@ import yaml
 import os
 import re
 
-example = '''// Example
+example = '''//--------------- Example -------------------
 const categories: Models.Category[] = [
     { id: "1", name: "web dev", slug: "web-dev" },
     { id: "1", name: "iot", slug: "iot" },
@@ -13,6 +13,8 @@ const categories: Models.Category[] = [
 //     // Logic for getCategories
 //     response.send({ data: categories });
 // }
+
+// -------------------------------------------
 '''
 
 def generate():
