@@ -28,9 +28,11 @@ jobs:
           generator: typescript-axios
           generator-tag: v7.0.0
           openapi-file: openapi.yaml
+          # '--global-property' tells it to ONLY generate code, not config files
           command-args: >
             -o ./generated-api 
-            --additional-properties=npmName=solutions-api-sdk,supportsES6=true,module=esnext,target=esnext,importFileExtension=.js
+            --global-property models,apis,supportingFiles=false
+            --additional-properties=supportsES6=true,importFileExtension=.js
 
       - name: Generate Clean Express Skeleton
         run: python scripts/gen-server.py
@@ -39,6 +41,6 @@ jobs:
         run: |
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action"
-          git add ./generated-api ./src/server/app-server.ts ./src/server/test-api.js
+          git add ./generated-api ./src/server/app-server.ts
           git commit -m "Auto-update API types and server skeleton [skip ci]" || echo "No changes"
           git push
