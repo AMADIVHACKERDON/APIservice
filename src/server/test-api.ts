@@ -16,9 +16,10 @@ const categories: Models.Category[] = [
 
 // -------------------------------------------
 
-// export function getCategories(request: Request, response: Response){
-//     // Logic for getCategories
-// }
+
+export function getCategories(request: Request, response: Response){
+    // Logic for getCategories
+}
 
 export function getCategoryBySlug(request: Request, response: Response){
     // Logic for getCategoryBySlug
