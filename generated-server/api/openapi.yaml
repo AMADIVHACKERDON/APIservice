@@ -1,0 +1,453 @@
+openapi: 3.1.0
+info:
+  description: REST API for technical solutions organized by categories and subcategories
+  title: Solutions API
+  version: 1.0.0
+servers:
+- description: Local development
+  url: http://localhost:3000/v1
+- description: Production
+  url: https://example.com/v1
+paths:
+  /categories:
+    get:
+      operationId: categoriesGET
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/Category'
+          description: List of categories
+      summary: List categories
+      tags:
+      - Categories
+      x-eov-operation-handler: controllers/CategoriesController
+  /categories/{slug}:
+    get:
+      operationId: categoriesSlugGET
+      parameters:
+      - $ref: '#/components/parameters/SlugParam'
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Category'
+          description: Category detail
+        "404":
+          $ref: '#/components/responses/NotFound'
+      summary: Get category
+      tags:
+      - Categories
+      x-eov-operation-handler: controllers/CategoriesController
+  /categories/{slug}/solutions:
+    get:
+      operationId: categoriesSlugSolutionsGET
+      parameters:
+      - $ref: '#/components/parameters/SlugParam'
+      - $ref: '#/components/parameters/PageParam'
+      - $ref: '#/components/parameters/LimitParam'
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedSolutions'
+          description: Paginated solutions
+      summary: Solutions under category
+      tags:
+      - Categories
+      x-eov-operation-handler: controllers/CategoriesController
+  /subcategories:
+    get:
+      operationId: subcategoriesGET
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/Subcategory'
+          description: List of subcategories
+      summary: List subcategories
+      tags:
+      - Categories
+      x-eov-operation-handler: controllers/CategoriesController
+  /subcategories/{slug}:
+    get:
+      operationId: subcategoriesSlugGET
+      parameters:
+      - $ref: '#/components/parameters/SlugParam'
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Subcategory'
+          description: Subcategory detail
+        "404":
+          $ref: '#/components/responses/NotFound'
+      summary: Get subcategory
+      tags:
+      - Categories
+      x-eov-operation-handler: controllers/CategoriesController
+  /subcategories/{slug}/solutions:
+    get:
+      operationId: subcategoriesSlugSolutionsGET
+      parameters:
+      - $ref: '#/components/parameters/SlugParam'
+      - $ref: '#/components/parameters/PageParam'
+      - $ref: '#/components/parameters/LimitParam'
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedSolutions'
+          description: Paginated solutions
+      summary: Solutions under subcategory
+      tags:
+      - Solutions
+      x-eov-operation-handler: controllers/SolutionsController
+  /solutions:
+    get:
+      description: "Search across title and content, optionally filter by subcategory"
+      operationId: solutionsGET
+      parameters:
+      - explode: true
+        in: query
+        name: search
+        required: false
+        schema: {}
+        style: form
+      - description: Subcategory ID filter
+        explode: true
+        in: query
+        name: subcategory
+        required: false
+        schema: {}
+        style: form
+      - $ref: '#/components/parameters/PageParam'
+      - $ref: '#/components/parameters/LimitParam'
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedSolutions'
+          description: Paginated solutions
+      summary: List solutions
+      tags:
+      - Solutions
+      x-eov-operation-handler: controllers/SolutionsController
+    post:
+      operationId: solutionsPOST
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SolutionInput'
+        required: true
+      responses:
+        "201":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Solution'
+          description: Created solution
+      security:
+      - BearerAuth: []
+      summary: Create solution
+      tags:
+      - Solutions
+      x-eov-operation-handler: controllers/SolutionsController
+  /solutions/{id}:
+    delete:
+      operationId: solutionsIdDELETE
+      parameters:
+      - $ref: '#/components/parameters/IdParam'
+      responses:
+        "204":
+          description: Deleted
+      security:
+      - BearerAuth: []
+      summary: Delete solution
+      tags:
+      - Solutions
+      x-eov-operation-handler: controllers/SolutionsController
+    get:
+      operationId: solutionsIdGET
+      parameters:
+      - $ref: '#/components/parameters/IdParam'
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Solution'
+          description: Solution detail
+      summary: Get solution
+      tags:
+      - Solutions
+      x-eov-operation-handler: controllers/SolutionsController
+    put:
+      operationId: solutionsIdPUT
+      parameters:
+      - $ref: '#/components/parameters/IdParam'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SolutionInput'
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Solution'
+          description: Updated solution
+      security:
+      - BearerAuth: []
+      summary: Update solution
+      tags:
+      - Solutions
+      x-eov-operation-handler: controllers/SolutionsController
+  /solutions/{id}/helpful:
+    post:
+      operationId: solutionsIdHelpfulPOST
+      parameters:
+      - $ref: '#/components/parameters/IdParam'
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/_solutions__id__helpful_post_200_response'
+          description: Updated helpful count
+      security:
+      - BearerAuth: []
+      - ApiKeyAuth: []
+      summary: Mark solution helpful
+      tags:
+      - Solutions
+      x-eov-operation-handler: controllers/SolutionsController
+  /auth/register:
+    post:
+      operationId: authRegisterPOST
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RegisterInput'
+        required: true
+      responses:
+        "201":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserPublic'
+          description: User created
+      summary: Register
+      tags:
+      - Auth
+      x-eov-operation-handler: controllers/AuthController
+  /auth/login:
+    post:
+      operationId: authLoginPOST
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LoginInput'
+        required: true
+      responses:
+        "200":
+          description: Token issued
+      summary: Login
+      tags:
+      - Auth
+      x-eov-operation-handler: controllers/AuthController
+  /me/api-key:
+    get:
+      operationId: meApiKeyGET
+      responses:
+        "200":
+          description: API key returned
+      security:
+      - BearerAuth: []
+      summary: Get API key
+      tags:
+      - Developer
+      x-eov-operation-handler: controllers/DeveloperController
+  /me/api-key/regenerate:
+    post:
+      operationId: meApiKeyRegeneratePOST
+      responses:
+        "200":
+          description: New API key issued
+      security:
+      - BearerAuth: []
+      summary: Regenerate API key
+      tags:
+      - Developer
+      x-eov-operation-handler: controllers/DeveloperController
+components:
+  parameters:
+    IdParam:
+      explode: false
+      in: path
+      name: id
+      required: true
+      schema: {}
+      style: simple
+    SlugParam:
+      explode: false
+      in: path
+      name: slug
+      required: true
+      schema: {}
+      style: simple
+    PageParam:
+      explode: true
+      in: query
+      name: page
+      required: false
+      schema:
+        default: 1
+      style: form
+    LimitParam:
+      explode: true
+      in: query
+      name: limit
+      required: false
+      schema:
+        default: 20
+        maximum: 100
+      style: form
+  responses:
+    NotFound:
+      description: Resource not found
+  schemas:
+    Category:
+      example:
+        name: ""
+        id: ""
+        slug: ""
+      properties:
+        id: {}
+        name: {}
+        slug: {}
+    Subcategory:
+      example:
+        category_id: ""
+        name: ""
+        id: ""
+        slug: ""
+      properties:
+        id: {}
+        name: {}
+        slug: {}
+        category_id: {}
+    Solution:
+      example:
+        difficulty: ""
+        subcategory_id: ""
+        created_at: ""
+        id: ""
+        title: ""
+        helpful_count: ""
+        content: ""
+      properties:
+        id: {}
+        title: {}
+        content: {}
+        difficulty:
+          enum:
+          - beginner
+          - intermediate
+          - advanced
+        helpful_count: {}
+        subcategory_id: {}
+        created_at:
+          format: date-time
+    SolutionInput:
+      example:
+        difficulty: ""
+        subcategory_id: ""
+        title: ""
+        content: ""
+      properties:
+        title: {}
+        content: {}
+        subcategory_id: {}
+        difficulty:
+          enum:
+          - beginner
+          - intermediate
+          - advanced
+      required:
+      - content
+      - subcategory_id
+      - title
+    PaginatedSolutions:
+      example:
+        total: ""
+        data: ""
+        limit: ""
+        page: ""
+      properties:
+        page: {}
+        limit: {}
+        total: {}
+        data:
+          items:
+            $ref: '#/components/schemas/Solution'
+    UserPublic:
+      example:
+        id: ""
+        username: ""
+      properties:
+        id: {}
+        username: {}
+    RegisterInput:
+      example:
+        password: ""
+        email: ""
+        username: ""
+      properties:
+        username: {}
+        email: {}
+        password: {}
+      required:
+      - email
+      - password
+      - username
+    LoginInput:
+      example:
+        password: ""
+        email: ""
+      properties:
+        email: {}
+        password: {}
+      required:
+      - email
+      - password
+    _solutions__id__helpful_post_200_response:
+      example:
+        id: ""
+        helpful_count: ""
+      properties:
+        id: {}
+        helpful_count: {}
+  securitySchemes:
+    BearerAuth:
+      bearerFormat: JWT
+      scheme: bearer
+      type: http
+    ApiKeyAuth:
+      in: header
+      name: x-api-key
+      type: apiKey
