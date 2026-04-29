@@ -101,3 +101,7 @@ celerybeat.pid
 *.sage.py
 .abstra/
 marimo/
+
+
+# local files
+test-*
