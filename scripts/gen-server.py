@@ -21,7 +21,7 @@ def generate():
     # 2. Start building the Express file
     server_code = [
         'import express from "express";',
-        f'import * as APIs from "./{test_filename}.js";',
+        f'import * as APIs from "./{test_filename}";',
         '',
         'const app = express();',
         'app.use(express.json());',
