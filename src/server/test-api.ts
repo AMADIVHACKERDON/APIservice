@@ -9,15 +9,15 @@ const categories: Models.Category[] = [
     { id: "1", name: "Machine Learning", slug: "machine-learning" },
 ];
 
-export function getCategories(request: Request, response: Response){
-    // Logic for getCategories
-    response.send({ data: categories });
-}
-
-
 // export function getCategories(request: Request, response: Response){
 //     // Logic for getCategories
+//     response.send({ data: categories });
 // }
+
+
+export function getCategories(request: Request, response: Response){
+    // Logic for getCategories
+}
 
 export function getCategoryBySlug(request: Request, response: Response){
     // Logic for getCategoryBySlug
