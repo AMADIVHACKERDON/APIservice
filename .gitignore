@@ -104,4 +104,4 @@ marimo/
 
 
 # local files
-./src/server/test-api.ts
+src/server/test-api.ts
