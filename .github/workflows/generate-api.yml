@@ -39,6 +39,7 @@ jobs:
         run: |
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action"
-          git add ./generated-api ./src/server/app-server.ts ./src/server/test-api.ts
+          git add ./generated-api ./src/server/app-server.ts
+          git add -f ./src/server/test-api.ts
           git commit -m "Auto-update API types and server skeleton [skip ci]" || echo "No changes"
           git push
