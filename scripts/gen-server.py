@@ -35,10 +35,11 @@ def generate():
     ]
 
     # 3. Process Paths
+    version = '/v1'
     paths = spec.get('paths', {})
     for path, methods in paths.items():
         # Convert OpenAPI path {id} to Express :id
-        express_path = path.replace('{', ':').replace('}', '')
+        express_path = version + path.replace('{', ':').replace('}', '')
         
         for method, details in methods.items():
             if method.lower() not in ['get', 'post', 'put', 'delete', 'patch']:

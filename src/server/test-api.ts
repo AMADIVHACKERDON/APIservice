@@ -2,8 +2,38 @@
 import * as Models from "../../generated-api/models/index.js";
 import type { Request, Response } from "express";
 
+
+const categories:Models.Category[] = [
+    { id: '1', name: 'IoT', slug: 'iot'},
+    { id: '2', name: 'AI', slug: 'ai'},
+];
+
+const subcategories:Models.Subcategory[] = [
+    { id: '101', name: 'Smart Home System', slug: 'smart-home'},
+    { id: '102', name: 'Industrial IoT', slug: 'industrial'},
+    { id: '103', name: 'Machine Learning', slug: 'machine-learning'},
+    { id: '104', name: 'NLP', slug: 'nlp'},
+];
+
+const solutions:Models.Solution[] = [
+    {
+        id: '201', title: 'Fix Alexa Hub',
+        content: 'Reset hub by holding button for 10s',
+        difficulty: 'beginner', helpful_count: 42,
+        created_at: '2026-04-24T12:00:00Z'
+    },
+    {
+        id: '202', title: 'Train BERT Model',
+        content: 'Use HuggingFace transformers library...',
+        difficulty: 'advanced', helpful_count: 89,
+        created_at: '2026-04-24T14:00:00Z'
+    }
+];
+
+
 export function getCategories(request: Request, response: Response){
     // Logic for getCategories
+    response.send({message:categories})
 }
 
 export function getCategoryBySlug(request: Request, response: Response){

@@ -4,7 +4,8 @@
   "description": "Creation of endpoints as service and it's details",
   "main": "index.js",
   "scripts": {
-    "test": "node ./src/server/test-api.js"
+    "start":"npx tsx ./src/server/app-server.ts",
+    "test": "npx tsx ./src/server/test-api.ts"
   },
   "repository": {
     "type": "git",
