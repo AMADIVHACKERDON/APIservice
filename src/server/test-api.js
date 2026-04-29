@@ -1,4 +1,5 @@
 //OPTIONAL FILE: configure test for the server
+import * as Models from "../../generated-api/models/index.ts";
 
 export function getCategories(request, response){
     // Logic for getCategories
