@@ -4,11 +4,11 @@ import re
 
 def generate():
     base_dir = os.getcwd()
-    test_filename = "test-api.js"
     target_dir = os.path.join(base_dir, "src", "server")
     os.makedirs(target_dir, exist_ok=True)
 
     # CREATE TEST FILE
+    test_filename = "test-api.js"
     test_file = os.path.join(target_dir, test_filename)
     with open(test_file, 'w') as f:
         f.write("//OPTIONAL FILE: configure test for the server")
