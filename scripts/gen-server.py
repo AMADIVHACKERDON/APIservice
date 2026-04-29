@@ -3,8 +3,7 @@ import os
 import re
 
 def generate():
-    base_dir = os.getcwd()
-    target_dir = os.path.join(base_dir, "src", "server")
+    target_dir = "src/server"
     os.makedirs(target_dir, exist_ok=True)
 
     # CREATE TEST FILE
@@ -25,7 +24,7 @@ def generate():
     code = [
         'import express from "express";',
         f'import * as APIs from ./{test_filename};',
-        f'import * as Models from "{base_dir}/generated-api/models/index.ts";',
+        f'import * as Models from "../../generated-api/models/index.ts";',
         '',
         'const app = express();',
         'app.use(express.json());',
