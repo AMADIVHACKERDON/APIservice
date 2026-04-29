@@ -2,6 +2,19 @@ import yaml
 import os
 import re
 
+example = '''// Example
+const categories: Models.Category[] = [
+    { id: "1", name: "web dev", slug: "web-dev" },
+    { id: "1", name: "iot", slug: "iot" },
+    { id: "1", name: "Machine Learning", slug: "machine-learning" },
+];
+
+// export function getCategories(request: Request, response: Response){
+//     // Logic for getCategories
+//     response.send({ data: categories });
+// }
+'''
+
 def generate():
     target_dir = "src/server"
     os.makedirs(target_dir, exist_ok=True)
@@ -31,7 +44,8 @@ def generate():
     test_code = [
         '//OPTIONAL FILE: configure test for the server',
         f'import * as Models from "../../generated-api/models/index.js";',
-        'import type { Request, Response } from "express";'
+        'import type { Request, Response } from "express";',
+        example,
     ]
 
     # 3. Process Paths
