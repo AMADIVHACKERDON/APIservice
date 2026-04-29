@@ -26,7 +26,7 @@ jobs:
       - name: Generate TypeScript Server
         uses: openapi-generators/openapitools-generator-action@v1
         with:
-          generator: typescript-node
+          generator: typescript-node-server
           generator-tag: v7.0.0
           openapi-file: openapi.yaml
           command-args: >

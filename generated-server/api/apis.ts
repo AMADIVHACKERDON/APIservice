@@ -15,6 +15,6 @@ export class HttpError extends Error {
     }
 }
 
-export { RequestFile } from '../model/models';
+export type { RequestFile } from '../model/models';
 
 export const APIS = [AuthApi, CategoriesApi, DeveloperApi, SolutionsApi];

@@ -15,22 +15,18 @@
 // }
 
 
-import { CategoriesApi, Configuration } from "../../generated-server/api/apis.js";
-
-// 1. Create a configuration object
-const config = new Configuration({
-    basePath: "http://localhost:3000"
-});
+import { CategoriesApi } from "../../generated-server/api/apis.js";
 
 // 2. Pass the config to the API constructor
-const catAPI = new CategoriesApi(config);
+const base_path = `http://localhost:3000`;
+const catAPI = new CategoriesApi(base_path);
 
 try {
     // 3. Axios responses store the data in the '.data' property
     const res = await catAPI.categoriesGet();
     
     // Log the actual JSON body returned by your server
-    console.log(res.data);
+    console.log(res.response);
 } catch (error) {
     console.error("Failed to fetch:", error);
 }
