@@ -22,4 +22,5 @@ models/solution.ts
 models/subcategory.ts
 models/user-public.ts
 package.json
+tsconfig.esm.json
 tsconfig.json
