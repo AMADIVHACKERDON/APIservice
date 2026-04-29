@@ -9,49 +9,49 @@ const PORT = 3000;
 app.get("/v1/categories", APIs.getCategories);
 
 // Get category
-app.get("/categories/:slug", APIs.getCategoryBySlug);
+app.get("/v1/categories/:slug", APIs.getCategoryBySlug);
 
 // Solutions under category
-app.get("/categories/:slug/solutions", APIs.getSolutionsByCategory);
+app.get("/v1/categories/:slug/solutions", APIs.getSolutionsByCategory);
 
 // List subcategories
-app.get("/subcategories", APIs.getSubcategories);
+app.get("/v1/subcategories", APIs.getSubcategories);
 
 // Get subcategory
-app.get("/subcategories/:slug", APIs.getSubcategoryBySlug);
+app.get("/v1/subcategories/:slug", APIs.getSubcategoryBySlug);
 
 // Solutions under subcategory
-app.get("/subcategories/:slug/solutions", APIs.getSolutionsBySubcategory);
+app.get("/v1/subcategories/:slug/solutions", APIs.getSolutionsBySubcategory);
 
 // List solutions
-app.get("/solutions", APIs.getSolutions);
+app.get("/v1/solutions", APIs.getSolutions);
 
 // Create solution
-app.post("/solutions", APIs.createSolution);
+app.post("/v1/solutions", APIs.createSolution);
 
 // Get solution
-app.get("/solutions/:id", APIs.getSolutionById);
+app.get("/v1/solutions/:id", APIs.getSolutionById);
 
 // Update solution
-app.put("/solutions/:id", APIs.updateSolution);
+app.put("/v1/solutions/:id", APIs.updateSolution);
 
 // Delete solution
-app.delete("/solutions/:id", APIs.deleteSolution);
+app.delete("/v1/solutions/:id", APIs.deleteSolution);
 
 // Mark solution helpful
-app.post("/solutions/:id/helpful", APIs.markSolutionHelpful);
+app.post("/v1/solutions/:id/helpful", APIs.markSolutionHelpful);
 
 // Register
-app.post("/auth/register", APIs.registerUser);
+app.post("/v1/auth/register", APIs.registerUser);
 
 // Login
-app.post("/auth/login", APIs.loginUser);
+app.post("/v1/auth/login", APIs.loginUser);
 
 // Get API key
-app.get("/me/api-key", APIs.getApiKey);
+app.get("/v1/me/api-key", APIs.getApiKey);
 
 // Regenerate API key
-app.post("/me/api-key/regenerate", APIs.regenerateApiKey);
+app.post("/v1/me/api-key/regenerate", APIs.regenerateApiKey);
 
 app.listen(PORT, () => {
     console.log(`🚀 Solutions API live at http://localhost:${PORT}`);
