@@ -41,3 +41,4 @@ jobs:
           git add ./generated-api ./generated-server
           git commit -m "Auto-update Client SDK and Server Boilerplate [skip ci]" || echo "No changes"
           git push
+          
