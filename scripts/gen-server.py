@@ -45,6 +45,7 @@ def generate():
         '//OPTIONAL FILE: configure test for the server',
         f'import * as Models from "../../generated-api/models/index.js";',
         'import type { Request, Response } from "express";',
+        '',
         example,
     ]
 

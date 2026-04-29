@@ -1,6 +1,7 @@
 //OPTIONAL FILE: configure test for the server
 import * as Models from "../../generated-api/models/index.js";
 import type { Request, Response } from "express";
+
 // Example
 const categories: Models.Category[] = [
     { id: "1", name: "web dev", slug: "web-dev" },
@@ -8,15 +9,15 @@ const categories: Models.Category[] = [
     { id: "1", name: "Machine Learning", slug: "machine-learning" },
 ];
 
-// export function getCategories(request: Request, response: Response){
-//     // Logic for getCategories
-//     response.send({ data: categories });
-// }
-
-
 export function getCategories(request: Request, response: Response){
     // Logic for getCategories
+    response.send({ data: categories });
 }
+
+
+// export function getCategories(request: Request, response: Response){
+//     // Logic for getCategories
+// }
 
 export function getCategoryBySlug(request: Request, response: Response){
     // Logic for getCategoryBySlug
