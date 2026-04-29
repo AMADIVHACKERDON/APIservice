@@ -3,11 +3,20 @@ import os
 import re
 
 def generate():
+    base_dir = os.getcwd()
+    test_filename = "test-api.js"
+    target_dir = os.path.join(base_dir, "src", "server")
+    os.makedirs(target_dir, exist_ok=True)
+
+    # CREATE TEST FILE
+    test_file = os.path.join(target_dir, test_filename)
+    with open(test_file, 'w') as f:
+        f.write("//OPTIONAL FILE: configure test for the server")
+
     # 1. Load the spec
     spec_path = 'openapi.yaml'
     if not os.path.exists(spec_path):
-        print(f"Error: {spec_path} not found")
-        return
+        raise FileNotFoundError(f"Error: {spec_path} not found")
 
     with open(spec_path, 'r') as f:
         spec = yaml.safe_load(f)
@@ -15,8 +24,8 @@ def generate():
     # 2. Start building the Express file
     code = [
         'import express from "express";',
-        'import * as APIs from "./test-api.js";',
-        'import * as Models from "../generated-api/models/index.js";',
+        f'import * as APIs from ./{test_filename};',
+        f'import * as Models from "{base_dir}/generated-api/models/index.ts";',
         '',
         'const app = express();',
         'app.use(express.json());',
@@ -52,13 +61,12 @@ def generate():
     code.append('    console.log(`🚀 Solutions API live at http://localhost:${PORT}`);')
     code.append('});')
 
-    # 5. Write to file
-    dir = 'src/server'
-    os.makedirs(dir, exist_ok=True)
-    server_file = dir + "/app-server.ts"
+    # Write to file
+    
+    # CREATE SERVER FILE
+    server_file = os.path.join(target_dir, "/app-server.ts")
     with open(server_file, 'w') as f:
         f.write("\n".join(code))
-    print(f"Successfully generated {server_file}")
-
+    
 if __name__ == "__main__":
     generate()
