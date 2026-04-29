@@ -7,7 +7,7 @@ def generate():
     os.makedirs(target_dir, exist_ok=True)
 
     # files to create
-    test_filename = "test-api.js"
+    test_filename = "test-api.ts"
     server_filename = "app-server.ts"
 
     # 1. Load the spec
@@ -30,7 +30,7 @@ def generate():
 
     test_code = [
         '//OPTIONAL FILE: configure test for the server',
-        f'import * as Models from "../../generated-api/models/index.js";'
+        f'import * as Models from "../../generated-api/models/index.js";',
         'import type { Request, Response } from "express";'
     ]
 
