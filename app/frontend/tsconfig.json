@@ -3,8 +3,7 @@
       "jsx": "react-jsx",
       "lib": ["DOM", "DOM.Iterable", "ESNext"],
       "moduleResolution": "bundler",
-      
-      /* Crucial additions */
+      "noEmit": true,
       "target": "ESNext",         // Support modern JS features
       "module": "ESNext",         // Use modern import/export syntax
       "strict": true,             // Catch bugs early with strict type checking
