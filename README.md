@@ -10,6 +10,7 @@ npm install && npm install app/generated-api
 
 ### Start the Server
 Go to app/backend/
+
 Run
 ```bash
 npm start
@@ -17,7 +18,12 @@ npm start
 
 ### Start the App
 Go to app/frontend/
+
 Run
 ```bash
 npm run dev
 ```
+
+**NOTE**: You need two separate terminal for this.
+
+
