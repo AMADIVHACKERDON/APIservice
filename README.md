@@ -3,8 +3,10 @@ Creation of endpoints as service and it's details
 
 
 ## Quickstart
-install global dependencies - npm install
-install api dependencies - npm install app/generated-api
+install all dependencies
+```bash
+npm install && npm install app/generated-api
+```
 
 ### Start the Server
 Go to app/backend/
