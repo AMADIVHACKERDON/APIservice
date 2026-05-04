@@ -69,7 +69,7 @@ def generate():
     ]
 
     # 3. Process Paths
-    version = 'api/v1'
+    version = '/api/v1'
     paths = spec.get('paths', {})
     for path, methods in paths.items():
         # Convert OpenAPI path {id} to Express :id

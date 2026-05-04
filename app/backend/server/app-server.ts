@@ -6,7 +6,7 @@ app.use(express.json());
 const PORT = 3000;
 
 // List categories
-app.get("api/v1/categories", APIs.getCategories);
+app.get("/api/v1/categories", APIs.getCategories);
 
 // Get category
 app.get("api/v1/categories/:slug", APIs.getCategoryBySlug);
