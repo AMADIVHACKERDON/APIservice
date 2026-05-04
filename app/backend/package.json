@@ -1,0 +1,29 @@
+{
+  "name": "backend",
+  "version": "1.0.0",
+  "description": "Creation of endpoints as service and it's details",
+  "main": "index.js",
+  "scripts": {
+    "start": "npx tsx ./src/server/app-server.ts",
+    "test": "npx tsx ./src/client/app-client.ts"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/AMADIVHACKERDON/APIservice.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "module",
+  "bugs": {
+    "url": "https://github.com/AMADIVHACKERDON/APIservice/issues"
+  },
+  "homepage": "https://github.com/AMADIVHACKERDON/APIservice#readme",
+  "dependencies": {
+    "express": "^5.2.1"
+  },
+  "devDependencies": {
+    "@types/express": "^5.0.6",
+    "start-server-and-test": "^3.0.2"
+  }
+}
