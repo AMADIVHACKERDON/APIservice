@@ -4,7 +4,7 @@ on:
     paths:
       - 'openapi.yaml'
       - '.github/workflows/generate-api.yml'
-      - 'scripts/gen-server.py'
+      - 'app/backend/scripts/gen-server.py'
 
 jobs:
   generate:
@@ -23,23 +23,23 @@ jobs:
         run: pip install pyyaml
 
       - name: Generate Client SDK (Axios)
-        uses: openapi-generators/openapitools-generator-action@v1
+        uses: openapi-generators/openapitools-generator-action@v1.5.0
         with:
           generator: typescript-axios
           generator-tag: v7.0.0
           openapi-file: openapi.yaml
           command-args: >
-            -o ./generated-api 
+            -o ./app/generated-api 
             --additional-properties=npmName=solutions-api-sdk,apiPackage=api,modelPackage=models,withSeparateModelsAndApi=true,useSingleRequestParameter=true,importFileExtension=.js
 
       - name: Generate Clean Express Skeleton
-        run: python scripts/gen-server.py
+        run: cd ./app/backend && python scripts/gen-server.py
 
       - name: Commit changes
         run: |
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action"
-          git add ./generated-api ./src/server/app-server.ts
-          git add -f ./src/server/test-api.ts
+          git add ./app/generated-api ./app/backend/server/app-server.ts
+          git add -f ./app/backend/server/test-api.ts
           git commit -m "Auto-update API types and server skeleton [skip ci]" || echo "No changes"
           git push
