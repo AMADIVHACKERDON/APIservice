@@ -1,0 +1,15 @@
+{
+    "compilerOptions": {
+      "jsx": "react-jsx",
+      "lib": ["DOM", "DOM.Iterable", "ESNext"],
+      "moduleResolution": "bundler",
+      
+      /* Crucial additions */
+      "target": "ESNext",         // Support modern JS features
+      "module": "ESNext",         // Use modern import/export syntax
+      "strict": true,             // Catch bugs early with strict type checking
+      "esModuleInterop": true,    // Fixes "module has no default export" errors
+      "skipLibCheck": true        // Speeds up builds by skipping type checks on node_modules
+    }
+  }
+  
