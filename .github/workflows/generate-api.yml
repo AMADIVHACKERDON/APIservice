@@ -35,6 +35,10 @@ jobs:
       - name: Generate Clean Express Skeleton
         run: cd ./app/backend && python scripts/gen-server.py
 
+      - name: Install API dependencies
+        run: npm install
+        working-directory: ./app/generated-api
+      
       - name: Commit changes
         run: |
           git config --local user.email "action@github.com"

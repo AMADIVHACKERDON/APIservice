@@ -6,9 +6,9 @@ info:
   version: 1.0.0
 
 servers:
-  - url: http://localhost:3000/v1
+  - url: http://localhost:3000/api/v1
     description: Local development
-  - url: https://example.com/v1
+  - url: https://example.com/api/v1
     description: Production
 
 paths:
