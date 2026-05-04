@@ -1,0 +1,37 @@
+name: CI Quality Check
+on:
+  push:
+    branches: [main]
+    paths:
+        - 'app/**'
+        - 'openapi.yaml'
+  pull_request:
+    branches: [main]
+    paths:
+        - 'app/**'
+        - 'openapi.yaml'
+
+jobs:
+  check-code:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Check Backend
+        working-directory: ./app/backend
+        run: |
+          npm ci
+          npx tsc --noEmit
+          npx eslint .
+
+      - name: Check Frontend
+        working-directory: ./app/frontend
+        run: |
+          npm ci
+          npx tsc --noEmit
+          npx eslint .
