@@ -1,10 +1,18 @@
-import { CategoriesApi } from "../../../generated-api/api/categories-api";
+import { useEffect, useState } from "react";
+import GetCategories from "../../../backend/src/categories";
+import { Category } from "solutions-api-sdk";
 
+export default function App() {
+    const [categories, setCategories] = useState<Category[]>([]);
 
-export default async function HomePage() {
-    const categoriesAPI = new CategoriesApi();
-    const categories = await categoriesAPI.getCategories();
-    
-    const { data } = categories;
-    console.log(data);
+    useEffect(() => {
+        GetCategories()
+            .then((category) => setCategories(category));
+    }, []);
+
+    return <div>
+        {categories.map((category, i) => (
+            <div key={i}>ID: {category.id} Name: {category.name} </div>
+        ))}
+    </div>
 }

@@ -2,19 +2,22 @@ import yaml
 from pathlib import Path
 import re
 
-example = '''//--------------- Example -------------------
+example = '''
+//--------------- Category Example -------------------
 const categories: Models.Category[] = [
     { id: "1", name: "web dev", slug: "web-dev" },
     { id: "1", name: "iot", slug: "iot" },
     { id: "1", name: "Machine Learning", slug: "machine-learning" },
 ];
-
-// export function getCategories(request: Request, response: Response){
-//     // Logic for getCategories
-//     response.send({ data: categories });
-// }
-
 // -------------------------------------------
+'''
+
+getCategoryFunc = '''
+export function getCategories(request: Request, response: Response){
+    // Logic for getCategories
+    response.send({ data: categories });
+}
+
 '''
 
 def createFileSeries(file_name:Path, file_dir:Path):
@@ -94,6 +97,10 @@ def generate():
             server_code.append(f'app.{method.lower()}("{express_path}", APIs.{op_id});')
 
             test_code.append("")
+            if op_id == "getCategories":
+                test_code.append(getCategoryFunc)
+                continue
+
             test_code.append(f"export function {op_id}(request: Request, response: Response){{")
             test_code.append(f"    // Logic for {op_id}")
             test_code.append("}")

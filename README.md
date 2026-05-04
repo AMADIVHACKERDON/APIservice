@@ -3,14 +3,17 @@ Creation of endpoints as service and it's details
 
 
 ## Quickstart
-1. Go to src/server/test...
-2. comment and uncomment the common function from the example
-3. Run the following commands
 
+# Start the Server
+Go to app/backend/
+Run
 ```bash
-# Start up the server
-npm start 
+npm start
+```
 
-# Run an api test
-npm test
+# Start the App
+Go to app/frontend/
+Run
+```bash
+npm run dev
 ```
