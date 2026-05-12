@@ -1,232 +1,81 @@
+//OPTIONAL FILE: configure test for the server
+import * as Models from "../../generated-api/models/index.js";
 import type { Request, Response } from "express";
-import * as Data from "../data/allData.ts";
 
-function wrap(data: any) {
-    return { data };
+
+//--------------- Category Example -------------------
+const categories: Models.Category[] = [
+    { id: "1", name: "web dev", slug: "web-dev" },
+    { id: "1", name: "iot", slug: "iot" },
+    { id: "1", name: "Machine Learning", slug: "machine-learning" },
+];
+// -------------------------------------------
+
+
+
+export function getCategories(request: Request, response: Response){
+    // Logic for getCategories
+    response.send({ data: categories });
 }
 
-/* ─────────────────────────────
-   CATEGORIES
-───────────────────────────── */
 
-export function getCategories(req: Request, res: Response) {
-    res.send(wrap(Data.categories));
+
+export function getCategoryBySlug(request: Request, response: Response){
+    // Logic for getCategoryBySlug
 }
 
-export function getCategoryBySlug(req: Request, res: Response) {
-    const category = Data.categories.find(
-        c => c.slug === req.params.slug
-    );
-
-    if (!category) return res.status(404).send();
-
-    res.send(wrap(category));
+export function getSolutionsByCategory(request: Request, response: Response){
+    // Logic for getSolutionsByCategory
 }
 
-/* ─────────────────────────────
-   SOLUTIONS BY CATEGORY (FIXED)
-───────────────────────────── */
-
-export function getSolutionsByCategory(req: Request, res: Response) {
-    const { slug } = req.params;
-
-    const category = Data.categories.find(c => c.slug === slug);
-    if (!category) return res.status(404).send(wrap([]));
-
-    const subIds = Data.subcategories
-        .filter(s => s.category_id === category.id)
-        .map(s => s.id);
-
-    const solutions = Data.solutions.filter(s =>
-        subIds.includes(s.subcategory_id)
-    );
-
-    const page = Number(req.query.page || 1);
-    const limit = Number(req.query.limit || 20);
-
-    const paginated = solutions.slice(
-        (page - 1) * limit,
-        page * limit
-    );
-
-    res.send({
-        page,
-        limit,
-        total: solutions.length,
-        data: paginated,
-    });
-});
-
-/* ─────────────────────────────
-   SUBCATEGORIES
-───────────────────────────── */
-
-export function getSubcategories(req: Request, res: Response) {
-    res.send(wrap(Data.subcategories));
+export function getSubcategories(request: Request, response: Response){
+    // Logic for getSubcategories
 }
 
-export function getSubcategoryBySlug(req: Request, res: Response) {
-    const sub = Data.subcategories.find(
-        s => s.slug === req.params.slug
-    );
-
-    if (!sub) return res.status(404).send();
-
-    res.send(wrap(sub));
+export function getSubcategoryBySlug(request: Request, response: Response){
+    // Logic for getSubcategoryBySlug
 }
 
-/* ─────────────────────────────
-   SOLUTIONS BY SUBCATEGORY (FIXED)
-───────────────────────────── */
-
-export function getSolutionsBySubcategory(req: Request, res: Response) {
-    const sub = Data.subcategories.find(
-        s => s.slug === req.params.slug
-    );
-
-    if (!sub) return res.status(404).send(wrap([]));
-
-    const solutions = Data.solutions.filter(
-        s => s.subcategory_id === sub.id
-    );
-
-    const page = Number(req.query.page || 1);
-    const limit = Number(req.query.limit || 20);
-
-    const paginated = solutions.slice(
-        (page - 1) * limit,
-        page * limit
-    );
-
-    res.send({
-        page,
-        limit,
-        total: solutions.length,
-        data: paginated,
-    });
-});
-
-/* ─────────────────────────────
-   SOLUTIONS
-───────────────────────────── */
-
-export function getSolutions(req: Request, res: Response) {
-    const { search, subcategory } = req.query;
-
-    let results = Data.solutions;
-
-    if (subcategory) {
-        results = results.filter(
-            s => s.subcategory_id === subcategory
-        );
-    }
-
-    if (search) {
-        const q = String(search).toLowerCase();
-        results = results.filter(
-            s =>
-                s.title.toLowerCase().includes(q) ||
-                s.content.toLowerCase().includes(q)
-        );
-    }
-
-    const page = Number(req.query.page || 1);
-    const limit = Number(req.query.limit || 20);
-
-    const paginated = results.slice(
-        (page - 1) * limit,
-        page * limit
-    );
-
-    res.send({
-        page,
-        limit,
-        total: results.length,
-        data: paginated,
-    });
-});
-
-export function createSolution(req: Request, res: Response) {
-    res.status(201).send(wrap(req.body));
+export function getSolutionsBySubcategory(request: Request, response: Response){
+    // Logic for getSolutionsBySubcategory
 }
 
-/* ─────────────────────────────
-   SOLUTION BY ID (FIXED 404)
-───────────────────────────── */
-
-export function getSolutionById(req: Request, res: Response) {
-    const solution = Data.solutions.find(
-        s => s.id === req.params.id
-    );
-
-    if (!solution) return res.status(404).send();
-
-    res.send(wrap(solution));
+export function getSolutions(request: Request, response: Response){
+    // Logic for getSolutions
 }
 
-/* ─────────────────────────────
-   UPDATE / DELETE
-───────────────────────────── */
-
-export function updateSolution(req: Request, res: Response) {
-    res.send(wrap({
-        id: req.params.id,
-        ...req.body,
-    }));
+export function createSolution(request: Request, response: Response){
+    // Logic for createSolution
 }
 
-export function deleteSolution(req: Request, res: Response) {
-    res.status(204).send();
+export function getSolutionById(request: Request, response: Response){
+    // Logic for getSolutionById
 }
 
-/* ─────────────────────────────
-   HELPFUL (FIXED MUTATION)
-───────────────────────────── */
-
-export function markSolutionHelpful(req: Request, res: Response) {
-    const solution = Data.solutions.find(
-        s => s.id === req.params.id
-    );
-
-    if (!solution) return res.status(404).send();
-
-    solution.helpful_count = (solution.helpful_count || 0) + 1;
-
-    res.send(wrap({
-        id: solution.id,
-        helpful_count: solution.helpful_count,
-    }));
+export function updateSolution(request: Request, response: Response){
+    // Logic for updateSolution
 }
 
-/* ─────────────────────────────
-   AUTH (unchanged mock)
-───────────────────────────── */
-
-export function registerUser(req: Request, res: Response) {
-    res.status(201).send(wrap({
-        id: "1",
-        username: req.body.username,
-    }));
+export function deleteSolution(request: Request, response: Response){
+    // Logic for deleteSolution
 }
 
-export function loginUser(req: Request, res: Response) {
-    res.send(wrap({
-        token: "sample-token",
-    }));
+export function markSolutionHelpful(request: Request, response: Response){
+    // Logic for markSolutionHelpful
 }
 
-/* ─────────────────────────────
-   API KEYS
-───────────────────────────── */
-
-export function getApiKey(req: Request, res: Response) {
-    res.send(wrap({
-        api_key: "sample-api-key",
-    }));
+export function registerUser(request: Request, response: Response){
+    // Logic for registerUser
 }
 
-export function regenerateApiKey(req: Request, res: Response) {
-    res.send(wrap({
-        api_key: "new-sample-api-key",
-    }));
+export function loginUser(request: Request, response: Response){
+    // Logic for loginUser
+}
+
+export function getApiKey(request: Request, response: Response){
+    // Logic for getApiKey
+}
+
+export function regenerateApiKey(request: Request, response: Response){
+    // Logic for regenerateApiKey
 }
