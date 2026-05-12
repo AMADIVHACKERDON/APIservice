@@ -103,5 +103,4 @@ marimo/
 
 
 # local files
-test-api**
-test*
+**/test*

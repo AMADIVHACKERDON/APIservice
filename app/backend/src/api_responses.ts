@@ -75,12 +75,13 @@ export async function CreateSolution() {
     const solutionsAPI = new SolutionsApi();
 
     const solution = await solutionsAPI.createSolution({
-        title: "Fix CORS issue",
-        content: "Enable cors middleware in express",
-        subcategory_id: "2",
-        difficulty: "beginner",
-    });
-
+        'solutionInput': {
+                title: "Fix CORS issue",
+                content: "Enable cors middleware in express",
+                subcategory_id: "2",
+                difficulty: "beginner",
+            }
+    })
     return solution.data;
 }
 
@@ -94,16 +95,19 @@ export async function GetSolutionById() {
     return solution.data;
 }
 
-export async function UpdateSolution() {
+export async function UpdateSolution({ id }: any) {
     const solutionsAPI = new SolutionsApi();
 
     const solution = await solutionsAPI.updateSolution({
-        id: "1",
-        title: "Updated title",
-        content: "Updated content",
-        subcategory_id: "2",
-        difficulty: "advanced",
-    });
+        id: id,
+        solutionInput:{
+            title: "Updated title",
+            content: "Updated content",
+            subcategory_id: "2",
+            difficulty: "advanced",
+        }
+    }
+    );
 
     return solution.data;
 }
@@ -132,9 +136,11 @@ export async function RegisterUser() {
     const authAPI = new AuthApi();
 
     const user = await authAPI.registerUser({
-        username: "emma",
-        email: "emma@example.com",
-        password: "password123",
+        registerInput: {
+            username: "emma",
+            email: "emma@example.com",
+            password: "password123",
+        }
     });
 
     return user.data;
@@ -144,8 +150,10 @@ export async function LoginUser() {
     const authAPI = new AuthApi();
 
     const token = await authAPI.loginUser({
-        email: "emma@example.com",
-        password: "password123",
+        loginInput: {
+            email: "emma@example.com",
+            password: "password123",
+        }
     });
 
     return token.data;
