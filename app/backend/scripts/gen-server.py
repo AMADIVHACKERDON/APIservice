@@ -115,8 +115,8 @@ def generate():
     # CREATE TEST FILE
     test_file = target_dir.joinpath(test_filename)
 
-     # Create numbered file if it already exists
-    while test_file.exists():
+     # Create test file only if it doesnt exists
+    if not test_file.exists():
         print(f"{test_filename} already exists")
         test_file = createFileSeries(test_file, target_dir)
 
