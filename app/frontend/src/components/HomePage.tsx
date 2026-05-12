@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import GetCategories from "../../../backend/src/categories";
+import { GetCategories } from "../../../backend/src/api_responses";
 import { Category } from "solutions-api-sdk";
 
 export default function App() {
