@@ -4,173 +4,207 @@ import { AuthApi } from "solutions-api-sdk/api/auth-api.ts";
 import { DeveloperApi } from "solutions-api-sdk/api/developer-api.ts";
 
 export async function GetCategories() {
-    const categoryAPI = new CategoriesApi();
-    const categories = await categoryAPI.getCategories();
-    const { data } = categories.data;
-
-    return data;
+    const api = new CategoriesApi();
+    const res = await api.getCategories();
+    return res.data.data;
 }
 
-export async function GetCategoryBySlug() {
-    const categoryAPI = new CategoriesApi();
-    const category = await categoryAPI.getCategoryBySlug({
-        slug: "web-dev",
+export async function GetCategoryBySlug({ slug }: { slug: string }) {
+    const api = new CategoriesApi();
+
+    const res = await api.getCategoryBySlug({
+        slug,
     });
 
-    return category.data;
+    return res.data;
 }
 
-export async function GetSolutionsByCategory() {
-    const categoryAPI = new CategoriesApi();
-    const solutions = await categoryAPI.getSolutionsByCategory({
-        slug: "web-dev",
-        page: 1,
-        limit: 20,
+export async function GetSolutionsByCategory({
+    slug,
+    page = 1,
+    limit = 20,
+}: {
+    slug: string;
+    page?: number;
+    limit?: number;
+}) {
+    const api = new CategoriesApi();
+
+    const res = await api.getSolutionsByCategory({
+        slug,
+        page,
+        limit,
     });
 
-    return solutions.data;
+    return res.data;
 }
 
 export async function GetSubcategories() {
-    const categoryAPI = new CategoriesApi();
-    const subcategories = await categoryAPI.getSubcategories();
-    const { data } = subcategories.data;
+    const api = new CategoriesApi();
+    const res = await api.getSubcategories();
 
-    return data;
+    return res.data.data;
 }
 
-export async function GetSubcategoryBySlug() {
-    const categoryAPI = new CategoriesApi();
-    const subcategory = await categoryAPI.getSubcategoryBySlug({
-        slug: "frontend",
+export async function GetSubcategoryBySlug({ slug }: { slug: string }) {
+    const api = new CategoriesApi();
+
+    const res = await api.getSubcategoryBySlug({
+        slug,
     });
 
-    return subcategory.data;
+    return res.data;
 }
 
-export async function GetSolutionsBySubcategory() {
-    const solutionsAPI = new SolutionsApi();
-    const solutions = await solutionsAPI.getSolutionsBySubcategory({
-        slug: "frontend",
-        page: 1,
-        limit: 20,
+export async function GetSolutionsBySubcategory({
+    slug,
+    page = 1,
+    limit = 20,
+}: {
+    slug: string;
+    page?: number;
+    limit?: number;
+}) {
+    const api = new SolutionsApi();
+
+    const res = await api.getSolutionsBySubcategory({
+        slug,
+        page,
+        limit,
     });
 
-    return solutions.data;
+    return res.data;
 }
 
-export async function GetSolutions() {
-    const solutionsAPI = new SolutionsApi();
-    const solutions = await solutionsAPI.getSolutions({
-        search: "cors",
-        subcategory: "1",
-        page: 1,
-        limit: 20,
+export async function GetSolutions({
+    search,
+    subcategory,
+    page = 1,
+    limit = 20,
+}: {
+    search?: string;
+    subcategory?: string;
+    page?: number;
+    limit?: number;
+}) {
+    const api = new SolutionsApi();
+
+    const res = await api.getSolutions({
+        search,
+        subcategory,
+        page,
+        limit,
     });
 
-    return solutions.data;
+    return res.data;
 }
 
 export async function CreateSolution() {
-    const solutionsAPI = new SolutionsApi();
+    const api = new SolutionsApi();
 
-    const solution = await solutionsAPI.createSolution({
-        'solutionInput': {
-                title: "Fix CORS issue",
-                content: "Enable cors middleware in express",
-                subcategory_id: "2",
-                difficulty: "beginner",
-            }
-    })
-    return solution.data;
-}
-
-export async function GetSolutionById() {
-    const solutionsAPI = new SolutionsApi();
-
-    const solution = await solutionsAPI.getSolutionById({
-        id: "1",
+    const res = await api.createSolution({
+        solutionInput: {
+            title: "Fix CORS issue",
+            content: "Enable cors middleware in express",
+            subcategory_id: "2",
+            difficulty: "beginner",
+        },
     });
 
-    return solution.data;
+    return res.data;
 }
 
-export async function UpdateSolution({ id }: any) {
-    const solutionsAPI = new SolutionsApi();
+export async function GetSolutionById({ id }: { id: string }) {
+    const api = new SolutionsApi();
 
-    const solution = await solutionsAPI.updateSolution({
-        id: id,
-        solutionInput:{
+    const res = await api.getSolutionById({
+        id,
+    });
+
+    return res.data;
+}
+
+export async function UpdateSolution({
+    id,
+    solutionInput,
+}: {
+    id: string;
+    solutionInput?: any;
+}) {
+    const api = new SolutionsApi();
+
+    const res = await api.updateSolution({
+        id,
+        solutionInput: solutionInput ?? {
             title: "Updated title",
             content: "Updated content",
             subcategory_id: "2",
             difficulty: "advanced",
-        }
-    }
-    );
-
-    return solution.data;
-}
-
-export async function DeleteSolution() {
-    const solutionsAPI = new SolutionsApi();
-
-    const response = await solutionsAPI.deleteSolution({
-        id: "1",
+        },
     });
 
-    return response.data;
+    return res.data;
 }
 
-export async function MarkSolutionHelpful() {
-    const solutionsAPI = new SolutionsApi();
+export async function DeleteSolution({ id }: { id: string }) {
+    const api = new SolutionsApi();
 
-    const response = await solutionsAPI.markSolutionHelpful({
-        id: "1",
+    const res = await api.deleteSolution({
+        id,
     });
 
-    return response.data;
+    return res.data;
+}
+
+export async function MarkSolutionHelpful({ id }: { id: string }) {
+    const api = new SolutionsApi();
+
+    const res = await api.markSolutionHelpful({
+        id,
+    });
+
+    return res.data;
 }
 
 export async function RegisterUser() {
-    const authAPI = new AuthApi();
+    const api = new AuthApi();
 
-    const user = await authAPI.registerUser({
+    const res = await api.registerUser({
         registerInput: {
             username: "emma",
             email: "emma@example.com",
             password: "password123",
-        }
+        },
     });
 
-    return user.data;
+    return res.data;
 }
 
 export async function LoginUser() {
-    const authAPI = new AuthApi();
+    const api = new AuthApi();
 
-    const token = await authAPI.loginUser({
+    const res = await api.loginUser({
         loginInput: {
             email: "emma@example.com",
             password: "password123",
-        }
+        },
     });
 
-    return token.data;
+    return res.data;
 }
 
 export async function GetApiKey() {
-    const developerAPI = new DeveloperApi();
+    const api = new DeveloperApi();
 
-    const apiKey = await developerAPI.getApiKey();
+    const res = await api.getApiKey();
 
-    return apiKey.data;
+    return res.data;
 }
 
 export async function RegenerateApiKey() {
-    const developerAPI = new DeveloperApi();
+    const api = new DeveloperApi();
 
-    const apiKey = await developerAPI.regenerateApiKey();
+    const res = await api.regenerateApiKey();
 
-    return apiKey.data;
+    return res.data;
 }

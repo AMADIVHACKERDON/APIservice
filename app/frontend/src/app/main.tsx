@@ -1,8 +1,7 @@
-import React from 'react';
-import { createRoot } from 'react-dom/client';
-import Homepage from "../components/HomePage";
+import React from "react";
+import { createRoot } from "react-dom/client";
+import Root from "./Root";
 
-const root = createRoot(document.getElementById('root')!);
-root.render(
-    <Homepage />
-);
+const root = createRoot(document.getElementById("root")!);
+
+root.render(<Root />);

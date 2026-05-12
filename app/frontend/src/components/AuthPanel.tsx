@@ -1,4 +1,6 @@
-export default function HomePage(){
+
+
+export default function AuthPanel(){
     return (
         <>
         </>
