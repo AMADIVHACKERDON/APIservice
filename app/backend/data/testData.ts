@@ -1,4 +1,4 @@
-import * as Models from "../../generated-api/models/index.js";
+import * as Models from "solutions-api-sdk/models/index.ts";
 
 export const categories: Models.Category[] = [
     { id: "1", name: "web dev", slug: "web-dev" },

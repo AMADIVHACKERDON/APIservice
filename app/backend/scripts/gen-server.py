@@ -26,10 +26,10 @@ def generate():
     target_dir = Path("server")
     target_dir.mkdir(exist_ok=True)
 
-    test_file = target_dir / "test-api.ts"
+    api_config = target_dir / "api-config.ts"
     server_file = target_dir / "app-server.ts"
 
-    test_exists = test_file.exists()
+    test_exists = api_config.exists()
     server_exists = server_file.exists()
 
     if test_exists and server_exists:
@@ -52,7 +52,7 @@ def generate():
     if not server_exists:
         server_code = [
             'import express from "express";',
-            f'import * as APIs from "./{test_file.name}";',
+            f'import * as APIs from "./{api_config.name}";',
             '',
             'const app = express();',
             'app.use(express.json());',
@@ -62,7 +62,7 @@ def generate():
     if not test_exists:
         test_code = [
             '//OPTIONAL FILE: configure test for the server',
-            'import * as Models from "../../generated-api/models/index.js";',
+            'import * as Models from "solutions-api-sdk/models/index.ts";',
             'import type { Request, Response } from "express";',
             '',
             example,
@@ -114,7 +114,7 @@ def generate():
         server_file.write_text("\n".join(server_code), encoding="utf-8")
 
     if test_code is not None:
-        test_file.write_text("\n".join(test_code), encoding="utf-8")
+        api_config.write_text("\n".join(test_code), encoding="utf-8")
 
 
 if __name__ == "__main__":
