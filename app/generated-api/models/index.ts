@@ -1,4 +1,6 @@
+export * from './api-key-response';
 export * from './category';
+export * from './error-response';
 export * from './login-input';
 export * from './mark-solution-helpful200-response';
 export * from './paginated-solutions';
@@ -6,4 +8,6 @@ export * from './register-input';
 export * from './solution';
 export * from './solution-input';
 export * from './subcategory';
+export * from './token-response';
 export * from './user-public';
+export * from './validation-error-response';

@@ -11,7 +11,9 @@ common.ts
 configuration.ts
 git_push.sh
 index.ts
+models/api-key-response.ts
 models/category.ts
+models/error-response.ts
 models/index.ts
 models/login-input.ts
 models/mark-solution-helpful200-response.ts
@@ -20,6 +22,8 @@ models/register-input.ts
 models/solution-input.ts
 models/solution.ts
 models/subcategory.ts
+models/token-response.ts
 models/user-public.ts
+models/validation-error-response.ts
 package.json
 tsconfig.json

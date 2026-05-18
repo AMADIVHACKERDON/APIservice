@@ -21,6 +21,8 @@ import globalAxios from 'axios';
 import { DUMMY_BASE_URL, assertParamExists, setApiKeyToObject, setBasicAuthToObject, setBearerAuthToObject, setOAuthToObject, setSearchParams, serializeDataIfNeeded, toPathString, createRequestFunction } from '../common';
 // @ts-ignore
 import { BASE_PATH, COLLECTION_FORMATS, RequestArgs, BaseAPI, RequiredError } from '../base';
+// @ts-ignore
+import { ApiKeyResponse } from '../models';
 /**
  * DeveloperApi - axios parameter creator
  * @export
@@ -111,7 +113,7 @@ export const DeveloperApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async getApiKey(options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
+        async getApiKey(options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ApiKeyResponse>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.getApiKey(options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
@@ -121,7 +123,7 @@ export const DeveloperApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async regenerateApiKey(options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
+        async regenerateApiKey(options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ApiKeyResponse>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.regenerateApiKey(options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
@@ -141,7 +143,7 @@ export const DeveloperApiFactory = function (configuration?: Configuration, base
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getApiKey(options?: AxiosRequestConfig): AxiosPromise<void> {
+        getApiKey(options?: AxiosRequestConfig): AxiosPromise<ApiKeyResponse> {
             return localVarFp.getApiKey(options).then((request) => request(axios, basePath));
         },
         /**
@@ -150,7 +152,7 @@ export const DeveloperApiFactory = function (configuration?: Configuration, base
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        regenerateApiKey(options?: AxiosRequestConfig): AxiosPromise<void> {
+        regenerateApiKey(options?: AxiosRequestConfig): AxiosPromise<ApiKeyResponse> {
             return localVarFp.regenerateApiKey(options).then((request) => request(axios, basePath));
         },
     };

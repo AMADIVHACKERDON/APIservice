@@ -22,9 +22,13 @@ import { DUMMY_BASE_URL, assertParamExists, setApiKeyToObject, setBasicAuthToObj
 // @ts-ignore
 import { BASE_PATH, COLLECTION_FORMATS, RequestArgs, BaseAPI, RequiredError } from '../base';
 // @ts-ignore
+import { ErrorResponse } from '../models';
+// @ts-ignore
 import { LoginInput } from '../models';
 // @ts-ignore
 import { RegisterInput } from '../models';
+// @ts-ignore
+import { TokenResponse } from '../models';
 // @ts-ignore
 import { UserPublic } from '../models';
 /**
@@ -122,7 +126,7 @@ export const AuthApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async loginUser(loginInput: LoginInput, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
+        async loginUser(loginInput: LoginInput, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<TokenResponse>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.loginUser(loginInput, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
@@ -154,7 +158,7 @@ export const AuthApiFactory = function (configuration?: Configuration, basePath?
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        loginUser(requestParameters: AuthApiLoginUserRequest, options?: AxiosRequestConfig): AxiosPromise<void> {
+        loginUser(requestParameters: AuthApiLoginUserRequest, options?: AxiosRequestConfig): AxiosPromise<TokenResponse> {
             return localVarFp.loginUser(requestParameters.loginInput, options).then((request) => request(axios, basePath));
         },
         /**
