@@ -11,6 +11,13 @@ servers:
   - url: https://example.com/api/v1
     description: Production
 
+# ─────────────────────────────
+# GLOBAL SECURITY
+# Public (read) endpoints override this with `security: []`
+# ─────────────────────────────
+security:
+  - BearerAuth: []
+
 paths:
   # ─────────────────────────────
   # CATEGORIES
@@ -20,6 +27,7 @@ paths:
       summary: List categories
       operationId: getCategories
       tags: [Categories]
+      security: []         # public read
       responses:
         "200":
           description: List of categories
@@ -29,12 +37,15 @@ paths:
                 type: array
                 items:
                   $ref: "#/components/schemas/Category"
+        "429":
+          $ref: "#/components/responses/TooManyRequests"
 
   /categories/{slug}:
     get:
       summary: Get category
       operationId: getCategoryBySlug
       tags: [Categories]
+      security: []         # public read
       parameters:
         - $ref: "#/components/parameters/SlugParam"
       responses:
@@ -46,12 +57,15 @@ paths:
                 $ref: "#/components/schemas/Category"
         "404":
           $ref: "#/components/responses/NotFound"
+        "429":
+          $ref: "#/components/responses/TooManyRequests"
 
   /categories/{slug}/solutions:
     get:
       summary: Solutions under category
       operationId: getSolutionsByCategory
       tags: [Categories]
+      security: []         # public read
       parameters:
         - $ref: "#/components/parameters/SlugParam"
         - $ref: "#/components/parameters/PageParam"
@@ -63,6 +77,8 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/PaginatedSolutions"
+        "429":
+          $ref: "#/components/responses/TooManyRequests"
 
   # ─────────────────────────────
   # SUBCATEGORIES
@@ -72,6 +88,7 @@ paths:
       summary: List subcategories
       operationId: getSubcategories
       tags: [Categories]
+      security: []         # public read
       responses:
         "200":
           description: List of subcategories
@@ -81,12 +98,15 @@ paths:
                 type: array
                 items:
                   $ref: "#/components/schemas/Subcategory"
+        "429":
+          $ref: "#/components/responses/TooManyRequests"
 
   /subcategories/{slug}:
     get:
       summary: Get subcategory
       operationId: getSubcategoryBySlug
       tags: [Categories]
+      security: []         # public read
       parameters:
         - $ref: "#/components/parameters/SlugParam"
       responses:
@@ -98,12 +118,15 @@ paths:
                 $ref: "#/components/schemas/Subcategory"
         "404":
           $ref: "#/components/responses/NotFound"
+        "429":
+          $ref: "#/components/responses/TooManyRequests"
 
   /subcategories/{slug}/solutions:
     get:
       summary: Solutions under subcategory
       operationId: getSolutionsBySubcategory
       tags: [Solutions]
+      security: []         # public read
       parameters:
         - $ref: "#/components/parameters/SlugParam"
         - $ref: "#/components/parameters/PageParam"
@@ -115,16 +138,18 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/PaginatedSolutions"
+        "429":
+          $ref: "#/components/responses/TooManyRequests"
 
-    # ─────────────────────────────
-    # SOLUTIONS
-    # ─────────────────────────────
-    
+  # ─────────────────────────────
+  # SOLUTIONS
+  # ─────────────────────────────
   /solutions:
     get:
       summary: List solutions
       operationId: getSolutions
       tags: [Solutions]
+      security: []         # public read
       description: Search across title and content, optionally filter by subcategory
       parameters:
         - name: search
@@ -132,12 +157,14 @@ paths:
           required: false
           schema:
             type: string
+            maxLength: 200
         - name: subcategory
           in: query
           required: false
           description: Subcategory ID filter
           schema:
             type: string
+            maxLength: 100
         - $ref: "#/components/parameters/PageParam"
         - $ref: "#/components/parameters/LimitParam"
       responses:
@@ -147,6 +174,8 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/PaginatedSolutions"
+        "429":
+          $ref: "#/components/responses/TooManyRequests"
 
     post:
       summary: Create solution
@@ -154,6 +183,7 @@ paths:
       tags: [Solutions]
       security:
         - BearerAuth: []
+        - ApiKeyAuth: []
       requestBody:
         required: true
         content:
@@ -167,12 +197,23 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Solution"
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "422":
+          $ref: "#/components/responses/UnprocessableEntity"
+        "429":
+          $ref: "#/components/responses/TooManyRequests"
 
   /solutions/{id}:
     get:
       summary: Get solution
       operationId: getSolutionById
       tags: [Solutions]
+      security: []         # public read
       parameters:
         - $ref: "#/components/parameters/IdParam"
       responses:
@@ -182,6 +223,10 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Solution"
+        "404":
+          $ref: "#/components/responses/NotFound"
+        "429":
+          $ref: "#/components/responses/TooManyRequests"
 
     put:
       summary: Update solution
@@ -189,6 +234,7 @@ paths:
       tags: [Solutions]
       security:
         - BearerAuth: []
+        - ApiKeyAuth: []
       parameters:
         - $ref: "#/components/parameters/IdParam"
       requestBody:
@@ -204,6 +250,18 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Solution"
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "404":
+          $ref: "#/components/responses/NotFound"
+        "422":
+          $ref: "#/components/responses/UnprocessableEntity"
+        "429":
+          $ref: "#/components/responses/TooManyRequests"
 
     delete:
       summary: Delete solution
@@ -216,6 +274,14 @@ paths:
       responses:
         "204":
           description: Deleted
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "404":
+          $ref: "#/components/responses/NotFound"
+        "429":
+          $ref: "#/components/responses/TooManyRequests"
 
   /solutions/{id}/helpful:
     post:
@@ -239,6 +305,20 @@ paths:
                     type: string
                   helpful_count:
                     type: integer
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "404":
+          $ref: "#/components/responses/NotFound"
+        "409":
+          description: Already marked helpful
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        "429":
+          $ref: "#/components/responses/TooManyRequests"
 
   # ─────────────────────────────
   # AUTH
@@ -248,6 +328,7 @@ paths:
       summary: Register
       operationId: registerUser
       tags: [Auth]
+      security: []
       requestBody:
         required: true
         content:
@@ -261,12 +342,25 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/UserPublic"
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "409":
+          description: Username or email already exists
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        "422":
+          $ref: "#/components/responses/UnprocessableEntity"
+        "429":
+          $ref: "#/components/responses/TooManyRequests"
 
   /auth/login:
     post:
       summary: Login
       operationId: loginUser
       tags: [Auth]
+      security: []
       requestBody:
         required: true
         content:
@@ -276,6 +370,20 @@ paths:
       responses:
         "200":
           description: Token issued
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/TokenResponse"
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "401":
+          description: Invalid credentials
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        "429":
+          $ref: "#/components/responses/TooManyRequests"
 
   # ─────────────────────────────
   # DEVELOPER
@@ -286,10 +394,18 @@ paths:
       operationId: getApiKey
       tags: [Developer]
       security:
-        - BearerAuth: []
+        - BearerAuth: []   # API key cannot be used to fetch itself
       responses:
         "200":
           description: API key returned
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiKeyResponse"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "429":
+          $ref: "#/components/responses/TooManyRequests"
 
   /me/api-key/regenerate:
     post:
@@ -297,10 +413,18 @@ paths:
       operationId: regenerateApiKey
       tags: [Developer]
       security:
-        - BearerAuth: []
+        - BearerAuth: []   # API key cannot regenerate itself
       responses:
         "200":
           description: New API key issued
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiKeyResponse"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "429":
+          $ref: "#/components/responses/TooManyRequests"
 
 # ─────────────────────────────
 components:
@@ -310,11 +434,17 @@ components:
       type: http
       scheme: bearer
       bearerFormat: JWT
+      description: >
+        Short-lived JWT issued at /auth/login. Include as:
+        `Authorization: Bearer <token>`
 
     ApiKeyAuth:
       type: apiKey
       in: header
       name: x-api-key
+      description: >
+        Long-lived API key obtained from /me/api-key. Include as:
+        `x-api-key: <key>`
 
   parameters:
 
@@ -324,6 +454,8 @@ components:
       required: true
       schema:
         type: string
+        maxLength: 100
+        pattern: '^[a-zA-Z0-9_-]+$'
 
     SlugParam:
       name: slug
@@ -331,6 +463,8 @@ components:
       required: true
       schema:
         type: string
+        maxLength: 100
+        pattern: '^[a-z0-9-]+$'
 
     PageParam:
       name: page
@@ -338,6 +472,8 @@ components:
       schema:
         type: integer
         default: 1
+        minimum: 1
+        maximum: 1000
 
     LimitParam:
       name: limit
@@ -345,14 +481,76 @@ components:
       schema:
         type: integer
         default: 20
+        minimum: 1
         maximum: 100
 
   responses:
 
+    BadRequest:
+      description: Malformed request syntax or invalid parameters
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/ErrorResponse"
+
+    Unauthorized:
+      description: Missing or invalid authentication token
+      headers:
+        WWW-Authenticate:
+          schema:
+            type: string
+          description: Authentication challenge
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/ErrorResponse"
+
+    Forbidden:
+      description: Authenticated but not authorised to perform this action
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/ErrorResponse"
+
     NotFound:
       description: Resource not found
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/ErrorResponse"
+
+    UnprocessableEntity:
+      description: Request body is syntactically valid but semantically invalid
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/ValidationErrorResponse"
+
+    TooManyRequests:
+      description: Rate limit exceeded
+      headers:
+        Retry-After:
+          schema:
+            type: integer
+          description: Seconds until the rate limit resets
+        X-RateLimit-Limit:
+          schema:
+            type: integer
+        X-RateLimit-Remaining:
+          schema:
+            type: integer
+        X-RateLimit-Reset:
+          schema:
+            type: integer
+          description: Unix timestamp when the limit resets
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/ErrorResponse"
 
   schemas:
+
+    # ── Core domain ──────────────────────────────
 
     Category:
       type: object
@@ -380,6 +578,7 @@ components:
           enum: [beginner, intermediate, advanced]
         helpful_count:
           type: integer
+          minimum: 0
         subcategory_id:
           type: string
         created_at:
@@ -390,9 +589,17 @@ components:
       type: object
       required: [title, content, subcategory_id]
       properties:
-        title: { type: string }
-        content: { type: string }
-        subcategory_id: { type: string }
+        title:
+          type: string
+          minLength: 3
+          maxLength: 300
+        content:
+          type: string
+          minLength: 10
+          maxLength: 50000
+        subcategory_id:
+          type: string
+          maxLength: 100
         difficulty:
           type: string
           enum: [beginner, intermediate, advanced]
@@ -408,6 +615,8 @@ components:
           items:
             $ref: "#/components/schemas/Solution"
 
+    # ── Auth ─────────────────────────────────────
+
     UserPublic:
       type: object
       properties:
@@ -418,13 +627,84 @@ components:
       type: object
       required: [username, email, password]
       properties:
-        username: { type: string }
-        email: { type: string }
-        password: { type: string }
+        username:
+          type: string
+          minLength: 3
+          maxLength: 50
+          pattern: '^[a-zA-Z0-9_-]+$'
+        email:
+          type: string
+          format: email
+          maxLength: 254
+        password:
+          type: string
+          format: password     # signals writeOnly / never echo back
+          writeOnly: true
+          minLength: 8
+          maxLength: 128
 
     LoginInput:
       type: object
       required: [email, password]
       properties:
-        email: { type: string }
-        password: { type: string }
+        email:
+          type: string
+          format: email
+          maxLength: 254
+        password:
+          type: string
+          format: password
+          writeOnly: true
+          minLength: 8
+          maxLength: 128
+
+    TokenResponse:
+      type: object
+      properties:
+        access_token:
+          type: string
+        token_type:
+          type: string
+          example: bearer
+        expires_in:
+          type: integer
+          description: Seconds until the token expires
+
+    # ── Developer ────────────────────────────────
+
+    ApiKeyResponse:
+      type: object
+      properties:
+        api_key:
+          type: string
+          writeOnly: true   # treat as a secret; never log or cache client-side
+        created_at:
+          type: string
+          format: date-time
+
+    # ── Errors ───────────────────────────────────
+
+    ErrorResponse:
+      type: object
+      required: [error]
+      properties:
+        error:
+          type: string
+          description: Human-readable error message
+        code:
+          type: string
+          description: Machine-readable error code
+
+    ValidationErrorResponse:
+      type: object
+      required: [error, details]
+      properties:
+        error:
+          type: string
+        details:
+          type: array
+          items:
+            type: object
+            properties:
+              field: { type: string }
+              message: { type: string }
