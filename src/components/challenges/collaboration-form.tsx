@@ -13,7 +13,7 @@ function SubmitButton() {
     <button
       type="submit"
       disabled={pending}
-      className="inline-flex items-center justify-center rounded-md bg-black px-4 py-3 text-sm font-semibold text-white transition disabled:cursor-not-allowed disabled:opacity-50 hover:bg-slate-900"
+      className="inline-flex items-center justify-center rounded-full bg-primary px-5 py-3 text-sm font-semibold text-primary-foreground transition disabled:cursor-not-allowed disabled:opacity-50 hover:opacity-90"
     >
       {pending ? "Submitting..." : "Request Collaboration"}
     </button>
@@ -26,10 +26,12 @@ export default function CollaborationForm({
   return (
     <form
       action={action}
-      className="space-y-6 rounded-3xl border border-slate-200 bg-white p-6 shadow-sm"
+      className="space-y-6 rounded-3xl border border-border bg-card p-6 shadow-sm"
     >
       <div>
-        <h2 className="text-2xl font-bold">Collaborate on this challenge?</h2>
+        <h2 className="font-display text-2xl font-bold">
+          Collaborate on this challenge?
+        </h2>
         <p className="mt-2 text-sm text-muted-foreground">
           Tell us how you&apos;d like to contribute.
         </p>
@@ -44,7 +46,7 @@ export default function CollaborationForm({
             id="name"
             name="name"
             required
-            className="mt-2 w-full rounded-md border border-slate-200 bg-slate-50 px-4 py-3 text-sm outline-none transition focus:border-primary focus:ring-2 focus:ring-primary/10"
+            className="mt-2 w-full rounded-xl border border-border bg-input px-4 py-3 text-sm text-foreground outline-none transition placeholder:text-muted-foreground focus:border-primary focus:ring-2 focus:ring-primary/20"
           />
         </div>
 
@@ -57,7 +59,7 @@ export default function CollaborationForm({
             name="email"
             type="email"
             required
-            className="mt-2 w-full rounded-md border border-slate-200 bg-slate-50 px-4 py-3 text-sm outline-none transition focus:border-primary focus:ring-2 focus:ring-primary/10"
+            className="mt-2 w-full rounded-xl border border-border bg-input px-4 py-3 text-sm text-foreground outline-none transition placeholder:text-muted-foreground focus:border-primary focus:ring-2 focus:ring-primary/20"
           />
         </div>
       </div>
@@ -71,7 +73,7 @@ export default function CollaborationForm({
             id="role"
             name="role"
             placeholder="Backend Engineer"
-            className="mt-2 w-full rounded-md border border-slate-200 bg-slate-50 px-4 py-3 text-sm outline-none transition focus:border-primary focus:ring-2 focus:ring-primary/10"
+            className="mt-2 w-full rounded-xl border border-border bg-input px-4 py-3 text-sm text-foreground outline-none transition placeholder:text-muted-foreground focus:border-primary focus:ring-2 focus:ring-primary/20"
           />
         </div>
 
@@ -83,7 +85,7 @@ export default function CollaborationForm({
             id="company"
             name="company"
             placeholder="Optional"
-            className="mt-2 w-full rounded-md border border-slate-200 bg-slate-50 px-4 py-3 text-sm outline-none transition focus:border-primary focus:ring-2 focus:ring-primary/10"
+            className="mt-2 w-full rounded-xl border border-border bg-input px-4 py-3 text-sm text-foreground outline-none transition placeholder:text-muted-foreground focus:border-primary focus:ring-2 focus:ring-primary/20"
           />
         </div>
       </div>
@@ -97,7 +99,7 @@ export default function CollaborationForm({
           id="intent"
           name="intent"
           required
-          className="mt-2 w-full rounded-md border border-slate-200 bg-slate-50 px-4 py-3 text-sm outline-none transition focus:border-primary focus:ring-2 focus:ring-primary/10"
+          className="mt-2 w-full rounded-xl border border-border bg-input px-4 py-3 text-sm text-foreground outline-none transition focus:border-primary focus:ring-2 focus:ring-primary/20"
         >
           <option value="">Select one</option>
           <option value="collaborate">I want to collaborate</option>
@@ -117,7 +119,7 @@ export default function CollaborationForm({
           name="message"
           rows={6}
           required
-          className="mt-2 w-full rounded-md border border-slate-200 bg-slate-50 px-4 py-3 text-sm outline-none transition focus:border-primary focus:ring-2 focus:ring-primary/10"
+          className="mt-2 w-full rounded-xl border border-border bg-input px-4 py-3 text-sm text-foreground outline-none transition placeholder:text-muted-foreground focus:border-primary focus:ring-2 focus:ring-primary/20"
         />
       </div>
 

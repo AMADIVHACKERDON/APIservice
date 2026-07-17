@@ -73,7 +73,7 @@ export default function ReactionBar({
             className={`inline-flex items-center gap-2 rounded-full border px-4 py-2 text-sm font-medium transition ${
               reactions.reacted[item.type]
                 ? "border-primary bg-primary text-primary-foreground"
-                : "border-slate-200 hover:border-slate-400 hover:bg-slate-50"
+                : "border-border bg-card text-foreground hover:border-primary/50 hover:bg-secondary"
             }`}
           >
             <span>{item.emoji}</span>

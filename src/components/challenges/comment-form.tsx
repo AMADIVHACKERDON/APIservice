@@ -9,7 +9,7 @@ function SubmitButton() {
     <button
       type="submit"
       disabled={pending}
-      className="rounded-md border bg-black px-4 py-2 text-sm font-semibold text-white transition disabled:cursor-not-allowed disabled:opacity-50 hover:bg-slate-900"
+      className="rounded-full bg-primary px-5 py-2.5 text-sm font-semibold text-primary-foreground transition disabled:cursor-not-allowed disabled:opacity-50 hover:opacity-90"
     >
       {pending ? "Posting..." : "Post Comment"}
     </button>
@@ -20,13 +20,11 @@ interface CommentFormProps {
   action: (formData: FormData) => Promise<void>;
 }
 
-export default function CommentForm({
-  action,
-}: CommentFormProps) {
+export default function CommentForm({ action }: CommentFormProps) {
   return (
     <form
       action={action}
-      className="space-y-6 rounded-3xl border border-slate-200 bg-white p-6 shadow-sm"
+      className="space-y-6 rounded-3xl border border-border bg-card p-6 shadow-sm"
     >
       <div>
         <label htmlFor="author" className="block text-sm font-medium">
@@ -38,7 +36,7 @@ export default function CommentForm({
           name="author"
           placeholder="e.g. Maya"
           required
-          className="mt-2 w-full rounded-md border border-slate-200 bg-slate-50 px-4 py-3 text-sm outline-none transition focus:border-primary focus:ring-2 focus:ring-primary/10"
+          className="mt-2 w-full rounded-xl border border-border bg-input px-4 py-3 text-sm text-foreground outline-none transition placeholder:text-muted-foreground focus:border-primary focus:ring-2 focus:ring-primary/20"
         />
       </div>
 
@@ -53,7 +51,7 @@ export default function CommentForm({
           placeholder="Share your perspective or a possible next step."
           rows={5}
           required
-          className="mt-2 w-full rounded-md border border-slate-200 bg-slate-50 px-4 py-3 text-sm outline-none transition focus:border-primary focus:ring-2 focus:ring-primary/10"
+          className="mt-2 w-full rounded-xl border border-border bg-input px-4 py-3 text-sm text-foreground outline-none transition placeholder:text-muted-foreground focus:border-primary focus:ring-2 focus:ring-primary/20"
         />
       </div>
 
