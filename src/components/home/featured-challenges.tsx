@@ -4,14 +4,12 @@ interface Props {
   challenges: any[];
 }
 
-export default function FeaturedChallenges({
-  challenges,
-}: Props) {
+export default function FeaturedChallenges({ challenges }: Props) {
   return (
     <section className="space-y-8">
       <div className="flex flex-col gap-2 md:flex-row md:items-end md:justify-between">
         <div>
-          <h2 className="text-3xl font-bold tracking-tight">
+          <h2 className="font-display text-3xl font-bold tracking-tight">
             Featured Challenges
           </h2>
           <p className="text-muted-foreground">
@@ -25,21 +23,21 @@ export default function FeaturedChallenges({
           <Link
             key={challenge.id}
             href={`/challenges/${challenge.slug}`}
-            className="group rounded-3xl border bg-white p-6 text-left transition hover:shadow-xl focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
+            className="group flex flex-col rounded-3xl border border-border bg-card p-6 text-left shadow-sm transition hover:border-primary/30 hover:shadow-md focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
           >
-            <h3 className="text-xl font-semibold transition group-hover:text-primary">
+            <h3 className="font-display text-xl font-semibold transition group-hover:text-primary">
               {challenge.title}
             </h3>
 
-            <p className="mt-4 text-sm leading-6 text-muted-foreground line-clamp-4">
+            <p className="mt-4 line-clamp-4 text-sm leading-6 text-muted-foreground">
               {challenge.summary}
             </p>
 
-            <div className="mt-6 flex flex-wrap gap-2">
+            <div className="mt-auto flex flex-wrap gap-2 pt-6">
               {challenge.tags.map((tag: string) => (
                 <span
                   key={tag}
-                  className="rounded-full bg-muted px-3 py-1 text-xs"
+                  className="rounded-full bg-secondary px-3 py-1 text-xs font-medium text-secondary-foreground"
                 >
                   #{tag}
                 </span>
