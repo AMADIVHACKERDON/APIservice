@@ -30,56 +30,32 @@ export default async function ChallengePage({
     notFound();
   }
 
-  const reactionCounts =
-  await getChallengeReactions(
-    challenge.id,
-  );
+  const reactionCounts = await getChallengeReactions(challenge.id);
 
-  async function react(
-    type: ReactionType,
-  ) {
+  async function react(type: ReactionType) {
     "use server";
-  
-    await toggleReaction(
-      challenge.id,
-      type,
-    );
+
+    await toggleReaction(challenge.id, type);
   }
 
-  const comments =
-  await getChallengeComments(
-    challenge.id,
-    );
-  
-    async function comment(
-      formData: FormData,
-    ) {
-      "use server";
-            
-      await createComment(
-        challenge.id,
-        formData,
-      );
-  }
-  
-  async function collaboration(
-    formData: FormData,
-  ) {
+  const comments = await getChallengeComments(challenge.id);
+
+  async function comment(formData: FormData) {
     "use server";
-  
-    await createCollaboration(
-      challenge.id,
-      formData,
-    );
+
+    await createComment(challenge.id, formData);
   }
-  
+
+  async function collaboration(formData: FormData) {
+    "use server";
+
+    await createCollaboration(challenge.id, formData);
+  }
+
   return (
-    <main className="container mx-auto max-w-5xl py-12">
-
+    <main className="container mx-auto max-w-5xl px-4 py-12">
       <header className="space-y-4">
-
-        <div className="flex flex-wrap gap-2 text-sm">
-
+        <div className="flex flex-wrap gap-2 text-sm font-medium uppercase tracking-wide text-muted-foreground">
           <span>{challenge.category}</span>
 
           <span>•</span>
@@ -92,11 +68,10 @@ export default async function ChallengePage({
 
           <span>•</span>
 
-          <span>{challenge.status}</span>
-
+          <span className="text-primary">{challenge.status}</span>
         </div>
 
-        <h1 className="text-5xl font-bold">
+        <h1 className="font-display text-4xl font-bold sm:text-5xl">
           {challenge.title}
         </h1>
 
@@ -105,65 +80,49 @@ export default async function ChallengePage({
         </p>
 
         <div className="flex flex-wrap gap-2">
-
           {challenge.tags.map((tag: string) => (
             <span
               key={tag}
-              className="rounded bg-muted px-2 py-1 text-sm"
+              className="rounded-full bg-secondary px-3 py-1 text-sm font-medium text-secondary-foreground"
             >
               #{tag}
             </span>
           ))}
-
         </div>
-
       </header>
-      
-      <ReactionBar
-        challengeId={challenge.id}
-        reactions={reactionCounts}
-        action={react}
-      />
-      <hr className="my-10" />
+
+      <div className="mt-8">
+        <ReactionBar
+          challengeId={challenge.id}
+          reactions={reactionCounts}
+          action={react}
+        />
+      </div>
+
+      <hr className="my-10 border-border" />
 
       <article className="prose prose-neutral dark:prose-invert max-w-none">
-
-        <Markdown
-          content={challenge.content}
-        />
-
+        <Markdown content={challenge.content} />
       </article>
 
-      <hr className="my-12" />
+      <hr className="my-12 border-border" />
+
       <section className="space-y-8">
+        <div>
+          <h2 className="font-display text-2xl font-bold">Discussion</h2>
+          <p className="text-muted-foreground">
+            Share ideas, ask questions, or suggest possible solutions.
+          </p>
+        </div>
 
-<div>
+        <CommentForm action={comment} />
 
-  <h2 className="text-2xl font-bold">
-    Discussion
-  </h2>
-
-  <p className="text-muted-foreground">
-    Share ideas, ask questions, or suggest
-    possible solutions.
-  </p>
-
-</div>
-
-<CommentForm
-  action={comment}
-/>
-
-<CommentList
-  comments={comments}
-/>
-
+        <CommentList comments={comments} />
       </section>
-      
-      <section className="pt-12">
-  <CollaborationForm action={collaboration} />
-</section>
 
+      <section className="pt-12">
+        <CollaborationForm action={collaboration} />
+      </section>
     </main>
   );
 }
