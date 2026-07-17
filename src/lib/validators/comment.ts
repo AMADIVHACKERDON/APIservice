@@ -5,7 +5,7 @@ export const commentSchema = z.object({
 
   name: z.string().optional(),
 
-  email: z.email().optional(),
+  email: z.string().email().optional(),
 
   content: z.string().min(2),
 });
