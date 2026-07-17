@@ -1,15 +1,15 @@
 {
-  "name": "apiservice",
+  "name": "kindling",
   "version": "0.1.0",
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "teed": "npm run migration && npx tsx src/test/seed.ts",
-    "scraper": "npx tsx src/test/scraper.ts",
-    "migration": "npx drizzle-kit generate && npx drizzle-kit migrate",
     "build": "next build",
-    "typecheck": "tsc --noEmit",
     "start": "next start",
+    "typecheck": "tsc --noEmit",
+    "migration": "npx drizzle-kit generate && npx drizzle-kit migrate",
+    "seed": "npx tsx src/test/seed.ts",
+    "teed": "npm run migration && npm run seed",
     "lint": "eslint",
     "prettier": "prettier --write \".\""
   },
@@ -22,6 +22,7 @@
     "date-fns": "^4.4.0",
     "dotenv": "^17.4.2",
     "drizzle-orm": "^0.45.2",
+    "nanoid": "^5.0.0",
     "next": "16.2.9",
     "playwright": "^1.61.1",
     "react": "19.2.4",
@@ -29,6 +30,7 @@
     "react-markdown": "^10.1.0",
     "remark-gfm": "^4.0.1",
     "slugify": "^1.6.9",
+    "zod": "^3.24.0",
     "zustand": "^5.0.14"
   },
   "devDependencies": {
@@ -44,6 +46,7 @@
     "eslint-config-next": "16.2.9",
     "prettier": "3.8.4",
     "tailwindcss": "^4",
+    "tsx": "^4.0.0",
     "typescript": "^5"
   }
 }

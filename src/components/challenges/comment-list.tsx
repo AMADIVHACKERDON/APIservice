@@ -11,9 +11,7 @@ interface CommentListProps {
   comments: Comment[];
 }
 
-export default function CommentList({
-  comments,
-}: CommentListProps) {
+export default function CommentList({ comments }: CommentListProps) {
   if (comments.length === 0) {
     return (
       <p className="text-muted-foreground">
@@ -27,24 +25,21 @@ export default function CommentList({
       {comments.map((comment) => (
         <article
           key={comment.id}
-          className="rounded-lg border p-4"
+          className="rounded-2xl border border-border bg-card p-5 shadow-sm"
         >
           <div className="mb-2 flex items-center justify-between">
-            <strong>
+            <strong className="font-display font-semibold">
               {comment.name}
             </strong>
 
             <span className="text-sm text-muted-foreground">
-              {formatDistanceToNow(
-                comment.createdAt,
-                {
-                  addSuffix: true,
-                },
-              )}
+              {formatDistanceToNow(comment.createdAt, {
+                addSuffix: true,
+              })}
             </span>
           </div>
 
-          <p className="whitespace-pre-wrap">
+          <p className="whitespace-pre-wrap leading-relaxed text-foreground">
             {comment.content}
           </p>
         </article>

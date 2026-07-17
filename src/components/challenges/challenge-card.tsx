@@ -6,14 +6,10 @@ interface ChallengeCardProps {
   challenge: Challenge;
 }
 
-export default function ChallengeCard({
-  challenge,
-}: ChallengeCardProps) {
+export default function ChallengeCard({ challenge }: ChallengeCardProps) {
   return (
-    <article className="group border border-[#c9ced2] bg-white/70 p-6 transition duration-200 hover:-translate-y-1 hover:border-[#101820] hover:shadow-[6px_6px_0_#101820]">
-
-      <div className="mb-5 flex flex-wrap items-center gap-x-2 gap-y-1 font-mono text-[0.68rem] font-semibold uppercase tracking-[0.1em] text-muted-foreground">
-
+    <article className="group border border-border bg-card p-6 shadow-sm transition duration-200 hover:-translate-y-1 hover:border-primary/30 hover:shadow-md">
+      <div className="mb-5 flex flex-wrap items-center gap-x-2 gap-y-1 text-xs font-semibold uppercase tracking-[0.08em] text-muted-foreground">
         <span>{challenge.category}</span>
 
         <span>•</span>
@@ -23,11 +19,13 @@ export default function ChallengeCard({
         <span>•</span>
 
         <span>{challenge.estimatedImpact}</span>
-
       </div>
 
-      <h2 className="text-2xl font-semibold leading-tight sm:text-3xl">
-        <Link className="transition group-hover:text-primary" href={`/challenges/${challenge.slug}`}>
+      <h2 className="font-display text-2xl font-semibold leading-tight sm:text-3xl">
+        <Link
+          className="transition group-hover:text-primary"
+          href={`/challenges/${challenge.slug}`}
+        >
           {challenge.title}
         </Link>
       </h2>
@@ -37,18 +35,15 @@ export default function ChallengeCard({
       </p>
 
       <div className="mt-5 flex flex-wrap gap-2">
-
         {challenge.tags.map((tag) => (
           <span
             key={tag}
-            className="border border-[#c9ced2] bg-[#f5f5f1] px-2 py-1 font-mono text-[0.65rem] font-semibold uppercase tracking-wide"
+            className="border border-border bg-secondary px-2 py-1 text-xs font-semibold uppercase tracking-wide text-secondary-foreground"
           >
             #{tag}
           </span>
         ))}
-
       </div>
-
     </article>
   );
 }

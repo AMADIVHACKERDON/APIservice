@@ -24,7 +24,7 @@ function SubmitButton({
     <button
       type="submit"
       disabled={pending}
-      className="rounded-md border px-4 py-2"
+      className="rounded-full bg-primary px-5 py-2.5 text-sm font-semibold text-primary-foreground transition disabled:cursor-not-allowed disabled:opacity-50 hover:opacity-90"
     >
       {pending
         ? "Saving..."
@@ -42,12 +42,10 @@ export default function SubcategoryForm({
   return (
     <form
       action={action}
-      className="space-y-4 rounded-lg border p-6"
+      className="space-y-4 rounded-3xl border border-border bg-card p-6 shadow-sm"
     >
-      <h2 className="text-2xl font-bold">
-        {subcategory
-          ? "Edit Subcategory"
-          : "New Subcategory"}
+      <h2 className="font-display text-2xl font-bold">
+        {subcategory ? "Edit Subcategory" : "New Subcategory"}
       </h2>
 
       <input
@@ -55,42 +53,28 @@ export default function SubcategoryForm({
         required
         placeholder="Name"
         defaultValue={subcategory?.name}
-        className="w-full rounded-md border p-2"
+        className="w-full rounded-xl border border-border bg-input px-4 py-3 text-sm text-foreground outline-none transition placeholder:text-muted-foreground focus:border-primary focus:ring-2 focus:ring-primary/20"
       />
 
       <select
         name="category"
-        defaultValue={
-          subcategory?.category ?? "software"
-        }
-        className="w-full rounded-md border p-2"
+        defaultValue={subcategory?.category ?? "software"}
+        className="w-full rounded-xl border border-border bg-input px-4 py-3 text-sm text-foreground outline-none transition focus:border-primary focus:ring-2 focus:ring-primary/20"
       >
-        <option value="software">
-          Software
-        </option>
-
-        <option value="hardware">
-          Hardware
-        </option>
-
-        <option value="hybrid">
-          Hybrid
-        </option>
+        <option value="software">Software</option>
+        <option value="hardware">Hardware</option>
+        <option value="hybrid">Hybrid</option>
       </select>
 
       <textarea
         name="description"
         rows={4}
         placeholder="Description"
-        defaultValue={
-          subcategory?.description ?? ""
-        }
-        className="w-full rounded-md border p-2"
+        defaultValue={subcategory?.description ?? ""}
+        className="w-full rounded-xl border border-border bg-input px-4 py-3 text-sm text-foreground outline-none transition placeholder:text-muted-foreground focus:border-primary focus:ring-2 focus:ring-primary/20"
       />
 
-      <SubmitButton
-        editing={!!subcategory}
-      />
+      <SubmitButton editing={!!subcategory} />
     </form>
   );
 }

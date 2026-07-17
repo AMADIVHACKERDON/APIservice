@@ -11,6 +11,12 @@ import {
 
 import type { ChallengeFormProps } from "./types";
 
+const inputClass =
+  "w-full rounded-xl border border-border bg-input px-4 py-3 text-sm text-foreground outline-none transition placeholder:text-muted-foreground focus:border-primary focus:ring-2 focus:ring-primary/20";
+
+const selectClass =
+  "w-full rounded-xl border border-border bg-input px-4 py-3 text-sm text-foreground outline-none transition focus:border-primary focus:ring-2 focus:ring-primary/20";
+
 export default function ChallengeForm({
   mode,
   challenge,
@@ -28,63 +34,52 @@ export default function ChallengeForm({
   }, [category, subcategories]);
 
   return (
-    <form
-      action={action}
-      className="space-y-6 max-w-4xl"
-    >
-      {/* Title */}
+    <form action={action} className="max-w-4xl space-y-6">
       <div className="space-y-2">
-        <label htmlFor="title">
+        <label htmlFor="title" className="text-sm font-medium">
           Title
         </label>
-
         <input
           id="title"
           name="title"
           defaultValue={challenge?.title}
           required
-          className="w-full rounded border p-2"
+          className={inputClass}
         />
       </div>
 
-      {/* Summary */}
       <div className="space-y-2">
-        <label htmlFor="summary">
+        <label htmlFor="summary" className="text-sm font-medium">
           Summary
         </label>
-
         <textarea
           id="summary"
           name="summary"
           defaultValue={challenge?.summary}
           rows={3}
           required
-          className="w-full rounded border p-2"
+          className={inputClass}
         />
       </div>
 
-      {/* Content */}
       <div className="space-y-2">
-        <label htmlFor="content">
+        <label htmlFor="content" className="text-sm font-medium">
           Markdown Content
         </label>
-
         <textarea
           id="content"
           name="content"
           defaultValue={challenge?.content}
           rows={18}
           required
-          className="w-full rounded border p-2 font-mono"
+          className={`${inputClass} font-mono`}
         />
       </div>
 
-      {/* Category */}
       <div className="space-y-2">
-        <label htmlFor="category">
+        <label htmlFor="category" className="text-sm font-medium">
           Category
         </label>
-
         <select
           id="category"
           name="category"
@@ -92,179 +87,127 @@ export default function ChallengeForm({
           onChange={(e) =>
             setCategory(e.target.value as (typeof CATEGORIES)[number])
           }
-          className="w-full rounded border p-2"
+          className={selectClass}
         >
           {CATEGORIES.map((item) => (
-            <option
-              key={item}
-              value={item}
-            >
+            <option key={item} value={item}>
               {item}
             </option>
           ))}
         </select>
       </div>
 
-      {/* Subcategory */}
       <div className="space-y-2">
-        <label htmlFor="subcategoryId">
+        <label htmlFor="subcategoryId" className="text-sm font-medium">
           Subcategory
         </label>
-
         <select
           id="subcategoryId"
           name="subcategoryId"
-          defaultValue={
-            challenge?.subcategoryId ?? ""
-          }
-          className="w-full rounded border p-2"
+          defaultValue={challenge?.subcategoryId ?? ""}
+          className={selectClass}
         >
-          <option value="">
-            None
-          </option>
-
-          {filteredSubcategories.map(
-            (subcategory) => (
-              <option
-                key={subcategory.id}
-                value={subcategory.id}
-              >
-                {subcategory.name}
-              </option>
-            )
-          )}
+          <option value="">None</option>
+          {filteredSubcategories.map((subcategory) => (
+            <option key={subcategory.id} value={subcategory.id}>
+              {subcategory.name}
+            </option>
+          ))}
         </select>
       </div>
 
-      {/* Difficulty */}
       <div className="space-y-2">
-        <label htmlFor="difficulty">
+        <label htmlFor="difficulty" className="text-sm font-medium">
           Difficulty
         </label>
-
         <select
           id="difficulty"
           name="difficulty"
-          defaultValue={
-            challenge?.difficulty ?? "medium"
-          }
-          className="w-full rounded border p-2"
+          defaultValue={challenge?.difficulty ?? "medium"}
+          className={selectClass}
         >
           {DIFFICULTIES.map((item) => (
-            <option
-              key={item}
-              value={item}
-            >
+            <option key={item} value={item}>
               {item}
             </option>
           ))}
         </select>
       </div>
 
-      {/* Estimated Impact */}
       <div className="space-y-2">
-        <label htmlFor="estimatedImpact">
+        <label htmlFor="estimatedImpact" className="text-sm font-medium">
           Estimated Impact
         </label>
-
         <select
           id="estimatedImpact"
           name="estimatedImpact"
-          defaultValue={
-            challenge?.estimatedImpact ??
-            "local"
-          }
-          className="w-full rounded border p-2"
+          defaultValue={challenge?.estimatedImpact ?? "local"}
+          className={selectClass}
         >
           {ESTIMATED_IMPACTS.map((item) => (
-            <option
-              key={item}
-              value={item}
-            >
+            <option key={item} value={item}>
               {item}
             </option>
           ))}
         </select>
       </div>
 
-      {/* Status */}
       <div className="space-y-2">
-        <label htmlFor="status">
+        <label htmlFor="status" className="text-sm font-medium">
           Status
         </label>
-
         <select
           id="status"
           name="status"
-          defaultValue={
-            challenge?.status ?? "open"
-          }
-          className="w-full rounded border p-2"
+          defaultValue={challenge?.status ?? "open"}
+          className={selectClass}
         >
           {STATUSES.map((item) => (
-            <option
-              key={item}
-              value={item}
-            >
+            <option key={item} value={item}>
               {item}
             </option>
           ))}
         </select>
       </div>
 
-      {/* Tags */}
       <div className="space-y-2">
-        <label htmlFor="tags">
+        <label htmlFor="tags" className="text-sm font-medium">
           Tags
         </label>
-
         <input
           id="tags"
           name="tags"
-          defaultValue={
-            challenge?.tags.join(", ")
-          }
+          defaultValue={challenge?.tags.join(", ")}
           placeholder="ai, networking, telecom"
-          className="w-full rounded border p-2"
+          className={inputClass}
         />
       </div>
 
-      {/* Settings */}
       <div className="flex gap-8">
-
-        <label className="flex items-center gap-2">
+        <label className="flex items-center gap-2 text-sm">
           <input
             type="checkbox"
             name="featured"
-            defaultChecked={
-              challenge?.featured
-            }
+            defaultChecked={challenge?.featured}
           />
-
           Featured
         </label>
 
-        <label className="flex items-center gap-2">
+        <label className="flex items-center gap-2 text-sm">
           <input
             type="checkbox"
             name="published"
-            defaultChecked={
-              challenge?.published
-            }
+            defaultChecked={challenge?.published}
           />
-
           Published
         </label>
-
       </div>
 
       <button
         type="submit"
-        className="rounded border px-4 py-2"
+        className="rounded-full bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground transition hover:opacity-90"
       >
-        {mode === "create"
-          ? "Create Challenge"
-          : "Update Challenge"}
+        {mode === "create" ? "Create Challenge" : "Update Challenge"}
       </button>
     </form>
   );

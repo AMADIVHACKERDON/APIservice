@@ -5,7 +5,7 @@ export const collaborationSchema = z.object({
 
   name: z.string().min(2),
 
-  email: z.email(),
+  email: z.string().email(),
 
   message: z.string().min(5),
 });
