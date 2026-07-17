@@ -5,6 +5,7 @@ import {
   HowItWorks,
   LatestChallenges,
 } from "@/components/home";
+import Link from "next/link";
 import {
   getFeaturedChallenges,
   getPublishedChallenges,
@@ -19,6 +20,12 @@ export default async function HomePage() {
   return (
     <main className="container mx-auto px-4 py-16 space-y-20">
       <Hero />
+
+      <div className="flex justify-end">
+        <Link href="/admin" className="text-sm text-primary hover:underline">
+          See admin
+        </Link>
+      </div>
 
       <section className="space-y-16">
         <FeaturedChallenges challenges={featured} />
