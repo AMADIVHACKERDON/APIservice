@@ -7,9 +7,7 @@ interface Props {
     >
   >[number];
 
-  deleteAction: (
-    id: string,
-  ) => Promise<void>;
+  deleteAction: (id: string) => Promise<void>;
 }
 
 export default function CommentCard({
@@ -17,32 +15,27 @@ export default function CommentCard({
   deleteAction,
 }: Props) {
   return (
-    <div className="rounded-lg border p-6">
-
+    <div className="rounded-2xl border border-border bg-card p-6 shadow-sm">
       <div className="flex items-center justify-between">
-
         <div>
-
-          <h3 className="font-semibold">
+          <h3 className="font-display font-semibold">
             {comment.name}
           </h3>
 
           <Link
             href={`/challenges/${comment.challenge.slug}`}
-            className="text-sm text-blue-600 hover:underline"
+            className="text-sm text-primary hover:underline"
           >
             {comment.challenge.title}
           </Link>
-
         </div>
 
         <span className="text-sm text-muted-foreground">
           {comment.createdAt.toLocaleDateString()}
         </span>
-
       </div>
 
-      <p className="mt-4 whitespace-pre-wrap">
+      <p className="mt-4 whitespace-pre-wrap leading-relaxed">
         {comment.content}
       </p>
 
@@ -53,13 +46,10 @@ export default function CommentCard({
           await deleteAction(comment.id);
         }}
       >
-        <button
-          className="rounded border px-3 py-1 text-red-600"
-        >
+        <button className="rounded-full border border-border px-3 py-1 text-sm text-destructive transition hover:bg-destructive/10">
           Delete
         </button>
       </form>
-
     </div>
   );
 }
