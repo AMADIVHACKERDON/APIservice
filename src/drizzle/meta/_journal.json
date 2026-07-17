@@ -1,0 +1,27 @@
+{
+  "version": "7",
+  "dialect": "sqlite",
+  "entries": [
+    {
+      "idx": 0,
+      "version": "6",
+      "when": 1784237549351,
+      "tag": "0000_ambitious_wonder_man",
+      "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "6",
+      "when": 1784244386170,
+      "tag": "0001_futuristic_kid_colt",
+      "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "6",
+      "when": 1784293897228,
+      "tag": "0002_ambiguous_raider",
+      "breakpoints": true
+    }
+  ]
+}

@@ -1,0 +1,563 @@
+openapi: 3.1.0
+
+info:
+  title: Solutions API
+  version: 1.0.0
+  description: Technical solutions knowledge base API
+
+servers:
+  - url: http://localhost:3000/api/v1
+    description: Local
+  - url: https://example.com/api/v1
+    description: Production
+
+security:
+  - BearerAuth: []
+
+paths:
+  /categories:
+    get:
+      summary: Get all categories
+      operationId: getCategories
+      tags: [Categories]
+      security: []
+      responses:
+        "200":
+          description: Categories retrieved
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/Category"
+
+  /categories/{slug}:
+    get:
+      summary: Get category by slug
+      operationId: getCategory
+      tags: [Categories]
+      security: []
+      parameters:
+        - $ref: "#/components/parameters/SlugParam"
+      responses:
+        "200":
+          description: Category retrieved
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CategoryDetail"
+        "404":
+          $ref: "#/components/responses/NotFound"
+
+  /categories/{slug}/subcategories:
+    get:
+      summary: Get category subcategories
+      operationId: getCategorySubcategories
+      tags: [Categories]
+      security: []
+      parameters:
+        - $ref: "#/components/parameters/SlugParam"
+      responses:
+        "200":
+          description: Subcategories retrieved
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/Subcategory"
+
+  /subcategories/{slug}:
+    get:
+      summary: Get subcategory
+      operationId: getSubcategory
+      tags: [Subcategories]
+      security: []
+      parameters:
+        - $ref: "#/components/parameters/SlugParam"
+      responses:
+        "200":
+          description: Subcategory retrieved
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SubcategoryDetail"
+        "404":
+          $ref: "#/components/responses/NotFound"
+
+  /subcategories/{slug}/solutions:
+    get:
+      summary: Get solutions by subcategory
+      operationId: getSubcategorySolutions
+      tags: [Solutions]
+      security: []
+      parameters:
+        - $ref: "#/components/parameters/SlugParam"
+        - $ref: "#/components/parameters/PageParam"
+        - $ref: "#/components/parameters/LimitParam"
+      responses:
+        "200":
+          description: Solutions retrieved
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PaginatedSolutions"
+
+  /solutions:
+    get:
+      summary: Get all solutions
+      operationId: getSolutions
+      tags: [Solutions]
+      security: []
+      parameters:
+        - name: search
+          in: query
+          schema:
+            type: string
+            maxLength: 200
+        - name: category
+          in: query
+          schema:
+            type: string
+        - name: subcategory
+          in: query
+          schema:
+            type: string
+        - name: source_platform
+          in: query
+          schema:
+            type: string
+        - $ref: "#/components/parameters/PageParam"
+        - $ref: "#/components/parameters/LimitParam"
+      responses:
+        "200":
+          description: Solutions retrieved
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PaginatedSolutions"
+
+    post:
+      summary: Create solution
+      operationId: createSolution
+      tags: [Solutions]
+      security:
+        - BearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/SolutionInput"
+      responses:
+        "201":
+          description: Solution created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Solution"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "422":
+          $ref: "#/components/responses/ValidationError"
+
+  /solutions/{id}:
+    get:
+      summary: Get solution
+      operationId: getSolution
+      tags: [Solutions]
+      security: []
+      parameters:
+        - $ref: "#/components/parameters/IdParam"
+      responses:
+        "200":
+          description: Solution retrieved
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Solution"
+        "404":
+          $ref: "#/components/responses/NotFound"
+
+    put:
+      summary: Update solution
+      operationId: updateSolution
+      tags: [Solutions]
+      security:
+        - BearerAuth: []
+      parameters:
+        - $ref: "#/components/parameters/IdParam"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/SolutionInput"
+      responses:
+        "200":
+          description: Solution updated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Solution"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "404":
+          $ref: "#/components/responses/NotFound"
+
+    delete:
+      summary: Delete solution
+      operationId: deleteSolution
+      tags: [Solutions]
+      security:
+        - BearerAuth: []
+      parameters:
+        - $ref: "#/components/parameters/IdParam"
+      responses:
+        "204":
+          description: Solution deleted
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "404":
+          $ref: "#/components/responses/NotFound"
+
+  /auth/register:
+    post:
+      summary: Register user
+      operationId: register
+      tags: [Auth]
+      security: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/RegisterInput"
+      responses:
+        "201":
+          description: User registered
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AuthResponse"
+
+  /auth/login:
+    post:
+      summary: Login
+      operationId: login
+      tags: [Auth]
+      security: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/LoginInput"
+      responses:
+        "200":
+          description: Login successful
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AuthResponse"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+
+  /auth/logout:
+    post:
+      summary: Logout
+      operationId: logout
+      tags: [Auth]
+      security:
+        - BearerAuth: []
+      responses:
+        "200":
+          description: Logged out
+
+components:
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+
+  parameters:
+    IdParam:
+      name: id
+      in: path
+      required: true
+      schema:
+        type: string
+
+    SlugParam:
+      name: slug
+      in: path
+      required: true
+      schema:
+        type: string
+
+    PageParam:
+      name: page
+      in: query
+      schema:
+        type: integer
+        minimum: 1
+        default: 1
+
+    LimitParam:
+      name: limit
+      in: query
+      schema:
+        type: integer
+        minimum: 1
+        maximum: 100
+        default: 20
+
+  responses:
+    Unauthorized:
+      description: Unauthorized
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/ErrorResponse"
+
+    Forbidden:
+      description: Forbidden
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/ErrorResponse"
+
+    NotFound:
+      description: Resource not found
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/ErrorResponse"
+
+    ValidationError:
+      description: Validation failed
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/ValidationErrorResponse"
+
+  schemas:
+    Category:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        slug:
+          type: string
+        description:
+          type: string
+
+    CategoryDetail:
+      allOf:
+        - $ref: "#/components/schemas/Category"
+        - type: object
+          properties:
+            subcategories_count:
+              type: integer
+            solutions_count:
+              type: integer
+
+    Subcategory:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        slug:
+          type: string
+        description:
+          type: string
+
+    SubcategoryDetail:
+      allOf:
+        - $ref: "#/components/schemas/Subcategory"
+        - type: object
+          properties:
+            category:
+              type: object
+              properties:
+                name:
+                  type: string
+                slug:
+                  type: string
+            solutions_count:
+              type: integer
+
+    Solution:
+      type: object
+      properties:
+        id:
+          type: string
+        title:
+          type: string
+        source_url:
+          type: string
+          format: uri
+        source_platform:
+          type: string
+        category:
+          type: string
+        subcategory:
+          type: string
+        fetched_at:
+          type: string
+          format: date-time
+        content:
+          $ref: "#/components/schemas/SolutionContent"
+        metadata:
+          $ref: "#/components/schemas/SolutionMetadata"
+
+    SolutionContent:
+      type: object
+      properties:
+        summary:
+          type: string
+        content_raw:
+          type: string
+        steps:
+          type: array
+          items:
+            type: string
+
+    SolutionMetadata:
+      type: object
+      properties:
+        frameworks:
+          type: array
+          items:
+            type: string
+        software_targets:
+          type: array
+          items:
+            type: string
+        hardware_targets:
+          type: array
+          items:
+            type: string
+        difficulty:
+          type: string
+
+    SolutionInput:
+      type: object
+      required:
+        - title
+        - source_url
+        - source_platform
+        - category
+        - subcategory
+        - content
+      properties:
+        title:
+          type: string
+        source_url:
+          type: string
+          format: uri
+        source_platform:
+          type: string
+        category:
+          type: string
+        subcategory:
+          type: string
+        content:
+          $ref: "#/components/schemas/SolutionContent"
+        metadata:
+          $ref: "#/components/schemas/SolutionMetadata"
+
+    PaginatedSolutions:
+      type: object
+      properties:
+        page:
+          type: integer
+        limit:
+          type: integer
+        total:
+          type: integer
+        data:
+          type: array
+          items:
+            $ref: "#/components/schemas/Solution"
+
+    RegisterInput:
+      type: object
+      required:
+        - username
+        - email
+        - password
+      properties:
+        username:
+          type: string
+        email:
+          type: string
+          format: email
+        password:
+          type: string
+          format: password
+
+    LoginInput:
+      type: object
+      required:
+        - email
+        - password
+      properties:
+        email:
+          type: string
+          format: email
+        password:
+          type: string
+          format: password
+
+    AuthResponse:
+      type: object
+      properties:
+        access_token:
+          type: string
+        refresh_token:
+          type: string
+        token_type:
+          type: string
+        expires_in:
+          type: integer
+
+    ErrorResponse:
+      type: object
+      properties:
+        error:
+          type: string
+        code:
+          type: string
+
+    ValidationErrorResponse:
+      type: object
+      properties:
+        error:
+          type: string
+
+        details:
+          type: array
+          items:
+            type: object
+            properties:
+              field:
+                type: string
+
+              message:
+                type: string
