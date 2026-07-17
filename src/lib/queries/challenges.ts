@@ -2,6 +2,17 @@ import { desc, eq } from "drizzle-orm";
 import { db } from "../../db";
 import { challenges } from "../../db/schema";
 
+function parseTags(tags:any){
+  if(!tags) return [];
+  if(Array.isArray(tags)) return tags;
+  if(typeof tags !== 'string') return [];
+  const s = tags.trim();
+  if(s.startsWith('[') || s.startsWith('{')){
+    try{ return JSON.parse(s); }catch{ /* fallthrough */ }
+  }
+  return s.split(',').map((t)=>t.trim()).filter(Boolean);
+}
+
 
 export async function getChallenges(){
     const data = await db.query.challenges.findMany({
@@ -21,9 +32,7 @@ export async function getChallenges(){
     return {
       data: data.map((challenge) => ({
         ...challenge,
-        tags: challenge.tags
-          ? JSON.parse(challenge.tags)
-          : [],
+        tags: parseTags(challenge.tags),
       })),
     };
 }
@@ -49,9 +58,7 @@ export async function getChallengeById(
 
     return {
         ...challenge,
-        tags:challenge.tags
-          ? JSON.parse(challenge.tags)
-          : [],
+        tags: parseTags(challenge.tags),
     };
 }
 
@@ -65,7 +72,7 @@ export async function getLatestChallenges() {
 
   return data.map((challenge) => ({
     ...challenge,
-    tags: challenge.tags ? JSON.parse(challenge.tags) : [],
+    tags: parseTags(challenge.tags),
   }));
 }
 
@@ -83,7 +90,7 @@ export async function getFeaturedChallenges() {
 
   return data.map((challenge) => ({
     ...challenge,
-    tags: challenge.tags ? JSON.parse(challenge.tags) : [],
+    tags: parseTags(challenge.tags),
   }));
 }
 
@@ -107,9 +114,7 @@ export async function getChallengeBySlug(
 
     return {
         ...challenge,
-        tags:challenge.tags
-          ? JSON.parse(challenge.tags)
-          : [],
+        tags: parseTags(challenge.tags),
       }
 }
 
@@ -140,9 +145,7 @@ export async function getPublishedChallenges()
   return data.map((item) => ({
     ...item,
 
-    tags: item.tags
-      ? JSON.parse(item.tags)
-      : [],
+    tags: parseTags(item.tags),
   }));
 }
 
