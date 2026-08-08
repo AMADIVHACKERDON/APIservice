@@ -5,7 +5,7 @@
 @custom-variant dark (&:is(.dark *));
 
 /*
- * Design system for Kindling.
+ * Design system for Solution Desk.
  *
  * Warm editorial palette with a coral accent. All colors use oklch.
  * Semantic tokens ensure readable contrast in both light and dark modes.

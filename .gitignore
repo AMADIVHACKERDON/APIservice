@@ -47,4 +47,5 @@ next-env.d.ts
 database/
 node_modules
 
+.temp
 # local

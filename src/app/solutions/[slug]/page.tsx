@@ -15,10 +15,10 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const { slug } = await params;
   const detail = await getSolutionBySlug(slug);
-  if (!detail) return { title: "Solution not found — Kindling" };
+  if (!detail) return { title: "Solution not found — Solution Desk" };
   const { title, summary } = detail.solution;
   return {
-    title: `${title} — Kindling`,
+    title: `${title} — Solution Desk`,
     description: summary.slice(0, 155),
     openGraph: { title, description: summary.slice(0, 155), type: "article" },
     twitter: { card: "summary_large_image", title, description: summary.slice(0, 155) },

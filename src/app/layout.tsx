@@ -19,18 +19,18 @@ const spaceGrotesk = Space_Grotesk({
 });
 
 export const metadata: Metadata = {
-  title: "Kindling — Share problems worth solving",
+  title: "Solution Desk — Share problems worth solving",
   description:
     "A collaborative space where real-world problems are shared, discussed, and turned into solutions.",
   openGraph: {
-    title: "Kindling — Share problems worth solving",
+    title: "Solution Desk — Share problems worth solving",
     description:
       "A collaborative space where real-world problems are shared, discussed, and turned into solutions.",
     type: "website",
   },
   twitter: {
     card: "summary_large_image",
-    title: "Kindling — Share problems worth solving",
+    title: "Solution Desk — Share problems worth solving",
     description:
       "A collaborative space where real-world problems are shared, discussed, and turned into solutions.",
   },

@@ -6,18 +6,18 @@ import { getFullGraph, listCategories, listSolutions } from "@/lib/data";
 export const revalidate = 0;
 
 export const metadata = {
-  title: "Kindling — A living map of solutions",
+  title: "Solution Desk — A living map of solutions",
   description:
     "Browse an interconnected knowledge graph of solutions, categories and fields. Click any node to read the full write-up.",
   openGraph: {
-    title: "Kindling — A living map of solutions",
+    title: "Solution Desk — A living map of solutions",
     description:
       "Browse an interconnected knowledge graph of solutions, categories and fields.",
     type: "website",
   },
   twitter: {
     card: "summary_large_image",
-    title: "Kindling — A living map of solutions",
+    title: "Solution Desk — A living map of solutions",
     description:
       "Browse an interconnected knowledge graph of solutions, categories and fields.",
   },
@@ -40,7 +40,7 @@ export default async function HomePage() {
           Every solution, connected to the ones around it.
         </h1>
         <p className="text-lg text-muted-foreground">
-          Kindling maps solutions, the categories they belong to and the fields
+          Solution Desk maps solutions, the categories they belong to and the fields
           they touch. Click any diamond to open its write-up and re-centre the
           graph on what it connects to.
         </p>

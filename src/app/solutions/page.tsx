@@ -4,18 +4,18 @@ import { listSolutions } from "@/lib/data";
 export const revalidate = 0;
 
 export const metadata = {
-  title: "Solutions — Kindling",
+  title: "Solutions — Solution Desk",
   description:
     "Every solution in the wiki, with its summary, type and tags. Open one to see how it connects to categories, fields and related work.",
   openGraph: {
-    title: "Solutions — Kindling",
-    description: "Every solution in the Kindling knowledge graph.",
+    title: "Solutions — Solution Desk",
+    description: "Every solution in the Solution Desk knowledge graph.",
     type: "website",
   },
   twitter: {
     card: "summary_large_image",
-    title: "Solutions — Kindling",
-    description: "Every solution in the Kindling knowledge graph.",
+    title: "Solutions — Solution Desk",
+    description: "Every solution in the Solution Desk knowledge graph.",
   },
 };
 

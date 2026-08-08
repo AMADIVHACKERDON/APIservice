@@ -66,7 +66,7 @@ export default function AuthPage() {
             {mode === "signin" ? "Sign in" : "Create an account"}
           </h1>
           <p className="text-sm text-muted-foreground">
-            Editor access to the Kindling admin portal.
+            Editor access to the Solution Desk admin portal.
           </p>
         </header>
 

@@ -4,18 +4,18 @@ import { listCategories } from "@/lib/data";
 export const revalidate = 0;
 
 export const metadata = {
-  title: "Categories & fields — Kindling",
+  title: "Categories & fields — Solution Desk",
   description:
     "Every category and field in the wiki. Each one collects the solutions that touch it and links to neighbouring topics.",
   openGraph: {
-    title: "Categories & fields — Kindling",
-    description: "Every category and field in the Kindling knowledge graph.",
+    title: "Categories & fields — Solution Desk",
+    description: "Every category and field in the Solution Desk knowledge graph.",
     type: "website",
   },
   twitter: {
     card: "summary_large_image",
-    title: "Categories & fields — Kindling",
-    description: "Every category and field in the Kindling knowledge graph.",
+    title: "Categories & fields — Solution Desk",
+    description: "Every category and field in the Solution Desk knowledge graph.",
   },
 };
 

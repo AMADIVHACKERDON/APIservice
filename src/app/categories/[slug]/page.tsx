@@ -13,12 +13,12 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const { slug } = await params;
   const detail = await getCategoryBySlug(slug);
-  if (!detail) return { title: "Category not found — Kindling" };
+  if (!detail) return { title: "Category not found — Solution Desk" };
   const { name, description, kind } = detail.category;
   const desc =
     description ?? `Solutions and neighbouring topics linked to the ${name} ${kind}.`;
   return {
-    title: `${name} — Kindling`,
+    title: `${name} — Solution Desk`,
     description: desc.slice(0, 155),
     openGraph: { title: name, description: desc.slice(0, 155), type: "website" },
     twitter: { card: "summary_large_image", title: name, description: desc.slice(0, 155) },

@@ -11,7 +11,7 @@ export default function Navbar() {
           <span className="grid size-7 place-items-center rounded-md bg-primary text-sm text-primary-foreground transition group-hover:opacity-90">
             K
           </span>
-          Kindling
+          Solution Desk
         </Link>
 
         <div className="flex items-center gap-3 text-sm font-medium text-muted-foreground sm:gap-7">
