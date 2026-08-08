@@ -15,16 +15,16 @@ export default function Navbar() {
         </Link>
 
         <div className="flex items-center gap-3 text-sm font-medium text-muted-foreground sm:gap-7">
-          <Link href="/challenges" className="transition hover:text-foreground">
-            Challenges
+          <Link href="/solutions" className="transition hover:text-foreground">
+            Solutions
           </Link>
 
-          <Link href="/submit-challenge" className="transition hover:text-foreground">
-            Submit
+          <Link href="/categories" className="transition hover:text-foreground">
+            Categories
           </Link>
 
-          <Link href="/about" className="transition hover:text-foreground">
-            About
+          <Link href="/admin" className="transition hover:text-foreground">
+            Admin
           </Link>
         </div>
       </nav>
