@@ -1,8 +1,19 @@
-node_modules
-dist
-.output
-.vinxi
-pnpm-lock.yaml
+# Dependencies
+node_modules/
+
+# Next.js build output
+.next/
+out/
+build/
+
+# Package manager locks
 package-lock.json
-bun.lock
-routeTree.gen.ts
+yarn.lock
+pnpm-lock.yaml
+
+# Environmental variables
+.env*.local
+
+# Database files (since you use SQLite)
+*.db
+*.db-journal
