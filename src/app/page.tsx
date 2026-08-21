@@ -1,122 +1,95 @@
-import Link from "next/link";
-import { ArrowRight, Network } from "lucide-react";
-import DiamondGraph from "@/components/graph/diamond-graph";
-import { getFullGraph, listCategories, listSolutions } from "@/lib/data";
+import SearchComponent from "@/components/home";
 
-export const revalidate = 0;
+export type Person = {
+    id: number;
+    name: string;
+    role: string;
+    about: string;
+    cvDetails: string;
+    professionals: string;
+    email: string;
+    phone: string;
+  };
+  
+  export type Category = {
+    id: number;
+    name: string;
+    category: string;
+    relatedIds:number[];
+    expertId: number; // Will default to 999 if no specific expert is assigned
+  };
+  
+  export const PERSONS_DATABASE: Person[] = [
+    {
+      id: 101,
+      name: 'Sarah Connor',
+      role: 'Principal Frontend Engineer',
+      about: 'Specializes in production-grade React frameworks and server-side rendering optimizations.',
+      cvDetails: '10+ years in web development. Former tech lead at Vercel ecosystem tools. Wrote 3 open-source routing plugins.',
+      professionals: 'AWS Certified Solutions Architect, Next.js Core Contributor',
+      email: 'sarah.c@techcorp.com',
+      phone: '+1 (555) 234-5678',
+    },
+    {
+      id: 102,
+      name: 'Alex Rivera',
+      role: 'Senior UI Architect',
+      about: 'Passionate about state management, component lifecycles, and building scalable design systems.',
+      cvDetails: 'Ex-Meta Engineer. Led migration of legacy architectures to React Fiber and Concurrent features.',
+      professionals: 'Meta Certified Front-End Developer, Speaker at React Conf',
+      email: 'alex.r@techcorp.com',
+      phone: '+1 (555) 876-5432',
+    },
+    // SYSTEM DEFAULT FALLBACK ADMIN
+    {
+      id: 999,
+      name: 'System Admin Support',
+      role: 'General Tech Support & Triage Desk',
+      about: 'Central support hub for unassigned or newly cataloged technology fields.',
+      cvDetails: 'Automated routing desk managed by the senior engineering operations team.',
+      professionals: 'ITIL Certified, TechCorp Global Helpdesk Infrastructure',
+      email: 'support@techcorp.com',
+      phone: '+1 (555) 000-1234',
+    }
+  ];
+  
+  export const CATEGORIES_DATABASE: Category[] = [
+    { 
+      id: 1, 
+      name: 'Next.js', 
+      category: 'Framework', 
+      relatedIds:[2,4], 
+      expertId: 101 // Sarah Connor
+    },
+    { 
+      id: 2, 
+      name: 'React', 
+      category: 'Library', 
+      relatedIds:[1,4], 
+      expertId: 101 // Sarah Connor
+    },
+    { 
+      id: 3, 
+      name: 'TypeScript', 
+      category: 'Language', 
+      relatedIds:[4], 
+      expertId: 102 // Alex Rivera
+    },
+    { 
+      id: 4, 
+      name: 'Tailwind CSS', 
+      category: 'Styling', 
+      relatedIds:[3,5], 
+      expertId: 999 // No specific expert yet -> Falls back to Admin Support!
+    }
+  ];
+    
+  
 
-export const metadata = {
-  title: "Solution Desk — A living map of solutions",
-  description:
-    "Browse an interconnected knowledge graph of solutions, categories and fields. Click any node to read the full write-up.",
-  openGraph: {
-    title: "Solution Desk — A living map of solutions",
-    description:
-      "Browse an interconnected knowledge graph of solutions, categories and fields.",
-    type: "website",
-  },
-  twitter: {
-    card: "summary_large_image",
-    title: "Solution Desk — A living map of solutions",
-    description:
-      "Browse an interconnected knowledge graph of solutions, categories and fields.",
-  },
-};
-
-export default async function HomePage() {
-  const [graph, solutions, categories] = await Promise.all([
-    getFullGraph(),
-    listSolutions(),
-    listCategories(),
-  ]);
-
-  return (
-    <main className="container mx-auto space-y-16 px-4 py-14 sm:px-6">
-      <section className="max-w-3xl space-y-5">
-        <span className="inline-flex items-center gap-2 rounded-full border border-border px-3 py-1 text-xs font-medium text-muted-foreground">
-          <Network className="size-3.5" /> Solution wiki
-        </span>
-        <h1 className="font-display text-4xl font-bold tracking-tight sm:text-5xl">
-          Every solution, connected to the ones around it.
-        </h1>
-        <p className="text-lg text-muted-foreground">
-          Solution Desk maps solutions, the categories they belong to and the fields
-          they touch. Click any diamond to open its write-up and re-centre the
-          graph on what it connects to.
-        </p>
-        <div className="flex flex-wrap gap-3 pt-1">
-          <Link
-            href="/solutions"
-            className="inline-flex items-center gap-2 rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground transition hover:opacity-90"
-          >
-            Browse solutions <ArrowRight className="size-4" />
-          </Link>
-          <Link
-            href="/categories"
-            className="inline-flex items-center gap-2 rounded-md border border-border px-4 py-2 text-sm font-medium transition hover:bg-secondary"
-          >
-            Categories &amp; fields
-          </Link>
-        </div>
-      </section>
-
-      <section className="space-y-4">
-        <div className="flex items-end justify-between gap-4">
-          <div>
-            <h2 className="font-display text-2xl font-bold tracking-tight">
-              The graph
-            </h2>
-            <p className="text-sm text-muted-foreground">
-              {graph.nodes.length} nodes · {graph.edges.length} connections —
-              drag to pan, scroll the controls to zoom, click to open.
-            </p>
-          </div>
-        </div>
-        <DiamondGraph data={graph} height={620} />
-      </section>
-
-      <section className="grid gap-10 md:grid-cols-2">
-        <div className="space-y-4">
-          <h2 className="font-display text-xl font-bold tracking-tight">
-            Latest solutions
-          </h2>
-          <ul className="space-y-3">
-            {solutions.slice(0, 5).map((s) => (
-              <li key={s.id}>
-                <Link
-                  href={`/solutions/${s.slug}`}
-                  className="block rounded-xl border border-border p-4 transition hover:border-primary/60 hover:bg-secondary/40"
-                >
-                  <p className="font-medium">{s.title}</p>
-                  <p className="mt-1 line-clamp-2 text-sm text-muted-foreground">
-                    {s.summary}
-                  </p>
-                </Link>
-              </li>
-            ))}
-          </ul>
-        </div>
-
-        <div className="space-y-4">
-          <h2 className="font-display text-xl font-bold tracking-tight">
-            Categories &amp; fields
-          </h2>
-          <div className="flex flex-wrap gap-2">
-            {categories.map((c) => (
-              <Link
-                key={c.id}
-                href={`/categories/${c.slug}`}
-                className="rounded-full border border-border px-3 py-1.5 text-sm transition hover:border-primary/60 hover:bg-secondary"
-              >
-                {c.name}
-                <span className="ml-2 text-xs text-muted-foreground">
-                  {c.kind}
-                </span>
-              </Link>
-            ))}
-          </div>
-        </div>
-      </section>
-    </main>
-  );
+export default function Page() {
+    
+    return <SearchComponent
+        categoriesDatabase={CATEGORIES_DATABASE}
+        personsDatabase={PERSONS_DATABASE}
+    />;
 }
