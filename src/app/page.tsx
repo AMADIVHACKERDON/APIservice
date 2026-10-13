@@ -1,208 +1,149 @@
 "use client";
-import { useState, useEffect } from 'react';
 
-export type Person = {
-  id: number;
-  name: string;
-  role: string;
-  about: string;
-  cvDetails: string;
-  professionals: string;
-  email: string;
-  phone: string;
-};
+import React, { useState } from "react";
+import { Header } from "@/components/home-page/header/Header";
+import { HeroSection } from "@/components/home-page/hero/HeroSection";
+import { ServiceDiscoverySection } from "@/components/home-page/service-discovery/ServiceDiscoverySection";
+import { RecommendationSection } from "@/components/home-page/recommendation/RecommendationSection";
+import { HowItWorksSection } from "@/components/home-page/how-it-works/HowItWorksSection";
+import { FeaturedServicesSection } from "@/components/home-page/featured-services/FeaturedServicesSection";
+import { FeaturedCaseStudiesSection } from "@/components/home-page/case-studies/FeaturedCaseStudiesSection";
+import { WhyChooseUsSection } from "@/components/home-page/why-choose-us/WhyChooseUsSection";
+import { TestimonialsSection } from "@/components/home-page/testimonials/TestimonialsSection";
+import { InsightsSection } from "@/components/home-page/insights/InsightsSection";
+import { ConsultationCtaSection } from "@/components/home-page/consultation-cta/ConsultationCtaSection";
+import { Footer } from "@/components/home-page/footer/Footer";
 
-export type Category = {
-  id: number;
-  name: string;
-  category: string;
-  relatedIds: number[];
-  expertId: number;
-};
+// Modals
+import { ProjectRequestModal } from "@/components/home-page/modals/ProjectRequestModal";
+import { BookConsultationModal } from "@/components/home-page/consultation-cta/BookConsultationModal";
+import { SolutionFinderModal } from "@/components/home-page/recommendation/SolutionFinderModal";
+import { ServiceDetailModal } from "@/components/home-page/service-discovery/ServiceDetailModal";
+import { ServiceItem } from "@/components/home-page/data/mock-data";
 
-// Response structure matching our API contract
-interface ApiResponse {
-  success: boolean;
-  mode: 'all_categories' | 'search_results';
-  data?: Category[]; // populated in 'all_categories' mode
-  matchedCategory?: Category | null;
-  assignedExpert?: Person | null;
-  relatedCategories?: Category[];
-}
+export default function HomePage() {
+  // Modal states
+  const [projectModalOpen, setProjectModalOpen] = useState(false);
+  const [preselectedService, setPreselectedService] = useState<ServiceItem | null>(null);
 
-export default function SearchComponent() {
-  const [query, setQuery] = useState('');
-  const [apiData, setApiData] = useState<ApiResponse | null>(null);
-  const [loading, setLoading] = useState(false);
+  const [consultationModalOpen, setConsultationModalOpen] = useState(false);
+  const [solutionFinderOpen, setSolutionFinderOpen] = useState(false);
+  const [detailModalService, setDetailModalService] = useState<ServiceItem | null>(null);
 
-  // Fetch from our Route Handler whenever the search query changes
-  useEffect(() => {
-    const fetchData = async () => {
-      setLoading(true);
-      try {
-        const res = await fetch(`/api/search?search=${encodeURIComponent(query)}`);
-        const data: ApiResponse = await res.json();
-        setApiData(data);
-      } catch (err) {
-        console.error("Failed fetching data from API:", err);
-      } finally {
-        setLoading(false);
-      }
-    };
+  // Handlers
+  const handleOpenProjectModal = (service?: ServiceItem | null) => {
+    setPreselectedService(service || null);
+    setProjectModalOpen(true);
+  };
 
-    // Tiny optimization: only debounce slightly if there is an active search query
-    const delayDebounce = setTimeout(() => {
-      fetchData();
-    }, query ? 250 : 0);
+  const handleOpenCustomRequest = () => {
+    setPreselectedService(null);
+    setProjectModalOpen(true);
+  };
 
-    return () => clearTimeout(delayDebounce);
-  }, [query]);
+  const handleSelectRecommendedService = (service: ServiceItem) => {
+    setPreselectedService(service);
+    setProjectModalOpen(true);
+  };
 
-  const matchedCategory = apiData?.matchedCategory;
-  const assignedExpert = apiData?.assignedExpert;
-  const relatedCategories = apiData?.relatedCategories || [];
-  const defaultCategories = apiData?.data || [];
+  const handleScrollToServices = () => {
+    const el = document.getElementById("services");
+    if (el) {
+      el.scrollIntoView({ behavior: "smooth" });
+    }
+  };
 
   return (
-    <div style={{ maxWidth: '650px', margin: '40px auto', padding: '24px', fontFamily: 'system-ui, -apple-system, sans-serif', backgroundColor: '#ffffff', borderRadius: '12px', boxShadow: '0 4px 6px -1px rgb(0 0 0 / 0.1)' }}>
-      {/* Search Input Container */}
-      <div style={{ marginBottom: '24px', position: 'relative', display: 'flex', alignItems: 'center' }}>
-        <input
-          type="text"
-          placeholder="Search categories (e.g., Next.js, Tailwind)..."
-          value={query}
-          onChange={(e) => setQuery(e.target.value)}
-          style={{ width: '100%', padding: '12px 40px 12px 16px', fontSize: '16px', border: '1px solid #e2e8f0', borderRadius: '8px', outline: 'none', boxSizing: 'border-box' }}
+    <div className="min-h-screen flex flex-col bg-slate-50 text-slate-900 selection:bg-blue-600 selection:text-white">
+      {/* 1. Global Navigation Header */}
+      <Header
+        onOpenProjectModal={() => handleOpenProjectModal(null)}
+        onOpenConsultationModal={() => setConsultationModalOpen(true)}
+        onOpenSolutionFinder={() => setSolutionFinderOpen(true)}
+      />
+
+      {/* Main Page Flow */}
+      <main className="flex-1">
+        {/* A. Hero Section */}
+        <HeroSection
+          onOpenProjectModal={() => handleOpenProjectModal(null)}
+          onOpenConsultationModal={() => setConsultationModalOpen(true)}
+          onOpenSolutionFinder={() => setSolutionFinderOpen(true)}
         />
-        {query && (
-          <button
-            onClick={() => setQuery('')}
-            style={{ position: 'absolute', right: '12px', background: 'none', border: 'none', color: '#94a3b8', fontSize: '18px', cursor: 'pointer', padding: '4px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
-            onMouseEnter={(e) => e.currentTarget.style.color = '#475569'}
-            onMouseLeave={(e) => e.currentTarget.style.color = '#94a3b8'}
-          >
-            ✕
-          </button>
-        )}
-      </div>
 
-      {loading && <p style={{ fontSize: '14px', color: '#64748b', textAlign: 'center' }}>Loading dynamic records...</p>}
+        {/* B. Interactive Service Discovery Section */}
+        <ServiceDiscoverySection
+          onGetStarted={(svc) => handleOpenProjectModal(svc)}
+          onOpenCustomRequest={handleOpenCustomRequest}
+        />
 
-      {!loading && (
-        <>
-          {/* NO SEARCH STATE: Display all categories */}
-          {!query && defaultCategories.length > 0 && (
-            <div>
-              <h3 style={{ fontSize: '14px', fontWeight: '600', color: '#475569', marginBottom: '14px', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Available Tech Categories</h3>
-              <div style={{ display: 'grid', gap: '12px' }}>
-                {defaultCategories.map((item) => (
-                  <div
-                    key={item.id}
-                    onClick={() => setQuery(item.name)}
-                    style={{ padding: '14px 16px', backgroundColor: '#f8fafc', border: '1px solid #e2e8f0', borderRadius: '8px', cursor: 'pointer', transition: 'all 0.2s' }}
-                    onMouseEnter={(e) => {
-                      e.currentTarget.style.backgroundColor = '#f1f5f9';
-                      e.currentTarget.style.borderColor = '#cbd5e1';
-                    }}
-                    onMouseLeave={(e) => {
-                      e.currentTarget.style.backgroundColor = '#f8fafc';
-                      e.currentTarget.style.borderColor = '#e2e8f0';
-                    }}
-                  >
-                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '4px' }}>
-                      <strong style={{ fontSize: '16px', color: '#0f172a' }}>{item.name}</strong>
-                      <span style={{ fontSize: '11px', backgroundColor: '#e2e8f0', color: '#334155', padding: '2px 6px', borderRadius: '4px', fontWeight: '500', textTransform: 'uppercase' }}>{item.category}</span>
-                    </div>
-                    <p style={{ margin: '0', fontSize: '13px', color: '#64748b', lineHeight: '1.4' }}>
-                      Explore core internal documentation, system architectures, and connect directly with the verified engineering expert for {item.name}.
-                    </p>
-                  </div>
-                ))}
-              </div>
-            </div>
-          )}
+        {/* C. "Not sure what you need?" Interactive Recommender Entry Point */}
+        <RecommendationSection
+          onSelectRecommendedService={handleSelectRecommendedService}
+        />
 
-          {/* SEARCH MATCH STATE */}
-          {query && matchedCategory && (
-            <div>
-              {/* Main Category Info */}
-              <div style={{ padding: '16px', backgroundColor: '#f8fafc', borderRadius: '8px', borderLeft: '4px solid #3b82f6', marginBottom: '20px' }}>
-                <h2 style={{ margin: '0 0 4px 0', fontSize: '20px', fontWeight: '600', color: '#0f172a' }}>{matchedCategory.name}</h2>
-                <span style={{ fontSize: '14px', color: '#64748b', textTransform: 'uppercase', fontWeight: '500' }}>{matchedCategory.category}</span>
-              </div>
+        {/* D. How It Works Section */}
+        <HowItWorksSection
+          onOpenProjectModal={() => handleOpenProjectModal(null)}
+        />
 
-              {/* Expert Profile Block */}
-              {assignedExpert && (
-                <div style={{ padding: '20px', backgroundColor: '#f0fdf4', borderRadius: '8px', border: '1px solid #bbf7d0', marginBottom: '20px' }}>
-                  <h3 style={{ fontSize: '12px', fontWeight: '700', color: '#166534', margin: '0 0 12px 0', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
-                    {matchedCategory.expertId === 999 ? "Default Assignment" : "Category Expert Profile"}
-                  </h3>
-                  
-                  <div style={{ marginBottom: '12px' }}>
-                    <div style={{ fontSize: '18px', fontWeight: '600', color: '#14532d' }}>{assignedExpert.name}</div>
-                    <div style={{ fontSize: '14px', color: '#166534', fontWeight: '500' }}>{assignedExpert.role}</div>
-                  </div>
+        {/* E. Featured Flagship Services */}
+        <FeaturedServicesSection
+          onGetStarted={(svc) => handleOpenProjectModal(svc)}
+          onLearnMore={(svc) => setDetailModalService(svc)}
+          onViewAllServices={handleScrollToServices}
+        />
 
-                  <div style={{ display: 'grid', gap: '12px', fontSize: '14px', color: '#1e3a1e' }}>
-                    <div>
-                      <strong>About:</strong>
-                      <p style={{ margin: '4px 0 0 0', color: '#2f5233', lineHeight: '1.4' }}>{assignedExpert.about}</p>
-                    </div>
+        {/* F. Featured Case Studies */}
+        <FeaturedCaseStudiesSection
+          onStartSimilarProject={() => handleOpenProjectModal(null)}
+        />
 
-                    <div>
-                      <strong>CV Background:</strong>
-                      <p style={{ margin: '4px 0 0 0', color: '#2f5233', lineHeight: '1.4' }}>{assignedExpert.cvDetails}</p>
-                    </div>
+        {/* G. Why Choose Us Trust Pillars */}
+        <WhyChooseUsSection />
 
-                    <div>
-                      <strong>Professionals & Credentials:</strong>
-                      <p style={{ margin: '4px 0 0 0', color: '#2f5233', lineHeight: '1.4' }}>{assignedExpert.professionals}</p>
-                    </div>
+        {/* H. Client Testimonials Carousel */}
+        <TestimonialsSection />
 
-                    <div style={{ marginTop: '4px', paddingTop: '12px', borderTop: '1px dashed #bbf7d0', display: 'flex', gap: '16px', fontSize: '13px' }}>
-                      <div>
-                        <strong>Email:</strong> <a href={`mailto:${assignedExpert.email}`} style={{ color: '#166534', textDecoration: 'none', fontWeight: '500' }}>{assignedExpert.email}</a>
-                      </div>
-                      <div>
-                        <strong>Phone:</strong> <span style={{ color: '#166534', fontWeight: '500' }}>{assignedExpert.phone}</span>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              )}
+        {/* I. Engineering Insights & Resources */}
+        <InsightsSection />
 
-              {/* Related Topics Section */}
-              <div>
-                <h3 style={{ fontSize: '14px', fontWeight: '600', color: '#475569', marginBottom: '10px', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Related Topics</h3>
-                {relatedCategories.length !== 0 ? (
-                  <ul style={{ listStyle: 'none', padding: '0', margin: '0', display: 'grid', gap: '8px' }}>
-                    {relatedCategories.map((item) => (
-                      <li
-                        key={item.id}
-                        onClick={() => setQuery(item.name)}
-                        style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '10px 14px', backgroundColor: '#f1f5f9', borderRadius: '6px', fontSize: '14px', color: '#334155', cursor: 'pointer', transition: 'background-color 0.2s' }}
-                        onMouseEnter={(e) => e.currentTarget.style.backgroundColor = '#e2e8f0'}
-                        onMouseLeave={(e) => e.currentTarget.style.backgroundColor = '#f1f5f9'}
-                      >
-                        <span style={{ fontWeight: '500' }}>{item.name}</span>
-                        <span style={{ fontSize: '12px', backgroundColor: '#cbd5e1', color: '#1e293b', padding: '2px 8px', borderRadius: '4px' }}>{item.category}</span>
-                      </li>
-                    ))}
-                  </ul>
-                ) : (
-                  <p style={{ fontSize: '14px', color: '#94a3b8', margin: '0' }}>No related categories found.</p>
-                )}
-              </div>
-            </div>
-          )}
+        {/* J. Consultation & Closing CTA */}
+        <ConsultationCtaSection
+          onOpenProjectModal={() => handleOpenProjectModal(null)}
+        />
+      </main>
 
-          {/* SEARCH WITH NO RESULTS STATE */}
-          {query && !matchedCategory && (
-            <p style={{ textAlign: 'center', color: '#64748b', fontSize: '14px', marginTop: '20px' }}>
-              No results found for "{query}")
-            </p>)}
-        </>)}
+      {/* K. Comprehensive Footer */}
+      <Footer
+        onOpenProjectModal={() => handleOpenProjectModal(null)}
+        onOpenConsultationModal={() => setConsultationModalOpen(true)}
+      />
+
+      {/* Global Interactive Modals */}
+      <ProjectRequestModal
+        isOpen={projectModalOpen}
+        onClose={() => setProjectModalOpen(false)}
+        preselectedService={preselectedService}
+        onOpenConsultation={() => setConsultationModalOpen(true)}
+      />
+
+      <BookConsultationModal
+        isOpen={consultationModalOpen}
+        onClose={() => setConsultationModalOpen(false)}
+      />
+
+      <SolutionFinderModal
+        isOpen={solutionFinderOpen}
+        onClose={() => setSolutionFinderOpen(false)}
+        onSelectRecommendedService={handleSelectRecommendedService}
+      />
+
+      <ServiceDetailModal
+        service={detailModalService}
+        onClose={() => setDetailModalService(null)}
+        onGetStarted={(svc) => handleOpenProjectModal(svc)}
+      />
     </div>
-  )
+  );
 }
-
