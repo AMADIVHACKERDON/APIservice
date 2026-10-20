@@ -18,7 +18,7 @@ export function TestimonialsSection() {
             Trusted by Leaders & Engineering Teams
           </h2>
           <p className="text-base text-slate-600 leading-relaxed">
-            See how founders, product leaders, and enterprise engineering departments accelerate their roadmaps with SolutionDesk.
+            See how founders, product leaders, and enterprise engineering departments accelerate their roadmaps with The NextTechGen Foundation.
           </p>
         </div>
 

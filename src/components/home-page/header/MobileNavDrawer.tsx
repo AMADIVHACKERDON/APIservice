@@ -1,7 +1,27 @@
 "use client";
 
-import React from "react";
-import { X, Layers, Calendar, ArrowRight, ShieldCheck } from "lucide-react";
+import React, { useState } from "react";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
+import {
+  X,
+  Cpu,
+  Calendar,
+  ArrowRight,
+  ShieldCheck,
+  ChevronDown,
+  Sparkles,
+  Globe,
+  Wifi,
+  Bot,
+  BarChart3,
+  Layers,
+  BookOpen,
+  Briefcase,
+  Milestone,
+  Info,
+} from "lucide-react";
+import { CORE_FIELDS } from "../data/mock-data";
 
 interface MobileNavDrawerProps {
   isOpen: boolean;
@@ -18,13 +38,35 @@ export function MobileNavDrawer({
   onOpenConsultationModal,
   onOpenSolutionFinder,
 }: MobileNavDrawerProps) {
+  const [fieldsExpanded, setFieldsExpanded] = useState(false);
+  const [companyExpanded, setCompanyExpanded] = useState(false);
+  const pathname = usePathname();
+
   if (!isOpen) return null;
 
-  const handleNavClick = (anchorId: string) => {
-    onClose();
-    const el = document.getElementById(anchorId);
-    if (el) {
-      el.scrollIntoView({ behavior: "smooth" });
+  const isActive = (path: string) => {
+    if (path === "/") return pathname === "/";
+    return pathname.startsWith(path);
+  };
+
+  const getFieldIcon = (iconName: string) => {
+    switch (iconName) {
+      case "Globe":
+        return Globe;
+      case "ShieldCheck":
+        return ShieldCheck;
+      case "Wifi":
+        return Wifi;
+      case "Bot":
+        return Bot;
+      case "BarChart3":
+        return BarChart3;
+      case "Sparkles":
+        return Sparkles;
+      case "Layers":
+        return Layers;
+      default:
+        return Cpu;
     }
   };
 
@@ -32,27 +74,32 @@ export function MobileNavDrawer({
     <div className="fixed inset-0 z-50 lg:hidden">
       {/* Backdrop */}
       <div
-        className="fixed inset-0 bg-slate-900/60 backdrop-blur-sm transition-opacity"
+        className="fixed inset-0 bg-slate-900/60 backdrop-blur-xs transition-opacity"
         onClick={onClose}
       />
 
       {/* Drawer */}
       <div className="fixed inset-y-0 right-0 w-full max-w-sm bg-white shadow-2xl p-6 flex flex-col justify-between overflow-y-auto z-10">
-        <div>
+        <div className="space-y-6">
           {/* Header */}
-          <div className="flex items-center justify-between pb-6 border-b border-slate-100">
-            <div className="flex items-center gap-2.5">
-              <div className="h-9 w-9 rounded-xl bg-blue-600 flex items-center justify-center text-white shadow-sm shadow-blue-500/20">
-                <Layers className="h-5 w-5" />
+          <div className="flex items-center justify-between pb-5 border-b border-slate-100">
+            <Link href="/" onClick={onClose} className="flex items-center gap-2.5">
+              <div className="h-9 w-9 rounded-xl bg-blue-600 flex items-center justify-center text-white shadow-xs">
+                <Cpu className="h-5 w-5" />
               </div>
               <div>
-                <span className="font-bold text-lg text-slate-900 tracking-tight">SolutionDesk</span>
-                <span className="block text-[10px] uppercase tracking-wider font-semibold text-blue-600">Digital Solutions</span>
+                <span className="font-extrabold text-base text-slate-900 tracking-tight block">
+                  NextTechGen
+                </span>
+                <span className="block text-[10px] uppercase tracking-wider font-bold text-blue-600">
+                  Foundation
+                </span>
               </div>
-            </div>
+            </Link>
             <button
+              type="button"
               onClick={onClose}
-              className="p-2 text-slate-400 hover:text-slate-600 hover:bg-slate-100 rounded-lg transition-colors"
+              className="p-2 text-slate-400 hover:text-slate-600 hover:bg-slate-100 rounded-lg transition-colors cursor-pointer"
               aria-label="Close menu"
             >
               <X className="h-5 w-5" />
@@ -60,98 +107,204 @@ export function MobileNavDrawer({
           </div>
 
           {/* Navigation Links */}
-          <nav className="mt-6 flex flex-col space-y-1">
-            <button
-              onClick={() => handleNavClick("services")}
-              className="text-left px-3 py-2.5 rounded-lg text-sm font-semibold text-slate-700 hover:text-blue-600 hover:bg-slate-50 transition-colors"
+          <nav className="flex flex-col space-y-1">
+            <Link
+              href="/"
+              onClick={onClose}
+              className={`px-3 py-2 rounded-xl text-sm font-semibold transition-colors block ${
+                pathname === "/"
+                  ? "bg-blue-50 text-blue-600 font-bold"
+                  : "text-slate-700 hover:bg-slate-50 hover:text-blue-600"
+              }`}
             >
-              Explore Services
-            </button>
-            <button
-              onClick={() => handleNavClick("how-it-works")}
-              className="text-left px-3 py-2.5 rounded-lg text-sm font-semibold text-slate-700 hover:text-blue-600 hover:bg-slate-50 transition-colors"
-            >
-              How It Works
-            </button>
-            <button
-              onClick={() => handleNavClick("featured")}
-              className="text-left px-3 py-2.5 rounded-lg text-sm font-semibold text-slate-700 hover:text-blue-600 hover:bg-slate-50 transition-colors"
-            >
-              Featured Solutions
-            </button>
-            <button
-              onClick={() => handleNavClick("case-studies")}
-              className="text-left px-3 py-2.5 rounded-lg text-sm font-semibold text-slate-700 hover:text-blue-600 hover:bg-slate-50 transition-colors"
-            >
-              Case Studies
-            </button>
-            <button
-              onClick={() => handleNavClick("why-us")}
-              className="text-left px-3 py-2.5 rounded-lg text-sm font-semibold text-slate-700 hover:text-blue-600 hover:bg-slate-50 transition-colors"
-            >
-              Why Choose Us
-            </button>
-            <button
-              onClick={() => handleNavClick("testimonials")}
-              className="text-left px-3 py-2.5 rounded-lg text-sm font-semibold text-slate-700 hover:text-blue-600 hover:bg-slate-50 transition-colors"
-            >
-              Testimonials
-            </button>
-            <button
-              onClick={() => handleNavClick("insights")}
-              className="text-left px-3 py-2.5 rounded-lg text-sm font-semibold text-slate-700 hover:text-blue-600 hover:bg-slate-50 transition-colors"
-            >
-              Insights & Articles
-            </button>
-          </nav>
+              Home
+            </Link>
 
-          {/* Solution Finder Card */}
-          <div className="mt-6 p-4 rounded-xl bg-blue-50/70 border border-blue-100">
-            <div className="flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-blue-700 mb-1">
-              <ShieldCheck className="h-4 w-4" />
-              Not Sure What You Need?
+            {/* 7 Fields Accordion */}
+            <div>
+              <button
+                type="button"
+                onClick={() => setFieldsExpanded((prev) => !prev)}
+                className={`w-full flex items-center justify-between px-3 py-2 rounded-xl text-sm font-semibold transition-colors cursor-pointer ${
+                  isActive("/fields")
+                    ? "bg-blue-50 text-blue-600 font-bold"
+                    : "text-slate-700 hover:bg-slate-50 hover:text-blue-600"
+                }`}
+              >
+                <span>7 Core Fields</span>
+                <ChevronDown
+                  className={`h-4 w-4 transition-transform duration-200 ${
+                    fieldsExpanded ? "rotate-180" : ""
+                  }`}
+                />
+              </button>
+
+              {fieldsExpanded && (
+                <div className="pl-3 pr-1 py-1 space-y-0.5 border-l-2 border-slate-100 ml-3 my-1">
+                  <Link
+                    href="/fields"
+                    onClick={onClose}
+                    className="block px-3 py-1.5 text-xs font-bold text-blue-600 hover:underline"
+                  >
+                    View All 7 Fields →
+                  </Link>
+                  {CORE_FIELDS.map((f) => {
+                    const Icon = getFieldIcon(f.iconName);
+                    return (
+                      <Link
+                        key={f.id}
+                        href={`/fields?category=${encodeURIComponent(f.category)}`}
+                        onClick={onClose}
+                        className="flex items-center gap-2 px-3 py-1.5 rounded-lg text-xs font-medium text-slate-600 hover:text-slate-900 hover:bg-slate-50"
+                      >
+                        <Icon className="h-3.5 w-3.5 text-slate-400" />
+                        <span>{f.name}</span>
+                      </Link>
+                    );
+                  })}
+                </div>
+              )}
             </div>
-            <p className="text-xs text-slate-600 mb-3">
-              Use our guided tool to find the exact service for your business challenge.
-            </p>
-            <button
-              onClick={() => {
-                onClose();
-                onOpenSolutionFinder();
-              }}
-              className="w-full py-2 px-3 bg-white text-blue-600 hover:bg-blue-600 hover:text-white border border-blue-200 text-xs font-semibold rounded-lg transition-all shadow-xs flex items-center justify-center gap-1.5"
+
+            {/* Web -> IoT Strategic Journey */}
+            <Link
+              href="/evolution"
+              onClick={onClose}
+              className={`px-3 py-2 rounded-xl text-sm font-semibold transition-colors flex items-center gap-2 ${
+                isActive("/evolution")
+                  ? "bg-blue-50 text-blue-600 font-bold"
+                  : "text-slate-700 hover:bg-slate-50 hover:text-blue-600"
+              }`}
             >
-              Find My Solution
-              <ArrowRight className="h-3.5 w-3.5" />
-            </button>
-          </div>
+              <span className="w-2 h-2 rounded-full bg-cyan-500 animate-pulse" />
+              <span>Web → IoT Journey</span>
+            </Link>
+
+            {/* Hosted Projects */}
+            <Link
+              href="/projects"
+              onClick={onClose}
+              className={`px-3 py-2 rounded-xl text-sm font-semibold transition-colors block ${
+                isActive("/projects")
+                  ? "bg-blue-50 text-blue-600 font-bold"
+                  : "text-slate-700 hover:bg-slate-50 hover:text-blue-600"
+              }`}
+            >
+              Hosted Projects
+            </Link>
+
+            {/* Company Accordion */}
+            <div>
+              <button
+                type="button"
+                onClick={() => setCompanyExpanded((prev) => !prev)}
+                className={`w-full flex items-center justify-between px-3 py-2 rounded-xl text-sm font-semibold transition-colors cursor-pointer ${
+                  isActive("/about") ||
+                  isActive("/case-studies") ||
+                  isActive("/how-it-works") ||
+                  isActive("/insights")
+                    ? "bg-blue-50 text-blue-600 font-bold"
+                    : "text-slate-700 hover:bg-slate-50 hover:text-blue-600"
+                }`}
+              >
+                <span>Company & Resources</span>
+                <ChevronDown
+                  className={`h-4 w-4 transition-transform duration-200 ${
+                    companyExpanded ? "rotate-180" : ""
+                  }`}
+                />
+              </button>
+
+              {companyExpanded && (
+                <div className="pl-3 pr-1 py-1 space-y-0.5 border-l-2 border-slate-100 ml-3 my-1">
+                  <Link
+                    href="/about"
+                    onClick={onClose}
+                    className="flex items-center gap-2 px-3 py-1.5 rounded-lg text-xs font-medium text-slate-600 hover:text-slate-900 hover:bg-slate-50"
+                  >
+                    <Info className="h-3.5 w-3.5 text-slate-400" />
+                    <span>About the Foundation</span>
+                  </Link>
+                  <Link
+                    href="/case-studies"
+                    onClick={onClose}
+                    className="flex items-center gap-2 px-3 py-1.5 rounded-lg text-xs font-medium text-slate-600 hover:text-slate-900 hover:bg-slate-50"
+                  >
+                    <Briefcase className="h-3.5 w-3.5 text-slate-400" />
+                    <span>Case Studies</span>
+                  </Link>
+                  <Link
+                    href="/how-it-works"
+                    onClick={onClose}
+                    className="flex items-center gap-2 px-3 py-1.5 rounded-lg text-xs font-medium text-slate-600 hover:text-slate-900 hover:bg-slate-50"
+                  >
+                    <Milestone className="h-3.5 w-3.5 text-slate-400" />
+                    <span>How It Works</span>
+                  </Link>
+                  <Link
+                    href="/insights"
+                    onClick={onClose}
+                    className="flex items-center gap-2 px-3 py-1.5 rounded-lg text-xs font-medium text-slate-600 hover:text-slate-900 hover:bg-slate-50"
+                  >
+                    <BookOpen className="h-3.5 w-3.5 text-slate-400" />
+                    <span>Engineering Insights</span>
+                  </Link>
+                </div>
+              )}
+            </div>
+
+            {/* Contact */}
+            <Link
+              href="/contact"
+              onClick={onClose}
+              className={`px-3 py-2 rounded-xl text-sm font-semibold transition-colors block ${
+                isActive("/contact")
+                  ? "bg-blue-50 text-blue-600 font-bold"
+                  : "text-slate-700 hover:bg-slate-50 hover:text-blue-600"
+              }`}
+            >
+              Contact & Inquiries
+            </Link>
+          </nav>
         </div>
 
         {/* Footer Actions */}
         <div className="pt-6 border-t border-slate-100 space-y-2.5">
           <button
+            type="button"
+            onClick={() => {
+              onClose();
+              onOpenSolutionFinder();
+            }}
+            className="w-full py-2.5 px-4 bg-slate-50 hover:bg-slate-100 text-slate-700 text-xs font-semibold rounded-xl transition-colors flex items-center justify-center gap-2 border border-slate-200 cursor-pointer"
+          >
+            <Sparkles className="h-3.5 w-3.5 text-blue-600" />
+            <span>Find My Field</span>
+          </button>
+          <button
+            type="button"
             onClick={() => {
               onClose();
               onOpenConsultationModal();
             }}
-            className="w-full py-2.5 px-4 bg-slate-100 hover:bg-slate-200 text-slate-800 text-sm font-semibold rounded-xl transition-colors flex items-center justify-center gap-2"
+            className="w-full py-2.5 px-4 bg-slate-100 hover:bg-slate-200 text-slate-800 text-xs font-semibold rounded-xl transition-colors flex items-center justify-center gap-2 cursor-pointer"
           >
-            <Calendar className="h-4 w-4 text-slate-600" />
-            Book a Consultation
+            <Calendar className="h-3.5 w-3.5 text-slate-600" />
+            <span>Book Consultation</span>
           </button>
           <button
+            type="button"
             onClick={() => {
               onClose();
               onOpenProjectModal();
             }}
-            className="w-full py-2.5 px-4 bg-blue-600 hover:bg-blue-700 text-white text-sm font-semibold rounded-xl transition-all shadow-md shadow-blue-500/20 flex items-center justify-center gap-2"
+            className="w-full py-2.5 px-4 bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold rounded-xl transition-all shadow-md shadow-blue-500/20 flex items-center justify-center gap-2 cursor-pointer"
           >
-            Start a Project
-            <ArrowRight className="h-4 w-4" />
+            <span>Start a Project</span>
+            <ArrowRight className="h-3.5 w-3.5" />
           </button>
         </div>
       </div>
     </div>
   );
 }
-

@@ -16,10 +16,10 @@ export function WhyChooseUsSection() {
             Reliable Foundations
           </div>
           <h2 className="text-3xl sm:text-4xl font-extrabold tracking-tight text-slate-900">
-            Why Choose SolutionDesk
+            Why Choose The NextTechGen Foundation
           </h2>
           <p className="text-base text-slate-600 leading-relaxed">
-            A unified model designed to bridge the gap between technical complexity and predictable business outcomes.
+            A unified engineering ecosystem designed to bridge modern web platforms with connected IoT telemetry, robotics, and embedded hardware.
           </p>
         </div>
 

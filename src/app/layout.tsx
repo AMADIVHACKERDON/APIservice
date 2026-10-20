@@ -1,10 +1,11 @@
 import type { Metadata } from "next";
 import "./globals.css";
+import { AppShell } from "@/components/layout/AppShell";
 
 export const metadata: Metadata = {
-  title: "SolutionDesk — Multipurpose Digital Solutions & Engineering Services",
+  title: "The NextTechGen Foundation — Pioneering Web, IoT, Robotics, AI & Hardware",
   description:
-    "Discover and request professional digital services: web & mobile development, applied AI, cybersecurity, cloud infrastructure, and technical consulting.",
+    "The NextTechGen Foundation: Advancing technological frontiers across 7 core fields — Web Development, Cybersecurity, IoT, Robotics, ML, AI, and Hardware. Bridging software engineering to smart physical systems.",
 };
 
 export default function RootLayout({
@@ -14,7 +15,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body>{children}</body>
+      <body>
+        <AppShell>{children}</AppShell>
+      </body>
     </html>
   );
 }

@@ -1,7 +1,8 @@
 "use client";
 
 import React from "react";
-import { Layers, Mail, Phone, MapPin } from "lucide-react";
+import Link from "next/link";
+import { Cpu, Mail, Phone, MapPin, ArrowRight } from "lucide-react";
 import { NewsletterForm } from "./NewsletterForm";
 
 interface FooterProps {
@@ -10,41 +11,34 @@ interface FooterProps {
 }
 
 export function Footer({ onOpenProjectModal, onOpenConsultationModal }: FooterProps) {
-  const scrollTo = (id: string) => {
-    const el = document.getElementById(id);
-    if (el) {
-      el.scrollIntoView({ behavior: "smooth" });
-    }
-  };
-
   return (
     <footer className="bg-slate-900 text-white border-t border-slate-800">
       <div className="container-custom pt-16 pb-12">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-10 lg:gap-8 pb-14 border-b border-slate-800">
           {/* Col 1: Brand & Bio (4 cols) */}
           <div className="lg:col-span-4 space-y-5">
-            <div className="flex items-center gap-3">
-              <div className="h-10 w-10 rounded-xl bg-blue-600 flex items-center justify-center text-white shadow-sm shadow-blue-500/20">
-                <Layers className="h-5 w-5" />
+            <Link href="/" className="flex items-center gap-3 group inline-flex">
+              <div className="h-10 w-10 rounded-xl bg-blue-600 flex items-center justify-center text-white shadow-sm shadow-blue-500/20 group-hover:scale-105 transition-transform">
+                <Cpu className="h-5 w-5" />
               </div>
               <div>
-                <span className="font-extrabold text-xl tracking-tight text-white block">
-                  SolutionDesk
+                <span className="font-extrabold text-xl tracking-tight text-white block group-hover:text-blue-400 transition-colors">
+                  The NextTechGen Foundation
                 </span>
                 <span className="text-[10px] uppercase font-bold tracking-widest text-blue-400">
-                  Digital Solutions Platform
+                  7 Core Technology Disciplines
                 </span>
               </div>
-            </div>
+            </Link>
 
             <p className="text-xs text-slate-400 leading-relaxed max-w-sm">
-              Discover, scope, and request high-impact digital services delivered by verified senior software engineers, cloud architects, and product designers.
+              Advancing technological frontiers from high-performance web applications and cybersecurity to connected IoT, robotics, ML, AI, and custom hardware engineering.
             </p>
 
             <div className="space-y-2 text-xs text-slate-400">
               <div className="flex items-center gap-2.5">
                 <Mail className="h-4 w-4 text-blue-400 shrink-0" />
-                <span>solutions@solutiondesk.io</span>
+                <span>foundation@nexttechgen.org</span>
               </div>
               <div className="flex items-center gap-2.5">
                 <Phone className="h-4 w-4 text-blue-400 shrink-0" />
@@ -52,159 +46,167 @@ export function Footer({ onOpenProjectModal, onOpenConsultationModal }: FooterPr
               </div>
               <div className="flex items-center gap-2.5">
                 <MapPin className="h-4 w-4 text-blue-400 shrink-0" />
-                <span>San Francisco, CA & Global Engineering Hubs</span>
+                <span>Global Engineering Hubs & Hardware Prototyping Labs</span>
               </div>
             </div>
           </div>
 
-          {/* Col 2: Services Links (2 cols) */}
+          {/* Col 2: The 7 Core Fields (2 cols) */}
           <div className="lg:col-span-2 space-y-3.5">
             <h4 className="text-xs font-bold uppercase tracking-wider text-slate-300">
-              Service Catalog
+              7 Core Fields
             </h4>
             <ul className="space-y-2 text-xs text-slate-400">
               <li>
-                <button
-                  onClick={() => scrollTo("services")}
-                  className="hover:text-blue-400 transition-colors text-left"
+                <Link
+                  href="/fields?category=Web%20Development"
+                  className="hover:text-blue-400 transition-colors text-left block"
                 >
                   Web Development
-                </button>
+                </Link>
               </li>
               <li>
-                <button
-                  onClick={() => scrollTo("services")}
-                  className="hover:text-blue-400 transition-colors text-left"
+                <Link
+                  href="/fields?category=Cybersecurity"
+                  className="hover:text-blue-400 transition-colors text-left block"
                 >
-                  Mobile Applications
-                </button>
+                  Cybersecurity
+                </Link>
               </li>
               <li>
-                <button
-                  onClick={() => scrollTo("services")}
-                  className="hover:text-blue-400 transition-colors text-left"
+                <Link
+                  href="/fields?category=IoT"
+                  className="hover:text-blue-400 transition-colors text-left block"
                 >
-                  AI & Machine Learning
-                </button>
+                  IoT (Internet of Things)
+                </Link>
               </li>
               <li>
-                <button
-                  onClick={() => scrollTo("services")}
-                  className="hover:text-blue-400 transition-colors text-left"
+                <Link
+                  href="/fields?category=Robotics"
+                  className="hover:text-blue-400 transition-colors text-left block"
                 >
-                  Cloud Computing & DevOps
-                </button>
+                  Robotics
+                </Link>
               </li>
               <li>
-                <button
-                  onClick={() => scrollTo("services")}
-                  className="hover:text-blue-400 transition-colors text-left"
+                <Link
+                  href="/fields?category=ML"
+                  className="hover:text-blue-400 transition-colors text-left block"
                 >
-                  Cybersecurity & Audit
-                </button>
+                  ML (Machine Learning)
+                </Link>
               </li>
               <li>
-                <button
-                  onClick={() => scrollTo("services")}
-                  className="hover:text-blue-400 transition-colors text-left"
+                <Link
+                  href="/fields?category=AI"
+                  className="hover:text-blue-400 transition-colors text-left block"
                 >
-                  UI/UX Design Systems
-                </button>
+                  AI (Artificial Intelligence)
+                </Link>
               </li>
               <li>
-                <button
-                  onClick={() => scrollTo("services")}
-                  className="hover:text-blue-400 transition-colors text-left"
+                <Link
+                  href="/fields?category=Hardware"
+                  className="hover:text-blue-400 transition-colors text-left block"
                 >
-                  Workflow Automation
-                </button>
+                  Hardware
+                </Link>
               </li>
             </ul>
           </div>
 
-          {/* Col 3: Company & Platform (2 cols) */}
-          <div className="lg:col-span-2 space-y-3.5">
+          {/* Col 3: Foundation Programs (3 cols) */}
+          <div className="lg:col-span-3 space-y-3.5">
             <h4 className="text-xs font-bold uppercase tracking-wider text-slate-300">
-              Platform
+              Navigation & Programs
             </h4>
             <ul className="space-y-2 text-xs text-slate-400">
               <li>
-                <button
-                  onClick={() => scrollTo("how-it-works")}
-                  className="hover:text-blue-400 transition-colors text-left"
+                <Link
+                  href="/evolution"
+                  className="hover:text-blue-400 transition-colors text-left flex items-center gap-1"
                 >
-                  How It Works
-                </button>
+                  <span>Web → IoT Strategic Journey</span>
+                  <ArrowRight className="h-3 w-3 text-blue-400" />
+                </Link>
               </li>
               <li>
-                <button
-                  onClick={() => scrollTo("case-studies")}
-                  className="hover:text-blue-400 transition-colors text-left"
+                <Link
+                  href="/projects"
+                  className="hover:text-blue-400 transition-colors text-left block"
                 >
-                  Case Studies
-                </button>
+                  Active Hosted Projects
+                </Link>
               </li>
               <li>
-                <button
-                  onClick={() => scrollTo("why-us")}
-                  className="hover:text-blue-400 transition-colors text-left"
+                <Link
+                  href="/case-studies"
+                  className="hover:text-blue-400 transition-colors text-left block"
                 >
-                  Why Choose Us
-                </button>
+                  Featured Case Studies
+                </Link>
               </li>
               <li>
-                <button
-                  onClick={() => scrollTo("testimonials")}
-                  className="hover:text-blue-400 transition-colors text-left"
+                <Link
+                  href="/how-it-works"
+                  className="hover:text-blue-400 transition-colors text-left block"
                 >
-                  Testimonials
-                </button>
+                  How It Works & Process
+                </Link>
               </li>
               <li>
-                <button
-                  onClick={() => scrollTo("insights")}
-                  className="hover:text-blue-400 transition-colors text-left"
+                <Link
+                  href="/about"
+                  className="hover:text-blue-400 transition-colors text-left block"
                 >
-                  Engineering Insights
-                </button>
+                  About the Foundation
+                </Link>
               </li>
               <li>
-                <button
-                  onClick={onOpenConsultationModal}
-                  className="hover:text-blue-400 transition-colors text-left"
+                <Link
+                  href="/insights"
+                  className="hover:text-blue-400 transition-colors text-left block"
                 >
-                  Book a Consultation
-                </button>
+                  Engineering Research & Insights
+                </Link>
               </li>
               <li>
-                <button
-                  onClick={onOpenProjectModal}
-                  className="hover:text-blue-400 transition-colors text-left"
+                <Link
+                  href="/contact"
+                  className="hover:text-blue-400 transition-colors text-left block"
                 >
-                  Start Project Request
-                </button>
+                  Contact & Consultation
+                </Link>
               </li>
             </ul>
           </div>
 
-          {/* Col 4: Newsletter & Dispatch (4 cols) */}
-          <div className="lg:col-span-4 space-y-4">
+          {/* Col 4: Newsletter & Community (3 cols) */}
+          <div className="lg:col-span-3 space-y-4">
+            <h4 className="text-xs font-bold uppercase tracking-wider text-slate-300">
+              NextTechGen Dispatch
+            </h4>
+            <p className="text-xs text-slate-400 leading-relaxed">
+              Receive quarterly technical briefs on web software, edge IoT gateways, robotics telematics, and hardware schematics.
+            </p>
+
             <NewsletterForm />
 
             <div className="pt-2">
-              <span className="text-[11px] font-bold uppercase tracking-wider text-slate-400 block mb-2">
-                Connect With Our Team
+              <span className="text-[10px] uppercase font-bold tracking-wider text-slate-400 block mb-2">
+                Connect With Us
               </span>
-              <div className="flex items-center gap-3">
+              <div className="flex items-center gap-2">
                 <a
-                  href="https://github.com"
+                  href="https://github.com/AMADIVHACKERDON"
                   target="_blank"
                   rel="noreferrer"
                   className="p-2 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white transition-colors"
                   aria-label="GitHub"
                 >
                   <svg className="h-4 w-4 fill-current" viewBox="0 0 24 24">
-                    <path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z" />
+                    <path fillRule="evenodd" clipRule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.53 1.032 1.53 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z" />
                   </svg>
                 </a>
                 <a
@@ -218,17 +220,6 @@ export function Footer({ onOpenProjectModal, onOpenConsultationModal }: FooterPr
                     <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
                   </svg>
                 </a>
-                <a
-                  href="https://linkedin.com"
-                  target="_blank"
-                  rel="noreferrer"
-                  className="p-2 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white transition-colors"
-                  aria-label="LinkedIn"
-                >
-                  <svg className="h-4 w-4 fill-current" viewBox="0 0 24 24">
-                    <path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.762-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z" />
-                  </svg>
-                </a>
               </div>
             </div>
           </div>
@@ -237,20 +228,20 @@ export function Footer({ onOpenProjectModal, onOpenConsultationModal }: FooterPr
         {/* Bottom Legal & Copyright Bar */}
         <div className="pt-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-slate-500">
           <p>
-            © {new Date().getFullYear()} SolutionDesk Technologies, Inc. All rights reserved.
+            © {new Date().getFullYear()} The NextTechGen Foundation. All rights reserved.
           </p>
           <div className="flex items-center gap-6">
+            <Link href="/about" className="hover:text-slate-300 transition-colors">
+              About Foundation
+            </Link>
+            <Link href="/contact" className="hover:text-slate-300 transition-colors">
+              Contact & Inquiries
+            </Link>
             <a href="#" className="hover:text-slate-300 transition-colors">
-              Privacy Policy
+              Zero-Trust Security
             </a>
             <a href="#" className="hover:text-slate-300 transition-colors">
-              Terms of Service
-            </a>
-            <a href="#" className="hover:text-slate-300 transition-colors">
-              Security & Compliance
-            </a>
-            <a href="#" className="hover:text-slate-300 transition-colors">
-              Cookie Preferences
+              Open Science Policy
             </a>
           </div>
         </div>

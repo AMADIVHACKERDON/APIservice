@@ -1,12 +1,13 @@
 "use client";
 
 import React, { useState, useMemo } from "react";
-import { SERVICES_CATALOG, ServiceItem } from "../data/mock-data";
+import { SERVICES_CATALOG, CORE_FIELDS, ServiceItem } from "../data/mock-data";
 import { SearchBar } from "./SearchBar";
 import { CategoryFilter, CategoryFilterType } from "./CategoryFilter";
 import { ServiceCard } from "./ServiceCard";
 import { ServiceDetailModal } from "./ServiceDetailModal";
-import { Sparkles, SlidersHorizontal, PlusCircle } from "lucide-react";
+import { Sparkles, SlidersHorizontal, PlusCircle, ArrowRight, Layers } from "lucide-react";
+import { IconHelper } from "../ui/IconHelper";
 
 interface ServiceDiscoverySectionProps {
   onGetStarted: (service?: ServiceItem) => void;
@@ -22,16 +23,17 @@ export function ServiceDiscoverySection({
   const [sortBy, setSortBy] = useState<"recommended" | "title">("recommended");
   const [activeModalService, setActiveModalService] = useState<ServiceItem | null>(null);
 
-  // Compute category counts
+  // Compute category counts across the 7 fields
   const counts = useMemo(() => {
     const map: Record<CategoryFilterType, number> = {
       All: SERVICES_CATALOG.length,
-      Development: 0,
-      Design: 0,
-      "AI & Data": 0,
-      Infrastructure: 0,
-      Security: 0,
-      "Strategy & Growth": 0,
+      "Web Development": 0,
+      Cybersecurity: 0,
+      IoT: 0,
+      Robotics: 0,
+      ML: 0,
+      AI: 0,
+      Hardware: 0,
     };
 
     SERVICES_CATALOG.forEach((item) => {
@@ -42,6 +44,12 @@ export function ServiceDiscoverySection({
 
     return map;
   }, []);
+
+  // Find active field meta if a specific field is selected
+  const activeFieldMeta = useMemo(() => {
+    if (selectedCategory === "All") return null;
+    return CORE_FIELDS.find((f) => f.category === selectedCategory) || null;
+  }, [selectedCategory]);
 
   // Filtered and sorted services
   const filteredServices = useMemo(() => {
@@ -82,21 +90,28 @@ export function ServiceDiscoverySection({
     setSelectedCategory("All");
   };
 
+  const scrollToProjects = () => {
+    const el = document.getElementById("projects");
+    if (el) {
+      el.scrollIntoView({ behavior: "smooth" });
+    }
+  };
+
   return (
-    <section id="services" className="py-20 md:py-24 bg-slate-50/60 border-t border-slate-200/80">
+    <section id="fields" className="py-20 md:py-24 bg-slate-50/60 border-t border-slate-200/80">
       <div className="container-custom space-y-10">
         {/* Section Header */}
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
           <div className="space-y-3 max-w-2xl">
             <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-blue-100/70 text-blue-700 text-xs font-semibold">
-              <Sparkles className="h-3.5 w-3.5" />
-              Service Catalog
+              <Layers className="h-3.5 w-3.5" />
+              The 7 Core Disciplines
             </div>
             <h2 className="text-3xl sm:text-4xl font-extrabold tracking-tight text-slate-900">
-              Interactive Service Discovery
+              Technology Disciplines & Capabilities
             </h2>
             <p className="text-base text-slate-600">
-              Explore 15 distinct service domains with clear deliverables, verified expertise, and guided project brief workflows.
+              Every technical initiative at The NextTechGen Foundation is unified under 7 core fields — eliminating vendor sprawl and bridging software to physical IoT and robotics.
             </p>
           </div>
 
@@ -106,7 +121,7 @@ export function ServiceDiscoverySection({
             className="self-start md:self-auto px-4 py-2.5 bg-white hover:bg-slate-100 text-slate-800 text-xs font-semibold rounded-xl border border-slate-200/90 shadow-2xs transition-colors flex items-center gap-2 cursor-pointer"
           >
             <PlusCircle className="h-4 w-4 text-blue-600" />
-            <span>Request Custom Service</span>
+            <span>Request Custom Solution</span>
           </button>
         </div>
 
@@ -143,12 +158,43 @@ export function ServiceDiscoverySection({
           </div>
         </div>
 
+        {/* Active Field Highlight Banner when a specific field is filtered */}
+        {activeFieldMeta && (
+          <div className="p-6 rounded-2xl border border-slate-200 bg-gradient-to-r from-white via-slate-50 to-blue-50/40 shadow-xs flex flex-col md:flex-row md:items-center justify-between gap-6">
+            <div className="flex items-start gap-4">
+              <div className={`p-3 rounded-xl ${activeFieldMeta.accentColor.bg} ${activeFieldMeta.accentColor.text} shrink-0`}>
+                <IconHelper name={activeFieldMeta.iconName} className="h-6 w-6" />
+              </div>
+              <div className="space-y-1">
+                <div className="flex items-center gap-2">
+                  <h3 className="text-lg font-bold text-slate-900">{activeFieldMeta.name}</h3>
+                  <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full border ${activeFieldMeta.accentColor.badge}`}>
+                    {activeFieldMeta.stats.value}
+                  </span>
+                </div>
+                <p className="text-xs text-slate-600 max-w-2xl">{activeFieldMeta.description}</p>
+                <p className="text-[11px] text-blue-600 font-medium pt-1">
+                  💡 <span className="font-semibold">IoT & System Link:</span> {activeFieldMeta.bridgeToIoT}
+                </p>
+              </div>
+            </div>
+
+            <button
+              onClick={scrollToProjects}
+              className="shrink-0 px-4 py-2 bg-slate-900 hover:bg-blue-600 text-white text-xs font-semibold rounded-xl transition-colors flex items-center gap-2 cursor-pointer shadow-xs self-start md:self-center"
+            >
+              <span>See Hosted Projects in {activeFieldMeta.shortTitle}</span>
+              <ArrowRight className="h-3.5 w-3.5" />
+            </button>
+          </div>
+        )}
+
         {/* Results Metadata */}
         <div className="flex items-center justify-between text-xs text-slate-500 px-1">
           <span>
             Showing <strong className="text-slate-900 font-semibold">{filteredServices.length}</strong> of{" "}
-            <strong className="text-slate-900 font-semibold">{SERVICES_CATALOG.length}</strong> services
-            {selectedCategory !== "All" && ` in ${selectedCategory}`}
+            <strong className="text-slate-900 font-semibold">{SERVICES_CATALOG.length}</strong> sub-disciplines
+            {selectedCategory !== "All" && ` under ${selectedCategory}`}
             {searchQuery && ` matching "${searchQuery}"`}
           </span>
 
@@ -157,7 +203,7 @@ export function ServiceDiscoverySection({
               onClick={handleClearFilters}
               className="text-blue-600 font-semibold hover:underline cursor-pointer"
             >
-              Reset filters
+              Show all 7 fields
             </button>
           )}
         </div>
@@ -181,17 +227,17 @@ export function ServiceDiscoverySection({
               <Sparkles className="h-6 w-6" />
             </div>
             <h3 className="text-lg font-bold text-slate-900">
-              No matching services found
+              No matching capabilities found
             </h3>
             <p className="text-xs text-slate-500 leading-relaxed">
-              We couldn't find a predefined service matching &ldquo;{searchQuery}&rdquo;. You can submit a custom service request or clear your search filters.
+              We couldn't find a discipline matching &ldquo;{searchQuery}&rdquo;. You can submit a custom project request or reset your filters.
             </p>
             <div className="flex items-center justify-center gap-3 pt-2">
               <button
                 onClick={handleClearFilters}
                 className="px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-800 text-xs font-semibold rounded-xl transition-colors cursor-pointer"
               >
-                Clear Search
+                Clear Filters
               </button>
               <button
                 onClick={onOpenCustomRequest}
@@ -213,4 +259,3 @@ export function ServiceDiscoverySection({
     </section>
   );
 }
-

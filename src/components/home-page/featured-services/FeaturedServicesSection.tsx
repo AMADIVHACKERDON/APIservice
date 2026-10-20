@@ -41,7 +41,7 @@ export function FeaturedServicesSection({
             onClick={onViewAllServices}
             className="self-start md:self-auto text-xs font-semibold text-blue-600 hover:text-blue-700 flex items-center gap-1.5 group cursor-pointer"
           >
-            <span>Browse Full Catalog ({SERVICES_CATALOG.length} services)</span>
+            <span>Explore All 7 Core Disciplines</span>
             <ArrowRight className="h-3.5 w-3.5 group-hover:translate-x-1 transition-transform" />
           </button>
         </div>
